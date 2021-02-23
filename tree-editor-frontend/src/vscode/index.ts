@@ -1,0 +1,45 @@
+import {TinyEmitter} from "tiny-emitter";
+import roarr from "roarr";
+
+const logger = roarr.child({
+  tag: "vscode"
+});
+
+/**
+ * Any messages sent from the VSCode extension will be re-sent from this emitter.
+ * Subscribe to events with `.on` or `.once`,
+ * and unsubscribe with `.off`.
+ * 
+ */
+const extensionEvents = new TinyEmitter();
+
+window.addEventListener("message", (event) => {
+  logger.debug({event}, "Got message: %s", event.data);
+  extensionEvents.emit("message", event.data);
+})
+
+function getVscodeApi() {
+  if (window.acquireVsCodeApi) {
+    logger.info("VScode API is available");
+    return acquireVsCodeApi();
+  } else {
+    logger.warn("VScode API is NOT available!")
+  }
+
+  const mockApi: VSCode = {
+    getState: () => {
+      logger.info("Returning empty state");
+      return {};
+    },
+    setState(state) {
+      logger.debug({newState: state}, "Tried setting state");
+    },
+    postMessage(message){
+      logger.debug({message}, "Sent message");
+    }
+  }
+  return mockApi;
+}
+
+export const vscode = getVscodeApi();
+
