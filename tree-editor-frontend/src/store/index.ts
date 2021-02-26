@@ -1,7 +1,11 @@
-import { createStore, Plugin } from "vuex";
+import Vue from "vue";
+import Vuex, { Plugin } from "vuex";
 import { TreeDocument } from "treedocumentmodel/TreeDocument";
-import { TreedocumentmodelFactoryImpl } from "treedocumentmodel/src/TreedocumentmodelFactoryImpl";
+import { TreedocumentmodelFactoryImpl } from "treedocumentmodel/TreedocumentmodelFactoryImpl";
 import { vscode } from "@/vscode/";
+
+Vue.use(Vuex);
+
 
 function getInitialState(): RootState {
   const oldState = vscode.getState();
@@ -23,12 +27,11 @@ export interface RootState {
   treeDocument: TreeDocument;
 }
 
-const store = createStore({
+
+export default new Vuex.Store({
   state: getInitialState(),
   mutations: {},
   actions: {},
   modules: {},
   plugins: [saveStateToVscode]
 });
-
-export default store;

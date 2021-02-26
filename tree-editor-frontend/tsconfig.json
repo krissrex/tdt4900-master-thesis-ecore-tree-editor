@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "strictNullChecks": false, //Disabled because of crossecore generated code
     "target": "esnext",
     "module": "esnext",
     "strict": true,
@@ -19,8 +18,7 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "treedocumentmodel/*": ["node_modules/treedocumentmodel/src/*"]
+      ]
     },
     "lib": [
       "esnext",

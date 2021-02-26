@@ -1,5 +1,6 @@
 import {TinyEmitter} from "tiny-emitter";
 import roarr from "roarr";
+import {loadXmi} from "@/testing/sample_xmi"
 
 const logger = roarr.child({
   tag: "vscode"
@@ -19,7 +20,7 @@ window.addEventListener("message", (event) => {
 })
 
 function getVscodeApi() {
-  if (window.acquireVsCodeApi) {
+  if ("acquireVsCodeApi" in window) {
     logger.info("VScode API is available");
     return acquireVsCodeApi();
   } else {
@@ -28,8 +29,14 @@ function getVscodeApi() {
 
   const mockApi: VSCode = {
     getState: () => {
-      logger.info("Returning empty state");
-      return {};
+      const useSampleData = true;
+      if (useSampleData) {
+        logger.warn("Using sample data");
+        return loadXmi();
+      } else {
+        logger.info("Returning empty state");
+        return {};
+      }
     },
     setState(state) {
       logger.debug({newState: state}, "Tried setting state");

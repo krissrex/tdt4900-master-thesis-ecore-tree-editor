@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TreeDocumentModel:TreeDocument
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:TreeDocumentModel="http://stud.ntnu.no/krirek/2021/treedocumentmodel"
+    xsi:schemaLocation="http://stud.ntnu.no/krirek/2021/treedocumentmodel ../model/TreeDocumentModel.ecore">
+  <roots id="MyEcore.ecore">
+    <rootNode
+        id="0"
+        type="EPackage"
+        name="MyEcore">
+      <children
+          id="1"
+          type="EClass"
+          name="TestClass">
+        <children
+            id="5"
+            type="EAnnotation"
+            name="Ecore"/>
+        <children
+            id="6"
+            type="EAnnotation"
+            name="Genmodel">
+          <children
+              id="11"
+              type="EStringToStringMapEntry"
+              name="documentation"/>
+        </children>
+        <children
+            id="7"
+            type="EOperation"
+            name="myOperation()"/>
+        <children
+            id="8"
+            type="EAttribute"
+            name="MyAttribute"/>
+        <children
+            id="9"
+            type="EReference"
+            name="MyReference"/>
+        <children
+            id="10"
+            type="EReference"
+            name="me"/>
+      </children>
+      <children
+          id="2"
+          type="EEnum"
+          name="MyEnum"/>
+      <children
+          id="3"
+          type="EDataType"
+          name="MyData"/>
+      <children
+          id="4"
+          type="EClass"
+          name="Circular"/>
+    </rootNode>
+    <actions>
+      <availableActions
+          id="ecore:new_child"
+          name="New child"/>
+      <availableActions
+          id="ecore:new_sibling"
+          name="New sibling"/>
+    </actions>
+    <hierarchy
+        href="EcoreHierarchyConfiguration.xmi#/"/>
+    <icons href="EcoreIcons.xmi#/"/>
+  </roots>
+  <roots id="TestClass.genmodel">
+    <actions>
+      <availableActions
+          id="generate:model"
+          name="Generate Model"/>
+      <nodeActions
+          key="generate:model">
+        <value>GenModel</value>
+      </nodeActions>
+    </actions>
+    <hierarchy/>
+  </roots>
+</TreeDocumentModel:TreeDocument>

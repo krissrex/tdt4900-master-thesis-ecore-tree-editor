@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TreeDocumentModel:HierarchyConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TreeDocumentModel="http://stud.ntnu.no/krirek/2021/treedocumentmodel" xsi:schemaLocation="http://stud.ntnu.no/krirek/2021/treedocumentmodel ../model/TreeDocumentModel.ecore">
+  <allowedChildren key="EPackage">
+    <value>EAnnotation</value>
+    <value>EPackage</value>
+    <value>EDataType</value>
+    <value>EEnum</value>
+    <value>EClass</value>
+  </allowedChildren>
+  <allowedChildren key="EClass">
+    <value>EAnnotation</value>
+    <value>EAttribute</value>
+    <value>EReference</value>
+  </allowedChildren>
+  <allowedChildren key="EAnnotation"/>
+  <roots>EPackage</roots>
+</TreeDocumentModel:HierarchyConfiguration>
