@@ -2,6 +2,11 @@ import {TinyEmitter} from "tiny-emitter";
 import roarr from "roarr";
 import {loadXmi} from "@/testing/sample_xmi"
 
+/*
+This file bridges the webview to the vscode API and messages from the vscode extension.
+Better abstractions are provided in `ExtensionHost.ts`.
+*/
+
 const logger = roarr.child({
   tag: "vscode"
 });
@@ -12,7 +17,7 @@ const logger = roarr.child({
  * and unsubscribe with `.off`.
  * 
  */
-const extensionEvents = new TinyEmitter();
+export const extensionEvents = new TinyEmitter();
 
 window.addEventListener("message", (event) => {
   logger.debug({event}, "Got message: %s", event.data);

@@ -15,7 +15,7 @@ function getInitialState(): RootState {
   }
 
   return {
-    treeDocument: TreedocumentmodelFactoryImpl.eINSTANCE.createTreeDocument()
+    treeDocument: undefined
   };
 }
 
@@ -24,7 +24,7 @@ const saveStateToVscode: Plugin<RootState> = rootStore => {
 };
 
 export interface RootState {
-  treeDocument: TreeDocument;
+  treeDocument?: TreeDocument;
 }
 
 

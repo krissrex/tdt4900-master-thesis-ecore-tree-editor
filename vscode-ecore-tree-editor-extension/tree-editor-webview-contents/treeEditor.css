@@ -1,0 +1,106 @@
+:root {
+  --tree-node-icon-size: 16px;
+}
+
+.tree ol, .tree {
+  list-style-type: none;
+}
+
+.tree {
+  margin: 0;
+  padding: 0;
+  padding-left: var(--tree-node-icon-size);
+  line-height: 1.6em;
+}
+
+.caret {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+}
+
+.caret::before {
+  position: absolute;
+  left: calc(-1 * var(--tree-node-icon-size));
+  content: "\25B6";
+	color: var(--vscode-button-foreground);
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  transform: rotate(90deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.treeNodeIcon {
+  min-width: var(--tree-node-icon-size);
+  width: var(--tree-node-icon-size);
+  display: inline-block;
+  vertical-align: text-bottom;
+}
+
+#editorApp {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  
+  display: grid;
+  grid-template-columns: 5fr 5fr;
+  grid-template-rows: 50px auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+
+  grid-template-areas: "actionbar actionbar"
+                       "tree      properties";
+}
+
+.pane {
+  padding: 10px;
+  border: 1px solid red;
+}
+
+.treePane, .propertiesPane {
+  overflow: scroll;
+}
+
+.treePane {
+  grid-area: tree;
+}
+
+.propertiesPane {
+  grid-area: properties;
+}
+
+.actionbarPane {
+  grid-area: actionbar;
+  background-color: var(--vscode-statusBar-background);
+  color: var(--vscode-statusBar-foreground);
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}
+
+.actionList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-content: center;
+  align-items: center;
+}
+
+.actionList button {
+  margin-left: 10px;
+}
