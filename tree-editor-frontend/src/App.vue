@@ -25,4 +25,5 @@ export default Vue.extend({
 });
 </script>
 
-<style href="@/assets/vscode.css"></style>
+<style src="@/assets/reset.css"></style>
+<style src="@/assets/vscode.css"></style>
