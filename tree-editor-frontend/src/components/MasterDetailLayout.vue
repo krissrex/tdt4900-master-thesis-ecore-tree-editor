@@ -25,7 +25,7 @@ export default Vue.extend({});
 
   display: grid;
   grid-template-columns: [master-line] 80fr [divider-line] 4px [detail-line] auto;
-  grid-template-rows: [top-line] 20fr [main-line] 80fr;
+  grid-template-rows: [top-line] 10fr [main-line] 90fr;
   grid-template-areas:
     "top top top"
     "master divider detail";
