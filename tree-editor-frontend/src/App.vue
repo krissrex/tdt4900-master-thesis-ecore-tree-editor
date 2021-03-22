@@ -1,19 +1,23 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <master-detail-layout>
+      <div slot="top">Top</div>
+      <div slot="master">Master</div>
+      <div slot="detail">Detail</div>
+    </master-detail-layout>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import MasterDetailLayout from "./components/MasterDetailLayout.vue";
 import {vscodeExtension} from "@/vscode/VscodeExtension"
 
 export default Vue.extend({
   name: "App",
   components: {
-    HelloWorld
+    MasterDetailLayout
   },
   mounted() {
     this.$nextTick(() => vscodeExtension.signalReady());
