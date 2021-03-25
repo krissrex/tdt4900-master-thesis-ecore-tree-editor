@@ -1,7 +1,12 @@
 import { IconDataUri } from "./IconDataUri";
 
-/** A composite icon, built on layers.
- * The first icon (index=0) is on the bottom, and the others are drawn on top.
+/**
+ * The icon shown on a {@link TreeNode}.
+ *
+ * A composite icon, built with a stack of layers.
+ * The first icon (`index=0`) is drawn first (beneath), and the others are drawn on top.
+ *
+ * @category Icon
  */
 export interface NodeIcon {
   icons: Array<IconDataUri>;
