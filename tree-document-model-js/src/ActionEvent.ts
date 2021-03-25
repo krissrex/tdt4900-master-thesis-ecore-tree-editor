@@ -2,6 +2,6 @@ import { Action } from "./Action";
 import { TreeNode } from "./TreeNode";
 
 export interface ActionEvent {
-  targetNodes: Array<TreeNode>;
+  targetNodes?: Array<TreeNode>;
   action: Action;
 }

@@ -1,3 +1,6 @@
+import { IconDataUri } from "./IconDataUri";
+import { NodeType } from "./NodeType";
+
 export interface IconConfiguration {
-  icons: Map<string, string>;
+  icons: Map<NodeType, IconDataUri>;
 }

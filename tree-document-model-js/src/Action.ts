@@ -1,5 +1,8 @@
+import { ActionId } from "./ActionId";
+import { IconDataUri } from "./IconDataUri";
+
 export interface Action {
-  id: string;
+  id: ActionId;
   name: string;
-  icon: string;
+  icon?: IconDataUri;
 }

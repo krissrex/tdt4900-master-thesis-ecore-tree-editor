@@ -6,8 +6,8 @@ import { ActionConfiguration } from "./ActionConfiguration";
 export interface TreeRoot {
   id: string;
 
-  rootNode: TreeNode;
+  rootNode?: TreeNode;
   actions: ActionConfiguration;
   hierarchy: HierarchyConfiguration;
-  icons: IconConfiguration;
+  icons?: IconConfiguration;
 }

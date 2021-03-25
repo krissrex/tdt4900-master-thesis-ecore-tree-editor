@@ -1,5 +1,7 @@
-export interface HierarchyConfiguration {
-  roots: Set<string>;
+import { NodeType } from "./NodeType";
 
-  allowedChildren: Map<string, string>;
+export interface HierarchyConfiguration {
+  roots: Set<NodeType>;
+
+  allowedChildren: Map<NodeType, Array<NodeType>>;
 }
