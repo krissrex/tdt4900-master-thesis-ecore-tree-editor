@@ -1,28 +1,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "ecore/*": ["node_modules/crossecore/lib/*"],
-      "treedocumentmodel/*": ["./*"]
-    },    
-    "outDir": "./dist/out-tsc",
+    "outDir": "./dist",
     "sourceMap": true,
-    "declaration": false,
+    "declaration": true, // Create d.ts files. Important for a library.
     "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ]
+    "lib": ["ES2015", "DOM"]
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*"]
 }
