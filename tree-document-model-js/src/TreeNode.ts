@@ -1,3 +1,4 @@
+import { IconDataUri } from "./IconDataUri";
 import { NodeIcon } from "./NodeIcon";
 
 export interface TreeNode {
@@ -8,5 +9,5 @@ export interface TreeNode {
 
   children: Array<TreeNode>;
   parent: TreeNode | null;
-  iconOverride?: NodeIcon;
+  iconOverride?: IconDataUri | NodeIcon;
 }
