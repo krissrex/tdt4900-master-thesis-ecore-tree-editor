@@ -1,0 +1,14 @@
+{
+  "folders": [
+	{
+		"path": "tree-editor-frontend"
+	},
+	{
+		"path": "tree-document-model-js"
+	},
+	{
+		"path": "vscode-ecore-tree-editor-extension"
+	}
+],
+  "settings": {}
+}
