@@ -10,5 +10,10 @@
 		"path": "vscode-ecore-tree-editor-extension"
 	}
 ],
-  "settings": {}
+  "settings": {
+    "cSpell.words": [
+      "ecore",
+      "plantuml"
+    ]
+  }
 }

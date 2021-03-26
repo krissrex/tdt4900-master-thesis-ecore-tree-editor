@@ -1,0 +1,9 @@
+{
+  "cSpell.words": [
+    "Vuex",
+    "fieldset",
+    "roarr"
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
