@@ -50,7 +50,7 @@ export interface TreeNode {
   /**
    * The parent of this node, or empty (`null`) if this is a root node.
    */
-  parent: TreeNode | null;
+  //parent: TreeNode | null;
 
   /**
    * An icon to use *instead* of the default icon.
