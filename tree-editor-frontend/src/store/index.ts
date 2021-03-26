@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Vuex, { Plugin } from "vuex";
-import { TreeDocument } from "treedocumentmodel/TreeDocument";
+import { TreeDocument } from "treedocumentmodel";
 import { vscode } from "@/vscode/";
 import { mockVscodeApi } from "@/vscode/mockVscode";
 
 Vue.use(Vuex);
 
 function getInitialState(): RootState {
-   const oldState = vscode.getState();
+  const oldState = vscode.getState();
 
   if (oldState) {
     return oldState;
