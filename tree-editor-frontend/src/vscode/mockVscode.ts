@@ -1,6 +1,5 @@
 import { getChildLogger } from "@/logging";
-import { loadXmi } from "@/testing/sample_xmi";
-
+import { getExampleTreeDocument } from "@/testing/sampleTreeDocument";
 
 export class MockVSCode implements VSCode {
   private readonly logger = getChildLogger("vscode");
@@ -8,11 +7,14 @@ export class MockVSCode implements VSCode {
   getState() {
     const useSampleData = true;
     if (useSampleData) {
-      this.logger.warn("Using sample xmi data");
+      this.logger.warn("Using sample data");
       try {
-        return loadXmi();
+        return getExampleTreeDocument();
       } catch (err) {
-        this.logger.error({err}, "Failed to load sample xmi data. Returning undefined");
+        this.logger.error(
+          { err },
+          "Failed to load sample data. Returning undefined"
+        );
         return undefined;
       }
     } else {
@@ -21,17 +23,17 @@ export class MockVSCode implements VSCode {
     }
   }
   setState(state: any) {
-    this.logger.debug({newState: state}, "Tried setting state");
+    this.logger.debug({ newState: state }, "Tried setting state");
     //TODO: persist it, either in a member variable or e.g. localstorage.
   }
-  postMessage(message: any){
-    this.logger.debug({message}, "Sent message");
+  postMessage(message: any) {
+    this.logger.debug({ message }, "Sent message");
   }
 }
 
 /**
  * An alternative to {@link acquireVsCodeApi} when running outside a VSCode webview.
- * 
+ *
  * **Note: Not for use in production!**
  */
- export const mockVscodeApi: VSCode = new MockVSCode();
+export const mockVscodeApi: VSCode = new MockVSCode();
