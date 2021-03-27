@@ -1,15 +1,17 @@
 import { getChildLogger } from "@/logging";
+import { RootState } from "@/store";
 import { getExampleTreeDocument } from "@/testing/sampleTreeDocument";
+import { VSCode } from "@/vscode";
 
 export class MockVSCode implements VSCode {
   private readonly logger = getChildLogger("vscode");
 
-  getState() {
+  getState(): RootState {
     const useSampleData = true;
     if (useSampleData) {
       this.logger.warn("Using sample data");
       try {
-        return getExampleTreeDocument();
+        return { treeDocument: getExampleTreeDocument() };
       } catch (err) {
         this.logger.error(
           { err },
@@ -22,7 +24,7 @@ export class MockVSCode implements VSCode {
       return {};
     }
   }
-  setState(state: any) {
+  setState(state: RootState) {
     this.logger.debug({ newState: state }, "Tried setting state");
     //TODO: persist it, either in a member variable or e.g. localstorage.
   }

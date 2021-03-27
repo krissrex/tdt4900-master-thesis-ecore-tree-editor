@@ -1,18 +1,22 @@
+import { getChildLogger } from "@/logging";
+import { vscode } from "@/vscode/";
+import { TreeDocument } from "treedocumentmodel";
 import Vue from "vue";
 import Vuex, { Plugin } from "vuex";
-import { TreeDocument } from "treedocumentmodel";
-import { vscode } from "@/vscode/";
-import { mockVscodeApi } from "@/vscode/mockVscode";
 
 Vue.use(Vuex);
 
 function getInitialState(): RootState {
+  const log = getChildLogger("store:getInitialState");
+  log.debug("Getting initial state");
   const oldState = vscode.getState();
 
   if (oldState) {
+    log.debug({ oldState }, "Using old state");
     return oldState;
   }
 
+  log.warn("Returning empty state");
   return {
     treeDocument: undefined,
   };

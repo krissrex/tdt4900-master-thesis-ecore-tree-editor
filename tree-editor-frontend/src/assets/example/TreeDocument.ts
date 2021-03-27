@@ -1,6 +1,4 @@
-
-export default 
-`<?xml version="1.0" encoding="UTF-8"?>
+export default `<?xml version="1.0" encoding="UTF-8"?>
 <TreeDocumentModel:TreeDocument
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"

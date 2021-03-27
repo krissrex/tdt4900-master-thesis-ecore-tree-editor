@@ -1,9 +1,5 @@
 {
-  "cSpell.words": [
-    "Vuex",
-    "fieldset",
-    "roarr"
-  ],
+  "cSpell.words": ["Vuex", "fieldset", "roarr", "treedocumentmodel"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

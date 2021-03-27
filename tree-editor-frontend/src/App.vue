@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <master-detail-layout>
-      <div slot="top">Top</div>
-      <div slot="master">Master</div>
-      <div slot="detail">Detail</div>
+      <action-bar slot="top" />
+      <tree-editor slot="master" />
+      <form-editor slot="detail" />
     </master-detail-layout>
   </div>
 </template>
@@ -11,12 +11,18 @@
 <script lang="ts">
 import Vue from "vue";
 import MasterDetailLayout from "./components/MasterDetailLayout.vue";
+import ActionBar from "./components/actions/ActionBar.vue";
+import TreeEditor from "./components/tree/TreeEditor.vue";
+import FormEditor from "./components/form/FormEditor.vue";
 import { vscodeExtension } from "@/vscode/VscodeExtension";
 
 export default Vue.extend({
   name: "App",
   components: {
     MasterDetailLayout,
+    ActionBar,
+    TreeEditor,
+    FormEditor,
   },
   mounted() {
     this.$nextTick(() => vscodeExtension.signalReady());
