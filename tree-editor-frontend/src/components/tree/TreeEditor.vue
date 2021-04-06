@@ -29,6 +29,6 @@ export default Vue.extend({
 }
 
 .roots {
-  /* TODO: remove list style */
+  list-style-type: none;
 }
 </style>

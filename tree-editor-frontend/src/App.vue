@@ -40,6 +40,10 @@ body {
   height: 100%;
   display: block;
 }
+
+:root {
+  --tree-node-icon-size: 16px;
+}
 </style>
 
 <style scoped>

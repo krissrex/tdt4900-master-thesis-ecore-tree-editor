@@ -1,11 +1,13 @@
 <template>
   <div class="tree-node">
-    <div v-if="children.length" class="expand-children inline">
-      🔽<!--  TODO: add toggle -->
-    </div>
+    <toggle-caret-component
+      v-if="children.length"
+      :expanded="showChildren"
+      @toggle="onToggleShowChildren"
+    />
     <div class="icon inline"><!-- TODO icon here  -->😎</div>
     <span>{{ label }}</span>
-    <ol class="children">
+    <ol class="children" v-if="showChildren">
       <li v-for="child in children" :key="child.id" class="child">
         <tree-node-component :node="child" />
       </li>
@@ -16,13 +18,21 @@
 <script lang="ts">
 import { NodeIcon, TreeNode } from "treedocumentmodel";
 import Vue, { PropType } from "vue";
+import ToggleCaretComponent from "./ToggleCaret.vue";
+
 export default Vue.extend({
   name: "tree-node-component",
+  components: { ToggleCaretComponent },
   props: {
     node: {
       type: Object as PropType<TreeNode>,
       required: true,
     },
+  },
+  data() {
+    return {
+      showChildren: true,
+    };
   },
   computed: {
     label(): string {
@@ -36,12 +46,17 @@ export default Vue.extend({
       return this.node.children;
     },
   },
+  methods: {
+    onToggleShowChildren(show: boolean) {
+      this.showChildren = show;
+    },
+  },
 });
 </script>
 
 <style scoped>
 .children {
-  /* TODO remove list style */
+  list-style-type: none;
 }
 
 .inline {

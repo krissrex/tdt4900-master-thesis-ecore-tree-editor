@@ -35,11 +35,11 @@ export default Vue.extend({});
 
 .top-bar {
   grid-area: top;
-  background-color: red; /* FIXME: debug color */
+  background-color: rgb(255, 87, 87); /* FIXME: debug color */
 }
 .master {
   grid-area: master;
-  background-color: blue; /* FIXME: debug color */
+  background-color: rgb(187, 187, 252); /* FIXME: debug color */
 }
 .divider {
   grid-area: divider;
