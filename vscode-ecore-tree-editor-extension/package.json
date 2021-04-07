@@ -5,6 +5,11 @@
 	"description": "Modify Ecore and XMI files in a Tree view",
 	"version": "0.0.1",
 	"license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krissrex/tdt4900-master-thesis-ecore-tree-editor",
+    "directory": "vscode-ecore-tree-editor-extension"
+  },
 	"engines": {
 		"vscode": "^1.50.0"
 	},
