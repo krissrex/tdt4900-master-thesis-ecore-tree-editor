@@ -6,6 +6,11 @@
 # - vsce
 # - dependencies already downloaded (npm install)
 
+echo "Building Tree Document Model library..."
+cd "tree-document-model-js"
+npm run build
+cd ..
+
 echo "Building frontend webview..."
 cd tree-editor-frontend
 npm run build
