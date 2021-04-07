@@ -14,7 +14,7 @@ import MasterDetailLayout from "./components/MasterDetailLayout.vue";
 import ActionBar from "./components/actions/ActionBar.vue";
 import TreeEditor from "./components/tree/TreeEditor.vue";
 import FormEditor from "./components/form/FormEditor.vue";
-import { vscodeExtension } from "@/vscode/VscodeExtension";
+import { vscodeExtension } from "@/vscode-extension/VscodeExtension";
 
 export default Vue.extend({
   name: "App",
@@ -42,7 +42,7 @@ body {
 }
 
 :root {
-  --tree-node-icon-size: 16px;
+  --tree-node-icon-size: 16px; /* TODO: make this a config setting*/
 }
 </style>
 

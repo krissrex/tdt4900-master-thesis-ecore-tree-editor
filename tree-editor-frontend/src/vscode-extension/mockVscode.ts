@@ -11,7 +11,7 @@ export class MockVSCode implements VSCode {
     if (useSampleData) {
       this.logger.warn("Using sample data");
       try {
-        return { treeDocument: getExampleTreeDocument() };
+        return { treeDocument: getExampleTreeDocument(), selectedNodes: [] };
       } catch (err) {
         this.logger.error(
           { err },
@@ -21,7 +21,9 @@ export class MockVSCode implements VSCode {
       }
     } else {
       this.logger.info("Returning empty state");
-      return {};
+      return {
+        selectedNodes: [],
+      };
     }
   }
   setState(state: RootState) {
