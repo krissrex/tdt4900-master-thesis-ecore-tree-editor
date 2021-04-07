@@ -152,16 +152,13 @@ export class CustomTreeEditorProvider
         )
       );
     };
-
-    const scriptUri = toWebviewUri("treeEditor.js");
     
     const css = {
-      reset: toWebviewUri("reset.css"),
-      app: toWebviewUri("dist/css/app.182dd1c7.css"),
+      app: toWebviewUri("dist/css/app.css"),
     };
     const js = {
-      app: toWebviewUri("dist/js/app.31d15ece.js"),
-      vendor: toWebviewUri("dist/js/chunk-vendors.cacaa7a1.js"),
+      app: toWebviewUri("dist/js/app.js"),
+      vendor: toWebviewUri("dist/js/chunk-vendors.js"),
     };
     const nonce = getNonce();
 
@@ -176,7 +173,6 @@ export class CustomTreeEditorProvider
 				-->
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} blob: data:; style-src ${webview.cspSource}; script-src 'nonce-${nonce}' 'unsafe-eval';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<link href="${css.reset}" rel="stylesheet" />
 				<title>${EXTENSION_HUMAN_NAME}</title>
 
         <link href="${css.app}" rel="preload" as="style">
