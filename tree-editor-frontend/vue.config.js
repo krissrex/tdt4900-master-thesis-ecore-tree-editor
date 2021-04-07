@@ -3,4 +3,7 @@ module.exports = {
   // BUT it allows copying the dist directly into the vscode extension
   // without updating filenames in the extension source code.
   filenameHashing: false,
+  chainWebpack(config) {
+    config.devtool("eval-source-map");
+  },
 };
