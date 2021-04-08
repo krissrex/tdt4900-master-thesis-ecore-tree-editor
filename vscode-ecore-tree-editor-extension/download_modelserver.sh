@@ -9,9 +9,10 @@ fi
 REPO=https://oss.sonatype.org/content/repositories/snapshots/
 GROUP=org.eclipse.emfcloud.modelserver
 ARTIFACT=org.eclipse.emfcloud.modelserver.example
-VERSION=0.7.0-20201125.131259-22
+VERSION=0.7.0-20210407.215044-46
 ACTUAL_VERSION=0.7.0-SNAPSHOT
 # Versions listed here https://oss.sonatype.org/content/repositories/snapshots/org/eclipse/emfcloud/modelserver/org.eclipse.emfcloud.modelserver.example/0.7.0-SNAPSHOT/maven-metadata.xml
+# Git repo: https://github.com/eclipse-emfcloud/emfcloud-modelserver
 
 OUT_FOLDER=lib
 OUT_FILE=emf_modelserver_standalone.jar
@@ -19,7 +20,8 @@ OUT_FILE=emf_modelserver_standalone.jar
 mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:get \
   -DremoteRepositories=$REPO \
   -Dartifact=$GROUP:$ARTIFACT:$VERSION:jar:standalone \
-  -Dtransitive=false
+  -Dtransitive=false \
+  -Dstyle.color=never
 
 LOCAL_PATH=~/.m2/repository/org/eclipse/emfcloud/modelserver/org.eclipse.emfcloud.modelserver.example/$ACTUAL_VERSION/$ARTIFACT-$VERSION-standalone.jar
 
