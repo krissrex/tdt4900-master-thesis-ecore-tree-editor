@@ -1,6 +1,6 @@
 import { getChildLogger } from "@/logging";
 import { RootState } from "@/store";
-import { getExampleTreeDocument } from "@/testing/sampleTreeDocument";
+import { example } from "treedocumentmodel";
 import { VSCode } from "@/vscode";
 
 export class MockVSCode implements VSCode {
@@ -11,7 +11,10 @@ export class MockVSCode implements VSCode {
     if (useSampleData) {
       this.logger.warn("Using sample data");
       try {
-        return { treeDocument: getExampleTreeDocument(), selectedNodes: [] };
+        return {
+          treeDocument: example.ecore.getExampleTreeDocument(),
+          selectedNodes: [],
+        };
       } catch (err) {
         this.logger.error(
           { err },

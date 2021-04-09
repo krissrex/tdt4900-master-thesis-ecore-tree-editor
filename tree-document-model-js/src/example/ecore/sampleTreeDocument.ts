@@ -1,4 +1,4 @@
-import { TreeDocument } from "../TreeDocument";
+import { TreeDocument } from "../../TreeDocument";
 import { ecoreIcons } from "./ecoreIcons";
 
 export function getExampleTreeDocument(): TreeDocument {

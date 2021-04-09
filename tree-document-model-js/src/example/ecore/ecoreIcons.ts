@@ -1,5 +1,5 @@
-import { IconDataUri } from "../IconDataUri";
-import { NodeType } from "../NodeType";
+import { IconDataUri } from "../../IconDataUri";
+import { NodeType } from "../../NodeType";
 
 /*
  * The license of the gifs were Eclipse EPL before creating this derivate work of base64 encoded strings.
