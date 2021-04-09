@@ -30,7 +30,6 @@ export class TreeEditorWebviewServer implements TreeEditorWebview {
       EXTENSION_MESSAGE_EVENT,
       (eventData: any) => {
         this.log.debug({ eventData }, "Got event");
-
         const method = eventData.method;
         const params: RpcParams = eventData.params ?? [];
         if (method && typeof method === "string") {
@@ -47,7 +46,8 @@ export class TreeEditorWebviewServer implements TreeEditorWebview {
     method: keyof TreeEditorWebview,
     params?: RpcParams
   ): void {
-    if (method && Object.prototype.hasOwnProperty.call(this, method)) {
+    // Do not use hasOwnProperty for this; the method lies in the prototype.
+    if (method && method in this) {
       const func: Function = this[method];
       if (typeof func === "function") {
         if (params === undefined) {
@@ -70,7 +70,7 @@ export class TreeEditorWebviewServer implements TreeEditorWebview {
     }
     this.log.warn({ method, params }, "Failed to dispatch method '%s'", method);
   }
-  setDocument(document: TreeDocument): void {
+  public setDocument(document: TreeDocument): void {
     this.store.commit(Mutations.setTreeDocument, document);
   }
 }
