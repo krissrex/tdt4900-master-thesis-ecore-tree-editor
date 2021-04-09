@@ -20,7 +20,7 @@ export const extensionEvents = new TinyEmitter();
 export const EXTENSION_MESSAGE_EVENT = "message";
 
 window.addEventListener("message", (event) => {
-  const logger = getChildLogger("vscode");
+  const logger = getChildLogger("vscode-extension");
 
   const data = event.data;
   if (data && data.from && data.from === "extension") {
@@ -38,7 +38,7 @@ window.addEventListener("message", (event) => {
  * @see mockVscodeApi
  */
 function getVscodeApi(): VSCode {
-  const logger = getChildLogger("vscode");
+  const logger = getChildLogger("vscode-extension");
 
   if ("acquireVsCodeApi" in window) {
     logger.info("VScode API is available");

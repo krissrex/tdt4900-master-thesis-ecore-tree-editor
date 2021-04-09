@@ -4,7 +4,7 @@ import { example } from "treedocumentmodel";
 import { VSCode } from "@/vscode";
 
 export class MockVSCode implements VSCode {
-  private readonly logger = getChildLogger("vscode");
+  private readonly logger = getChildLogger("vscode-extension");
 
   getState(): RootState {
     const useSampleData = true;
