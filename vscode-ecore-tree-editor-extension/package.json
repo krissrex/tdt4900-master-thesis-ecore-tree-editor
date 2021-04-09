@@ -5,11 +5,11 @@
 	"description": "Modify Ecore and XMI files in a Tree view",
 	"version": "0.0.1",
 	"license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/krissrex/tdt4900-master-thesis-ecore-tree-editor",
-    "directory": "vscode-ecore-tree-editor-extension"
-  },
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/krissrex/tdt4900-master-thesis-ecore-tree-editor",
+		"directory": "vscode-ecore-tree-editor-extension"
+	},
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -37,18 +37,18 @@
 			{
 				"command": "krissrex.ecore-tree-editor.helloWorld",
 				"title": "Hello World",
-        "category": "Ecore"
+				"category": "Ecore"
 			},
 			{
 				"command": "krissrex.ecore-tree-editor.xmi-newfile",
 				"title": "New Model file...",
-        "category": "Ecore"
+				"category": "Ecore"
 			},
-      {
-        "command": "krissrex.ecore-tree-editor.server.assert-java",
-        "title": "Assert java is present",
-        "category": "Ecore debug"
-      }
+			{
+				"command": "krissrex.ecore-tree-editor.server.assert-java",
+				"title": "Assert java is present",
+				"category": "Ecore debug"
+			}
 		],
 		"customEditors": [
 			{
@@ -120,6 +120,7 @@
 	},
 	"dependencies": {
 		"@vscode-logging/logger": "^1.2.1",
-		"axios": "^0.21.0"
+		"axios": "^0.21.1",
+		"treedocumentmodel": "file:../tree-document-model-js"
 	}
 }
