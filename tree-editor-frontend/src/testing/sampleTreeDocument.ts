@@ -1,6 +1,5 @@
 import { TreeDocument } from "treedocumentmodel";
 
-import treeDocument from "@/assets/example/TreeDocument";
 import { getChildLogger } from "@/logging";
 import { ecoreIcons } from "./ecoreIcons";
 
