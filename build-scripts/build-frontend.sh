@@ -30,7 +30,11 @@ cp -r "tree-editor-frontend/dist" "$DIST" || { echo 'copying dist failed' ; exit
 
 echo "Building vscode extension"
 cd "vscode-ecore-tree-editor-extension"
-npx vsce package  || { echo 'bundling package failed' ; exit 1; }
+# VSCE complains about dev-dependencies in the tree-document-model-js library.
+# Using yarn, vsce will ignore it since it can't find a yarn.lock
+# This might be fixed if we use webpack instead of vsce directly.
+VSCE_HACKS="--yarn"
+npx vsce package "$VSCE_HACKS"  || { echo 'bundling package failed' ; exit 1; }
 
 echo "Install the extension from the vsix:"
 ls -1 --human-readable ecore-tree-editor-*.vsix 
