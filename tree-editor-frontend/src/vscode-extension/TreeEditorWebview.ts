@@ -54,6 +54,10 @@ export class TreeEditorWebviewServer implements TreeEditorWebview {
           return func.call(this);
         } else if (Array.isArray(params)) {
           return func.apply(this, params);
+        } else {
+          this.log.trace({ params }, "The params are an object");
+          return func.call(this, params); // Seems like a bad idea. This allows sending one-arg objects but not one-arg arrays.
+          // Also, this does not work with "keyword arguments" as expected.
         }
         //FIXME: implement for object params. KW-args like as in python?
       } else {

@@ -4,6 +4,8 @@ import { EXTENSION_HUMAN_NAME, EXTENSION_NAME } from "../config";
 import { getLogger } from "../log";
 import { createClient, TreeClient } from "../tree-language-server/Client";
 import { TreeDocument } from "./TreeDocument";
+import {example} from "treedocumentmodel"
+import { sendWebviewNotification } from "./TreeEditorWebview";
 
 type TreeDocumentChangeEvent =
   | vscode.Event<vscode.CustomDocumentEditEvent<TreeDocument>>
@@ -121,7 +123,7 @@ export class CustomTreeEditorProvider
       // TODO: add message handling. This is where the webview talks to vscode.
       this.log.debug("Got event from webview", { event });
     });
-
+    // TODO: should the onDidReceiveMessage be disposed at some point?
     webviewPanel.webview.onDidReceiveMessage((event) => {
       if (event.type === "ready") {
         if (document.uri.scheme === "untitled") {
@@ -134,6 +136,14 @@ export class CustomTreeEditorProvider
           /* this.postMessage(webviewPanel, 'init', {
 						value: document.documentData
 					}); */
+
+          //FIXME: use a interface here like the TreeEditorWebview from tree-editor-frontend
+          this.log.warn("Setting example document"); //FIXME: remove this testing code.
+          sendWebviewNotification(webviewPanel.webview, {
+            from: "extension",
+            method: "setDocument",
+            params: [example.ecore.getExampleTreeDocument()],
+          });
         }
       }
     });
