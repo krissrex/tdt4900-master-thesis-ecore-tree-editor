@@ -8,15 +8,20 @@ import { EXTENSION_HUMAN_NAME, EXTENSION_ID } from "./config";
 
 export function activate(context: vscode.ExtensionContext) {
   try {
-  initializeLogger(context);
-  listenToLogSettingsChanges(context);
+    initializeLogger(context);
+    listenToLogSettingsChanges(context);
   } catch (error) {
     console.error("Failed to start logger!", error);
   }
   const log = getLogger();
 
   log.info("Extension activated.");
-  log.info("Extension mode: %s", context.extensionMode === vscode.ExtensionMode.Production ? "production" : "development");
+  log.info(
+    "Extension mode: %s",
+    context.extensionMode === vscode.ExtensionMode.Production
+      ? "production"
+      : "development"
+  );
   log.debug("Logs are written to %s", context.logUri.fsPath);
 
   registerHelloWorld(context);
@@ -48,6 +53,3 @@ function registerHelloWorld(context: vscode.ExtensionContext) {
 export function deactivate() {
   getLogger().info("Extension deactivated.");
 }
-
-
-

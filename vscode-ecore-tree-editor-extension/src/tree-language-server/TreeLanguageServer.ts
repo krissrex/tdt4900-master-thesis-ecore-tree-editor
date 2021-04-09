@@ -1,10 +1,15 @@
 import { spawn } from "child_process";
 import { getLogger } from "../log";
 import { ExtensionContext } from "vscode";
-import { TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION, TREE_LANGUAGE_SERVER_JAR_PATH } from "../config";
+import {
+  TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION,
+  TREE_LANGUAGE_SERVER_JAR_PATH,
+} from "../config";
 
 export class TreeLanguageServer {
-  private readonly log = getLogger().getChildLogger({ label: "TreeLanguageServer" });
+  private readonly log = getLogger().getChildLogger({
+    label: "TreeLanguageServer",
+  });
 
   public static create(context: ExtensionContext): TreeLanguageServer {
     return new TreeLanguageServer(this.getJarPath(context));
@@ -24,7 +29,6 @@ export class TreeLanguageServer {
 
   public async assertEnvironmentHasJava(): Promise<boolean> {
     try {
-
       const version = await getJavaVersion();
       const major = version.split(".")[0];
       try {
@@ -32,9 +36,14 @@ export class TreeLanguageServer {
         if (majorInt >= TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION) {
           return true;
         } else {
-          this.log.debug("Java version %s (JRE %s) is below %s!", version, major, TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION);
+          this.log.debug(
+            "Java version %s (JRE %s) is below %s!",
+            version,
+            major,
+            TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION
+          );
         }
-      } catch (_){}
+      } catch (_) {}
       return false;
     } catch (err) {
       this.log.error("Failed to get java version");
@@ -54,14 +63,19 @@ export function getJavaVersion(): Promise<string> {
     windowsHide: true, // hide console windows on Windows
     detached: false, // false = end when parent process ends
   });
-  
+
   const timeoutSec = 10;
   setTimeout(() => {
     if (!childProcess.killed) {
-      log.warn("The command timed out (%s sec): '%s %s'", timeoutSec, command, args.join(" "));
+      log.warn(
+        "The command timed out (%s sec): '%s %s'",
+        timeoutSec,
+        command,
+        args.join(" ")
+      );
       childProcess.kill("SIGKILL");
     }
-  }, timeoutSec*1000);
+  }, timeoutSec * 1000);
 
   return new Promise((resolve, reject) => {
     childProcess.on("error", (err) => {

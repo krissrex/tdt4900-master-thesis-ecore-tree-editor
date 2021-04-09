@@ -8,7 +8,7 @@ export function registerXmiCommands(context: vscode.ExtensionContext) {
   const client = createClient();
 
   context.subscriptions.push(
-    vscode.commands.registerCommand(EXTENSION_ID+".xmi-newfile", () => {
+    vscode.commands.registerCommand(EXTENSION_ID + ".xmi-newfile", () => {
       vscode.window
         .showInputBox({
           prompt: "Filename (e.g. MyModel.ecore)",
@@ -37,7 +37,9 @@ export function registerXmiCommands(context: vscode.ExtensionContext) {
     // TODO: what if workspace starts with ftp:// or something? We only want file://.
     client.changeWorkspace(workspace.toString()).then(() => {
       if (context.extensionMode !== vscode.ExtensionMode.Production) {
-        vscode.window.showInformationMessage("Set EMF ModelServer workspace to " + workspace.toString());
+        vscode.window.showInformationMessage(
+          "Set EMF ModelServer workspace to " + workspace.toString()
+        );
       }
     });
   } else {

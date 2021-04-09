@@ -4,7 +4,7 @@ import { EXTENSION_HUMAN_NAME, EXTENSION_NAME } from "../config";
 import { getLogger } from "../log";
 import { createClient, TreeClient } from "../tree-language-server/Client";
 import { TreeDocument } from "./TreeDocument";
-import {example} from "treedocumentmodel"
+import { example } from "treedocumentmodel";
 import { sendWebviewNotification } from "./TreeEditorWebview";
 
 type TreeDocumentChangeEvent =
@@ -162,7 +162,7 @@ export class CustomTreeEditorProvider
         )
       );
     };
-    
+
     const css = {
       app: toWebviewUri("dist/css/app.css"),
     };

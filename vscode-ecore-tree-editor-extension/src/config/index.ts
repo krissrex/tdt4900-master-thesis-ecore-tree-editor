@@ -18,6 +18,9 @@ export const DEFAULT_LOG_LEVEL: LogLevel = "info";
 /**
  * The Tree Language Server this extension talks directly to over TLSP.
  */
-export const TREE_LANGUAGE_SERVER_JAR_PATH = path.join("lib", "tree_language_server.jar");
+export const TREE_LANGUAGE_SERVER_JAR_PATH = path.join(
+  "lib",
+  "tree_language_server.jar"
+);
 /** Minimum version of JRE that can run the server jar, inclusive. */
 export const TREE_LANGUAGE_SERVER_JAR_MIN_JRE_VERSION = 11;

@@ -8,8 +8,11 @@ export interface WebviewRpcNotification {
 
 /**
  * This is some ad-hoc JSON-RPC until something proper is used.
- * @param notification 
+ * @param notification
  */
-export function sendWebviewNotification(webview: Webview, notification: WebviewRpcNotification): void {
+export function sendWebviewNotification(
+  webview: Webview,
+  notification: WebviewRpcNotification
+): void {
   webview.postMessage(notification);
 }
