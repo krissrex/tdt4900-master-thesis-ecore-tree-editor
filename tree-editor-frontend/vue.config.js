@@ -5,5 +5,6 @@ module.exports = {
   filenameHashing: false,
   chainWebpack(config) {
     config.devtool("eval-source-map");
+    config.resolve.symlinks(false);
   },
 };
