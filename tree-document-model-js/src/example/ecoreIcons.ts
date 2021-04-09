@@ -1,4 +1,10 @@
-import { IconDataUri, NodeType } from "treedocumentmodel";
+import { IconDataUri } from "../IconDataUri";
+import { NodeType } from "../NodeType";
+
+/*
+ * The license of the gifs were Eclipse EPL before creating this derivate work of base64 encoded strings.
+ * FIXME: add a proper license text to this file.
+ */
 
 // prettier-ignore
 export const ecoreIcons: Map<NodeType, IconDataUri> = new Map(

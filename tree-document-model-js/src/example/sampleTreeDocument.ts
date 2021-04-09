@@ -1,12 +1,7 @@
-import { TreeDocument } from "treedocumentmodel";
-
-import { getChildLogger } from "@/logging";
+import { TreeDocument } from "../TreeDocument";
 import { ecoreIcons } from "./ecoreIcons";
 
 export function getExampleTreeDocument(): TreeDocument {
-  const log = getChildLogger("exampleDocument");
-  log.warn("Loading sample document");
-
   const doc: TreeDocument = {
     roots: [
       {

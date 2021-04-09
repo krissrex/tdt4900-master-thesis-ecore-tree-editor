@@ -12,3 +12,6 @@ export * from "./NodeType";
 export * from "./TreeDocument";
 export * from "./TreeNode";
 export * from "./TreeRoot";
+
+export * from "./example/sampleTreeDocument";
+export * from "./example/ecoreIcons";
