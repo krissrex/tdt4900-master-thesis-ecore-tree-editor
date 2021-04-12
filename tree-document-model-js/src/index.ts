@@ -4,6 +4,7 @@ export * from "./ActionId";
 export * from "./Action";
 export * from "./ActionConfiguration";
 export * from "./ActionEvent";
+export * from "./EditorState";
 export * from "./HierarchyConfiguration";
 export * from "./IconConfiguration";
 export * from "./IconDataUri";

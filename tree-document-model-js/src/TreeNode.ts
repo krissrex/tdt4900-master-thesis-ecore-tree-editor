@@ -1,3 +1,4 @@
+import { EditorState } from "./EditorState";
 import { IconDataUri } from "./IconDataUri";
 import { NodeIcon } from "./NodeIcon";
 import { NodeType } from "./NodeType";
@@ -63,4 +64,9 @@ export interface TreeNode {
    * A node with a special property value could have a new icon to indicate this.
    */
   iconOverride?: IconDataUri | NodeIcon;
+
+  /**
+   * State related to the visual presentation of the node.
+   */
+  editorState?: EditorState;
 }
