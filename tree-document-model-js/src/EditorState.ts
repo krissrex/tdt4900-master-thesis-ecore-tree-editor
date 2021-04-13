@@ -11,3 +11,14 @@ export interface EditorState {
 
   // TODO: Add other states, like e.g.: hasWarning, hasError, readOnly. Look to Theia tree node hierarchy for ideas.
 }
+
+export class EditorStateFactory {
+  public createDefaultEditorState(): EditorState {
+    return {
+      collapsed: false,
+      selected: false,
+    };
+  }
+}
+
+export const editorStateFactoryInstance = new EditorStateFactory();
