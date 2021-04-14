@@ -8,7 +8,7 @@
       "type": "pwa-chrome",
       "request": "launch",
       "name": "Open index.html",
-      "file": "c:\\Dev\\Master\\vscode-ecore-tree-editor\\tree-document-model-js\\dist\\docs\\index.html"
+      "file": "${workspaceFolder}\\dist\\docs\\index.html"
     }
   ]
 }
