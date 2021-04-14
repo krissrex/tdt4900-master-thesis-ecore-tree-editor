@@ -13,6 +13,7 @@
     "roarr": "^4.2.5",
     "tiny-emitter": "^2.1.0",
     "treedocumentmodel": "file:../tree-document-model-js",
+    "vscode-webview-tree-editor-rpc": "file:../vscode-webview-tree-editor-rpc",
     "vue": "^2.6.11",
     "vuex": "^3.4.0"
   },

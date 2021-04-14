@@ -3,19 +3,12 @@ import { Mutations, RootState } from "@/store";
 import { TinyEmitter } from "tiny-emitter";
 import { TreeDocument } from "treedocumentmodel";
 import { Store } from "vuex";
+import {
+  TreeEditorWebview,
+  RpcParams,
+  isNotification,
+} from "vscode-webview-tree-editor-rpc";
 import { EXTENSION_MESSAGE_EVENT } from "./index";
-
-/**
- * A VSCode extension will send messages to the webview,
- * which in turn are interpreted as actions to do, specified here.
- * The frontend/client should implement this.
- */
-export interface TreeEditorWebview {
-  // TODO
-  setDocument(document: TreeDocument): void;
-}
-
-type RpcParams = any[] | Record<string, any> | undefined;
 
 /**
  * Works like RPC, where this webview is the remote server doing the prodcedures called by the local vscode extension.
@@ -30,12 +23,13 @@ export class TreeEditorWebviewServer implements TreeEditorWebview {
       EXTENSION_MESSAGE_EVENT,
       (eventData: any) => {
         this.log.debug({ eventData }, "Got event");
-        const method = eventData.method;
-        const params: RpcParams = eventData.params ?? [];
-        if (method && typeof method === "string") {
-          this.dispatchMethod(method as any, params);
+        if (isNotification(eventData)) {
+          this.dispatchMethod(
+            eventData.method as keyof TreeEditorWebview,
+            eventData.params
+          );
         } else {
-          this.log.warn({ eventData }, "No method in event data");
+          this.log.warn({ eventData }, "Not a valid event");
         }
       },
       this

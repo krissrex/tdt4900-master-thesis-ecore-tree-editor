@@ -22,7 +22,11 @@
 
 <script lang="ts">
 import { Actions, Mutations } from "@/store";
-import { NodeIcon, TreeNode } from "treedocumentmodel";
+import {
+  editorStateFactoryInstance,
+  NodeIcon,
+  TreeNode,
+} from "treedocumentmodel";
 import Vue, { PropType } from "vue";
 import ToggleCaretComponent from "./ToggleCaret.vue";
 
@@ -35,11 +39,6 @@ export default Vue.extend({
       required: true,
     },
   },
-  data() {
-    return {
-      showChildren: true,
-    };
-  },
   computed: {
     label(): string {
       return this.node.name ?? "<no name>";
@@ -51,13 +50,28 @@ export default Vue.extend({
     children(): TreeNode[] {
       return this.node.children;
     },
+    showChildren(): boolean {
+      const hasChildren = this.node.children.length > 0;
+      const collapsed = this.node.editorState?.collapsed ?? false;
+      return hasChildren && !collapsed;
+    },
     isSelected(): boolean {
       return this.$store.state.selectedNodes.includes(this.node);
     },
   },
   methods: {
     onToggleShowChildren(show: boolean) {
-      this.showChildren = show;
+      const editorState =
+        this.node.editorState ??
+        editorStateFactoryInstance.createDefaultEditorState();
+      editorState.collapsed = !show;
+      this.node.editorState = editorState;
+      // Options here:
+      // - use vuex store to mutate/action where you toggle state
+      //  - locally change the state to match: lost on new tree document from extension, unless merging
+      //  - send a message to the extension to change state, wait for new tree document with new state: more work, more overhead, more flexible
+      // - [BAD] store state as data field: does not work; lost on editor tab re-focus.
+      // - store expanded/collapsed nodes in vuex as a Set, like selected: desync issues(?), always need lookup,
     },
     onClicked() {
       this.$store.commit(Mutations.setSelectedNode, this.node);
