@@ -51,6 +51,9 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
     this.disposables.forEach((it) => it.dispose());
   }
 
+  /**
+   * This is called every time the webview initializes and re-initializes from a editor tab change.
+   */
   signalReady(): void {
     if (this.document.uri.scheme === "untitled") {
       this.log.debug("Webview is ready for untitled document.");
@@ -65,7 +68,9 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
 
       //FIXME: use a interface here like the TreeEditorWebview from tree-editor-frontend
       this.log.warn("Setting example document"); //FIXME: remove this testing code.
-      this.document.documentData = example.ecore.getExampleTreeDocument(); //FIXME: remove this testing code.
+      if (!this.document.documentData) {
+        this.document.documentData = example.ecore.getExampleTreeDocument(); //FIXME: remove this testing code.
+      }
       this.treeEditorWebview.setDocument(this.document.documentData);
     }
   }
