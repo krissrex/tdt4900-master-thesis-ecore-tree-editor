@@ -6,6 +6,7 @@ import {
   TREE_LANGUAGE_SERVER_JAR_PATH,
 } from "../config";
 
+// FIXME: can use something like https://github.com/eclipse-glsp/glsp-vscode-integration/blob/master/vscode-integration/src/java-socket-server-connection-provider.ts
 export class TreeLanguageServer {
   private readonly log = getLogger().getChildLogger({
     label: "TreeLanguageServer",

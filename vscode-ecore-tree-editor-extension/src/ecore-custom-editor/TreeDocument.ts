@@ -13,6 +13,7 @@ import { indexToMap } from "treedocumentmodel/dist/util";
  */
 export class TreeDocument implements vscode.CustomDocument {
   // You can draw inspiration from vscode.TextDocument for what properties and methods are needed.
+  // and https://github.com/eclipse-glsp/glsp-vscode-integration/blob/master/vscode-integration/src/glsp-diagram-document.ts
   private readonly log = getLogger().getChildLogger({ label: "TreeDocument" });
 
   private _documentData?: TreeDocumentModel;

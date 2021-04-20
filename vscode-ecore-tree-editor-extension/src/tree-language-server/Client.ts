@@ -3,6 +3,7 @@ import { IChildLogger, IVSCodeExtLogger } from "@vscode-logging/logger";
 import Axios from "axios";
 import { getLogger } from "../log";
 
+// TODO: use a JSON-RPC client like https://www.npmjs.com/package/vscode-ws-jsonrpc
 /**
  * For testing and development, not real use.
  */
