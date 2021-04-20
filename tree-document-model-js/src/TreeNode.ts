@@ -1,6 +1,7 @@
 import { EditorState } from "./EditorState";
 import { IconDataUri } from "./IconDataUri";
 import { NodeIcon } from "./NodeIcon";
+import { NodeId } from "./NodeId";
 import { NodeType } from "./NodeType";
 
 /**
@@ -20,7 +21,7 @@ export interface TreeNode {
    * The unique id of a node.
    * This allows actions to know what they are working on, and the editor to know where the user is working.
    */
-  id: string;
+  id: NodeId;
 
   /**
    * What type of node this is.

@@ -9,6 +9,7 @@ export * from "./HierarchyConfiguration";
 export * from "./IconConfiguration";
 export * from "./IconDataUri";
 export * from "./NodeIcon";
+export * from "./NodeId";
 export * from "./NodeType";
 export * from "./TreeDocument";
 export * from "./TreeNode";
