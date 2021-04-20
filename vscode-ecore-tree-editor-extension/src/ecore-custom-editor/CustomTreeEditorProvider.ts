@@ -5,7 +5,11 @@ import { getLogger } from "../log";
 import { createClient, TreeClient } from "../tree-language-server/Client";
 import { TreeDocument } from "./TreeDocument";
 import { example } from "treedocumentmodel";
-import { sendWebviewNotification } from "./TreeEditorWebview";
+import {
+  sendWebviewNotification,
+  TreeEditorWebviewClient,
+} from "./TreeEditorWebview";
+import { VscodeExtensionServer } from "./VscodeExtension";
 
 type TreeDocumentChangeEvent =
   | vscode.Event<vscode.CustomDocumentEditEvent<TreeDocument>>
@@ -123,30 +127,14 @@ export class CustomTreeEditorProvider
       // TODO: add message handling. This is where the webview talks to vscode.
       this.log.debug("Got event from webview", { event });
     });
-    // TODO: should the onDidReceiveMessage be disposed at some point?
-    webviewPanel.webview.onDidReceiveMessage((event) => {
-      if (event.type === "ready") {
-        if (document.uri.scheme === "untitled") {
-          this.log.debug("Webview is ready for untitled document.");
-          /* this.postMessage(webviewPanel, 'init', {
-						untitled: true
-					}); */
-        } else {
-          this.log.debug("Webview is ready for %s.", document.uri.toString());
-          /* this.postMessage(webviewPanel, 'init', {
-						value: document.documentData
-					}); */
 
-          //FIXME: use a interface here like the TreeEditorWebview from tree-editor-frontend
-          this.log.warn("Setting example document"); //FIXME: remove this testing code.
-          sendWebviewNotification(webviewPanel.webview, {
-            from: "extension",
-            method: "setDocument",
-            params: [example.ecore.getExampleTreeDocument()],
-          });
-        }
-      }
-    });
+    const treeEditorWebview = new TreeEditorWebviewClient(webviewPanel.webview);
+    const vscodeExtension = new VscodeExtensionServer(
+      webviewPanel.webview,
+      document,
+      treeEditorWebview
+    );
+    this.context.subscriptions.push(vscodeExtension);
   }
 
   createWebviewHtml(webview: vscode.Webview): string {

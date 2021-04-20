@@ -47,3 +47,13 @@ export function initializeLogger(
 export function getLogger(): IVSCodeExtLogger {
   return logger;
 }
+
+/**
+ * Create a child logger with a label.
+ * @param label a string like `MyClass`.
+ * @param parent Optional parent logger. If none is provided, the {@link getLogger()} is used.
+ * @returns a new logger
+ */
+export function getChildLogger(label: string, parent?: IVSCodeExtLogger) {
+  return (parent ?? getLogger()).getChildLogger({ label: label });
+}
