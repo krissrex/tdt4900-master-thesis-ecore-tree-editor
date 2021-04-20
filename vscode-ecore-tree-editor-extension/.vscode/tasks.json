@@ -3,14 +3,14 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "compile",
-      "problemMatcher": ["$tsc"],
+      "script": "build",
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "label": "build rpc library",
-      "detail": "tsc -p ."
+      "problemMatcher": [],
+      "label": "build extension",
+      "detail": "tsc -p ./"
     }
   ]
 }
