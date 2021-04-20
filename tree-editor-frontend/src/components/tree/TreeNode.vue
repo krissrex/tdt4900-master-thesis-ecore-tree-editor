@@ -22,11 +22,7 @@
 
 <script lang="ts">
 import { Actions, Mutations } from "@/store";
-import {
-  editorStateFactoryInstance,
-  NodeIcon,
-  TreeNode,
-} from "treedocumentmodel";
+import { NodeIcon, TreeNode } from "treedocumentmodel";
 import Vue, { PropType } from "vue";
 import ToggleCaretComponent from "./ToggleCaret.vue";
 
@@ -60,18 +56,17 @@ export default Vue.extend({
     },
   },
   methods: {
-    onToggleShowChildren(show: boolean) {
-      const editorState =
-        this.node.editorState ??
-        editorStateFactoryInstance.createDefaultEditorState();
-      editorState.collapsed = !show;
-      this.node.editorState = editorState;
+    onToggleShowChildren(visible: boolean) {
       // Options here:
       // - use vuex store to mutate/action where you toggle state
       //  - locally change the state to match: lost on new tree document from extension, unless merging
       //  - send a message to the extension to change state, wait for new tree document with new state: more work, more overhead, more flexible
       // - [BAD] store state as data field: does not work; lost on editor tab re-focus.
       // - store expanded/collapsed nodes in vuex as a Set, like selected: desync issues(?), always need lookup,
+      this.$store.dispatch(Actions.toggleNodeChildrenVisible, {
+        node: this.node,
+        visible: visible,
+      });
     },
     onClicked() {
       this.$store.commit(Mutations.setSelectedNode, this.node);

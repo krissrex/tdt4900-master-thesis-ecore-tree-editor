@@ -1,8 +1,9 @@
 import { getChildLogger } from "@/logging";
+import { extensionHost } from "@/main";
 import { vscode } from "@/vscode-extension";
 import { TreeDocument, TreeNode } from "treedocumentmodel";
 import Vue from "vue";
-import Vuex, { Plugin } from "vuex";
+import Vuex, { ActionContext, Plugin } from "vuex";
 
 Vue.use(Vuex);
 
@@ -41,6 +42,7 @@ export enum Mutations {
 
 export enum Actions {
   toggleNodeSelection = "toggleNodeSelection",
+  toggleNodeChildrenVisible = "toggleNodeChildrenVisible",
 }
 
 export default new Vuex.Store({
@@ -75,6 +77,12 @@ export default new Vuex.Store({
       } else {
         context.commit(Mutations.addNodeToSelection, node);
       }
+    },
+    [Actions.toggleNodeChildrenVisible](
+      context,
+      { node, visible }: { node: TreeNode; visible: boolean }
+    ) {
+      extensionHost.setNodeChildrenVisibility(node.id, visible);
     },
   },
   modules: {},

@@ -15,7 +15,10 @@ import { vscode } from "./index";
 export class VscodeExtensionClient implements VscodeExtension {
   constructor(private vscode: VSCode) {}
 
-  protected sendMethod(method: keyof VscodeExtension, params?: RpcParams) {
+  protected sendNotification(
+    method: keyof VscodeExtension,
+    params?: RpcParams
+  ) {
     const notification: RpcNotification = {
       from: "extension",
       method,
@@ -29,11 +32,15 @@ export class VscodeExtensionClient implements VscodeExtension {
    */
   public signalReady() {
     // TODO: can this be done automatically with a js Proxy object/wrapper or something?
-    this.sendMethod("signalReady");
+    this.sendNotification("signalReady");
   }
 
   public triggerAction(actionEvent: ActionEvent) {
-    this.sendMethod("triggerAction", [actionEvent]);
+    this.sendNotification("triggerAction", Array.from(arguments));
+  }
+
+  setNodeChildrenVisibility(id: string, visible: boolean) {
+    this.sendNotification("setNodeChildrenVisibility", Array.from(arguments));
   }
 }
 
