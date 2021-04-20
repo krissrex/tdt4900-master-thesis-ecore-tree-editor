@@ -1,4 +1,7 @@
-import { dispatchMethod } from "../method-dispatcher";
+import {
+  BlacklistedMethodException,
+  dispatchMethod,
+} from "../method-dispatcher";
 
 describe("Method dispatcher", () => {
   it("should dispatch with no params", (done) => {
@@ -102,5 +105,20 @@ describe("Method dispatcher", () => {
     };
 
     dispatchMethod(target, "needsThis");
+  });
+
+  it("should not call blacklisted methods", () => {
+    const target = {
+      okay() {},
+      notOkay() {
+        fail("This method is blacklisted and should not be called!");
+      },
+    };
+
+    expect(() =>
+      dispatchMethod(target, "notOkay", [], ["notOkay"])
+    ).toThrowError(
+      "The method 'notOkay' is blacklisted and can not be called!'"
+    );
   });
 });
