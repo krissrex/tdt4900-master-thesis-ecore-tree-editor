@@ -15,4 +15,5 @@ export * from "./TreeDocument";
 export * from "./TreeNode";
 export * from "./TreeRoot";
 
+export * as util from "./util/index";
 export * as example from "./example/index";
