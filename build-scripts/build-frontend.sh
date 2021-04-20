@@ -6,10 +6,14 @@
 # - vsce
 # - dependencies already downloaded (npm install)
 
-## Commented out because it broke tree-editor-frontend for some reason
 echo "Building Tree Document Model library..."
 cd "tree-document-model-js"
 npm run build || { echo 'tree-document-model-js build failed' ; exit 1; }
+cd ..
+
+echo "Building Vscode to WebviewTreeEditor RPC library..."
+cd "vscode-webview-tree-editor-rpc"
+npm run build || { echo 'vscode-webview-tree-editor-rpc build failed' ; exit 1; }
 cd ..
 
 echo "Building frontend webview..."
