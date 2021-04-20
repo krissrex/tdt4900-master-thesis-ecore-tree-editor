@@ -91,6 +91,7 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
         node.editorState ??
         editorStateFactoryInstance.createDefaultEditorState();
       editorState.collapsed = !visible;
+      node.editorState = editorState;
       this.refreshDocument(); // TODO: only send a "diff" of changes?
     } catch (err) {
       this.log.error("Failed to change visibility of node '%s': %s", id, err);
