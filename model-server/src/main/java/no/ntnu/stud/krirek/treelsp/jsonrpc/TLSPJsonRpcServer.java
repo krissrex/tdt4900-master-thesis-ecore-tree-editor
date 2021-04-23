@@ -37,6 +37,8 @@ public class TLSPJsonRpcServer {
             return;
         }
 
+        // Documentation for lsp4j-jsonrpc: https://github.com/eclipse/lsp4j/blob/master/documentation/jsonrpc.md
+
         server = getServerImpl();
         stoppableSystemIn = new CloseShieldInputStream(System.in);
         final Launcher<Client> serverLauncher = Launcher.createLauncher(server, Client.class, stoppableSystemIn, System.out);
