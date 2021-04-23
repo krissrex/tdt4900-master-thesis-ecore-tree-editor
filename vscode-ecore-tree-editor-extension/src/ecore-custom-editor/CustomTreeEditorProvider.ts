@@ -123,10 +123,13 @@ export class CustomTreeEditorProvider
       enableCommandUris: false, // False is default. TODO: what is this, and should it be true?
     };
     webviewPanel.webview.html = this.createWebviewHtml(webviewPanel.webview);
-    webviewPanel.webview.onDidReceiveMessage((event) => {
-      // TODO: add message handling. This is where the webview talks to vscode.
-      this.log.debug("Got event from webview", { event });
-    });
+    webviewPanel.webview.onDidReceiveMessage(
+      (event) => {
+        this.log.debug("Got event from webview", { event });
+      },
+      this,
+      this.context.subscriptions
+    );
 
     const treeEditorWebview = new TreeEditorWebviewClient(webviewPanel.webview);
     const vscodeExtension = new VscodeExtensionServer(
