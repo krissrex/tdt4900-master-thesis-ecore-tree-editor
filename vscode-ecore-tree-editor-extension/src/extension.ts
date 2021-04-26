@@ -5,6 +5,7 @@ import { registerXmiCommands } from "./xmi-file-commands";
 import { registerCustomTreeEditor } from "./ecore-custom-editor/registerCustomTreeEditor";
 import { registerServerCommands } from "./tree-language-server/serverCommands";
 import { EXTENSION_HUMAN_NAME, EXTENSION_ID } from "./config";
+import { startServer } from "./tree-language-server/start-server";
 
 export function activate(context: vscode.ExtensionContext) {
   try {
@@ -28,6 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
   registerXmiCommands(context);
   registerCustomTreeEditor(context);
   registerServerCommands(context);
+  startServer(context);
 }
 
 function registerHelloWorld(context: vscode.ExtensionContext) {
