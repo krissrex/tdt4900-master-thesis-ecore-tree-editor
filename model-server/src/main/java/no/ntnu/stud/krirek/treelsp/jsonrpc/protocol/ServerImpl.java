@@ -10,6 +10,21 @@ public class ServerImpl implements Server {
     }
 
     @Override
+    public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
+        return CompletableFuture.completedFuture(new InitializeResult());
+    }
+
+    @Override
+    public CompletableFuture<Object> shutdown() {
+        return CompletableFuture.completedFuture(new Object());
+    }
+
+    @Override
+    public void exit() {
+
+    }
+
+    @Override
     public CompletableFuture<Ping> ping() {
         Ping ping = new Ping();
         ping.receivedAtTimestamp = new Date().getTime();
