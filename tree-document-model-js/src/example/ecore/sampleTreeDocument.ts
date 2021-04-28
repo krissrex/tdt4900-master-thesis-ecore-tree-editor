@@ -9,6 +9,7 @@ export function getExampleTreeDocument(): TreeDocument {
         actions: {
           availableActions: [{ id: "validate", name: "Validate" }],
           defaultActionbarActions: [],
+          nodeActions: new Map([["validate", ["EPackage", "EClass"]]]),
         },
         hierarchy: {
           roots: new Set(["EPackage"]),

@@ -23,7 +23,7 @@ export interface ActionConfiguration {
 
   /**
    * They *key* is the id of an action in {@link .availableActions}
-   * and the *value* is the {@link NodeType} for the {@link TreeNode}s where it is available.
+   * and the *values* are the {@link NodeType}s for the {@link TreeNode}s where the action is available.
    */
-  nodeActions?: Map<ActionId, NodeType>;
+  nodeActions?: Map<ActionId, Array<NodeType>>;
 }
