@@ -1,5 +1,6 @@
 package no.ntnu.stud.krirek.treelsp.jsonrpc.protocol;
 
+import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
 import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
@@ -41,4 +42,10 @@ public interface Server {
 
     @JsonDelegate
     Workspace workspace();
+
+    @JsonRequest
+    CompletableFuture<TreeDocument> getModel(ModelRequest modelRequest);
+    class ModelRequest {
+        public String modelFileUri;
+    }
 }

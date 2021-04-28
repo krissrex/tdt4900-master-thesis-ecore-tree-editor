@@ -8,12 +8,13 @@ public interface Workspace {
 
     /**
      * Configure the server to look for model files in the specified workspace uri.
-     * @param workspaceUri a file uri, like {@code "file:/C:/Users/krissrex/eclipse-workspace/TreeLanguageServerProtocol/"}.
+     * @param config configuration options like file uri.
      */
     @JsonNotification
     void setWorkspaceUri(WorkspaceConfig config);
 
     class WorkspaceConfig {
-        String workspaceUri;
+        /**  a file uri, like {@code "file:/C:/Users/krissrex/eclipse-workspace/TreeLanguageServerProtocol/"}. */
+        public String workspaceUri;
     }
 }

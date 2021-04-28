@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/TreeLanguageServerProtocol/src" modelPluginID="TreeLanguageServerProtocol"
+    runtimeJar="true" modelName="TreeDocumentModel" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" bundleManifest="false" complianceLevel="11.0"
+    suppressGenModelAnnotations="false" copyrightFields="false" language="en" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>TreeDocumentModel.ecore</foreignModel>
+  <genPackages prefix="TreeDocumentModel" basePackage="no.ntnu.stud" resource="XMI"
+      disposableProviderFactory="true" fileExtensions="treedm" ecorePackage="TreeDocumentModel.ecore#/">
+    <genDataTypes ecoreDataType="TreeDocumentModel.ecore#//NodeType"/>
+    <genDataTypes ecoreDataType="TreeDocumentModel.ecore#//ActionId"/>
+    <genDataTypes ecoreDataType="TreeDocumentModel.ecore#//IconDataUri"/>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//TreeDocument">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeDocument/roots"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//TreeRoot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//TreeRoot/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeRoot/rootNode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeRoot/actions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeRoot/hierarchy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeRoot/icons"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//TreeNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//TreeNode/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//TreeNode/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//TreeNode/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//TreeNode/documentation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeNode/children"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeNode/parent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//TreeNode/iconOverride"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//HierarchyConfiguration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//HierarchyConfiguration/allowedChildren"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//HierarchyConfiguration/roots"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//NodeTypeToNodeTypesMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//NodeTypeToNodeTypesMap/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//NodeTypeToNodeTypesMap/value"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//Action">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//Action/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//Action/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//Action/icon"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//ActionEvent">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//ActionEvent/targetNodes"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//ActionEvent/action"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//ActionConfiguration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//ActionConfiguration/availableActions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//ActionConfiguration/defaultActionbarActions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//ActionConfiguration/nodeActions"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//ActionIdToNodeTypeMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//ActionIdToNodeTypeMap/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//ActionIdToNodeTypeMap/value"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//IconConfiguration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TreeDocumentModel.ecore#//IconConfiguration/icons"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//NodeIcon">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//NodeIcon/icons"/>
+    </genClasses>
+    <genClasses ecoreClass="TreeDocumentModel.ecore#//NodeTypeToIconDataUriMap">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//NodeTypeToIconDataUriMap/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TreeDocumentModel.ecore#//NodeTypeToIconDataUriMap/value"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

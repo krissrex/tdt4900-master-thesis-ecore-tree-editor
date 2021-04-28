@@ -10,8 +10,12 @@ import org.eclipse.emfcloud.modelserver.emf.di.DefaultModelServerModule;
 import org.eclipse.emfcloud.modelserver.emf.launch.CLIBasedModelServerLauncher;
 import org.eclipse.emfcloud.modelserver.emf.launch.ModelServerEntryPoint;
 import org.eclipse.emfcloud.modelserver.emf.launch.ModelServerStartup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -21,19 +25,21 @@ public class MainRpc {
 
     public static final String MESSAGE_JSONRPC_READY = "[JSON-RPC] Server is ready.";
 
+    static final Logger log = LoggerFactory.getLogger(MainRpc.class);
+
     public static void main(String[] args) {
+        configureLogging();
+
         CommandLine options = parseArgs(args);
 
         if (options.hasOption("h")) {
-            String header = "Tree Language Server Protocol over JSON-RPC.\nOptions:";
-            String footer = "\nPlease report issues at github.";
-            new HelpFormatter().printHelp("model-server.jar", header, getCliOptions(), footer, true);
+            printHelp();
             System.exit(0);
             return;
         }
 
         // TODO: start JSON-RPC here
-        final TLSPJsonRpcServer jsonRpcServer = new TLSPJsonRpcServer();
+        final TLSPJsonRpcServer jsonRpcServer = TLSPJsonRpcServer.create();
         jsonRpcServer.start();
 
         if (options.hasOption("r")) {
@@ -43,23 +49,25 @@ public class MainRpc {
             System.out.println(MESSAGE_JSONRPC_READY);
         }
 
+        // FIXME: remove test code
         final Client client = jsonRpcServer.getLauncher().getRemoteProxy();
         final CompletableFuture<Client.Hello> helloResponse = client.helloClient(new Client.Hello("Vscode extension"));
         helloResponse.handleAsync((hello, throwable) -> {
-            System.err.println("Got response hello: " + hello.message);
+            log.info("Got response hello: {}", hello.message);
             return null;
         });
 
+        // Wait for server to stop
         final Future<Void> onStopped = jsonRpcServer.getOnStopped();
         while (!onStopped.isDone()) {
             try {
-                synchronized (onStopped) {
-                    onStopped.wait();
-                }
+                onStopped.get();
             } catch (InterruptedException ignored) {
+            } catch (ExecutionException e) {
+                log.error("Waiting for server stop, but it threw an error", e);
             }
         }
-        System.err.println("Server stopped.");
+        log.info("Server stopped");
 
         // TODO: implement with these
 
@@ -77,6 +85,17 @@ public class MainRpc {
         DefaultModelController modelController; // MVC controller for editing models.
 
         ModelServerRoutingV1 routing; // The endpoints in javalin are set here. However, most methods are protected. Otherwise our RPC could bridge to something similar to this.
+    }
+
+    private static void printHelp() {
+        String header = "Tree Language Server Protocol over JSON-RPC.\nOptions:";
+        String footer = "\nPlease report issues at github.";
+        new HelpFormatter().printHelp("model-server.jar", header, getCliOptions(), footer, true);
+    }
+
+    protected static void configureLogging() {
+        SLF4JBridgeHandler.removeHandlersForRootLogger(); // Unbind any existing j.u.l root handler
+        SLF4JBridgeHandler.install();
     }
 
     protected static CommandLine parseArgs(String[] args) {

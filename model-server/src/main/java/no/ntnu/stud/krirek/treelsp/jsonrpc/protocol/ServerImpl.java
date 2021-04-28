@@ -1,12 +1,20 @@
 package no.ntnu.stud.krirek.treelsp.jsonrpc.protocol;
 
+import no.ntnu.stud.krirek.treelsp.emf.ModelTreeController;
+import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
+
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 public class ServerImpl implements Server {
 
+    private no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Workspace workspace;
+    private ModelTreeController modelTreeController;
+
     //TODO: make a JSON-RPC interface into something like the ModelServerRoutingV1?
-    public ServerImpl() {
+    public ServerImpl(Workspace workspace, ModelTreeController modelTreeController) {
+        this.workspace = workspace;
+        this.modelTreeController = modelTreeController;
     }
 
     @Override
@@ -21,7 +29,7 @@ public class ServerImpl implements Server {
 
     @Override
     public void exit() {
-
+        System.exit(0);
     }
 
     @Override
@@ -33,6 +41,12 @@ public class ServerImpl implements Server {
 
     @Override
     public Workspace workspace() {
-        return new WorkspaceImpl();
+        return workspace;
+    }
+
+    @Override
+    public CompletableFuture<TreeDocument> getModel(ModelRequest modelRequest) {
+        final TreeDocument treeDocument = modelTreeController.getTreeDocument(modelRequest.modelFileUri);
+        return CompletableFuture.completedFuture(treeDocument);
     }
 }

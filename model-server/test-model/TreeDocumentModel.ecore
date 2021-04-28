@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="treedocumentmodel" nsURI="http://stud.ntnu.no/krirek/2021/treedocumentmodel"
+    nsPrefix="TreeDocumentModel">
+  <eAnnotations source="model:/version">
+    <details key="version" value="0.0.1"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="TreeDocument">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The document model that the Tree Editor works with.&#xA;Add contents to it by adding a TreeRoot to roots, for example an ecore file or genmodel file.&#xA;Configure it by specifying icon mappings in {@link #getIcons()}."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roots" upperBound="-1"
+        eType="#//TreeRoot" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TreeRoot">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The root of a tree.&#xA;It has the information on icons, actions and valid hierarchy within this tree."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rootNode" eType="#//TreeNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actions" ordered="false"
+        unique="false" lowerBound="1" eType="#//ActionConfiguration" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A configuration of all available actions, and which ones are in the action bar depending on the selected node etc."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hierarchy" ordered="false"
+        unique="false" lowerBound="1" eType="#//HierarchyConfiguration" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The mapping between parent node types and their allowed child node types."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="icons" eType="#//IconConfiguration"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TreeNode">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="A node in the Tree document. &#xA;This represents an element in the model being edited, such as a single EClass instance, EReference instance etc. &#xA;&#xA;Nodes are nested with parents and children.&#xA;A node with no parent is a root node, and a node with no children is a leaf node.&#xA;&#xA;Nodes have an unique identifier within a TreeDocument.&#xA;Nodes have a name that also works as an identifier for the user, but it does not have a uniqueness constraint."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" ordered="false" unique="false"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The documentation or help text for a node."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="children" upperBound="-1"
+        eType="#//TreeNode" containment="true" eOpposite="#//TreeNode/parent" eKeys="#//TreeNode/id">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The child nodes of a node.&#xA;&#xA;For example, an EClass would have children of type EReference and EAttribute. &#xA;A filesystem directory would have children of type directory or file."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//TreeNode"
+        eOpposite="#//TreeNode/children">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The parent of this node, or empty if this is a root node."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="iconOverride" ordered="false"
+        unique="false" eType="#//NodeIcon" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="An icon to use instead of the default icon.&#xA;The default icon is based on the node's type."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="NodeType" instanceClassName="java.lang.String">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The class name or type name of a node, such as EClass, EReference, EAnnotation etc."/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="HierarchyConfiguration">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Defines what children are allowed for each parent node type."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allowedChildren" ordered="false"
+        upperBound="-1" eType="#//NodeTypeToNodeTypesMap" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="roots" ordered="false"
+        upperBound="-1" eType="#//NodeType">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The NodeTypes that can be tree roots."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeTypeToNodeTypesMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="#//NodeType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
+        upperBound="-1" eType="#//NodeType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Action">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="An action is something that can be triggered by a user.&#xA;For example, a user can trigger &quot;Validation&quot;, &quot;Create a dynamic instance&quot; or &quot;Create a genmodel&quot;.&#xA;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="#//ActionId"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="icon" ordered="false" unique="false"
+        eType="#//IconDataUri"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionEvent">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="An event triggering an action, optionally against some target TreeNodes."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetNodes" upperBound="-1"
+        eType="#//TreeNode">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="An action can target zero, one or more nodes.&#xA;&#xA;For example, creating a &quot;dynamic instance&quot; might need a node to use as root.&#xA;Deleting nodes can target multiple."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="action" ordered="false"
+        unique="false" lowerBound="1" eType="#//Action">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The triggered action."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionConfiguration">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Lists all the available actions that can be performed, and also maps certain actions to certain node types."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="availableActions" upperBound="-1"
+        eType="#//Action" containment="true" eKeys="#//Action/id">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The available actions in a document."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultActionbarActions"
+        upperBound="-1" eType="#//ActionId">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The actions to always show in the action bar, regardless of what TreeNodes are selected."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeActions" ordered="false"
+        upperBound="-1" eType="#//ActionIdToNodeTypeMap" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="They key is the id of an action in {@link #getAvailableActions()} and the value is the {@link TreeNode#getType() type} of a TreeNode."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionIdToNodeTypeMap" instanceClassName="java.util.Map$Entry">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" ordered="false" lowerBound="1"
+        eType="#//ActionId"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
+        lowerBound="1" upperBound="-1" eType="#//NodeType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="ActionId" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IconConfiguration">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="icons" upperBound="-1"
+        eType="#//NodeTypeToIconDataUriMap" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The key is the NodeType and the value is a IconDataUri."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeIcon">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The icon shown on a TreeNode."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="icons" unique="false" upperBound="-1"
+        eType="#//IconDataUri">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A stack of icons, rendered from first (beneath) to last (on top)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="IconDataUri" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeTypeToIconDataUriMap" instanceClassName="java.util.Map$Entry">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Maps node types to dataUri strings, where the dataUri contains a gif/png/jpeg icon."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="#//NodeType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="#//IconDataUri"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -39,6 +39,69 @@
             <artifactId>org.eclipse.emfcloud.modelserver.emf</artifactId>
             <version>0.7.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <!-- Dependency injection required to initiate emf-cloud modelserver. -->
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+        <dependency>
+            <!-- Required by emf-cloud modelserver. -->
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.3</version>
+        </dependency>
+        <!-- We have to pull in a bunch of emf dependencies manually.
+        Maybe because they were specified as dependencies in META-INF (eclipse) instead of maven pom...
+         They are supposed to be transitive dependencies of emf-cloud modelserver.
+         -->
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore</artifactId>
+            <version>2.23.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.edit</artifactId>
+            <version>2.16.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>org.eclipse.emf.transaction</artifactId>
+            <version>1.4.0.v20100331-1738</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.emf</groupId>
+            <artifactId>org.eclipse.emf.ecore.change</artifactId>
+            <version>2.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.emfjson</groupId>
+            <artifactId>emfjson-jackson</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
+        <dependency>
+            <!-- For generating value objects with annotation processing. Similar to lombok etc. -->
+            <groupId>org.immutables</groupId>
+            <artifactId>value</artifactId>
+            <version>2.8.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>4.2.3</version>
+        </dependency>
+
+
+        <dependency>
+            <!-- For @Nullable and @NotNull. -->
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>20.1.0</version>
+        </dependency>
+
 
         <dependency>
             <!-- For command line arguments when starting the program. -->
@@ -61,6 +124,46 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <!-- Logging facade. -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <!-- Logging implementation for slf4j. Writes actual logs to stderr/files etc.-->
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
+            <!-- Binds jdk internal use of java.util.logging into slf4j instead. -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <!-- Binds emf-cloud model server log4j to slf4j. -->
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+
+        <dependency>
+            <!-- Unit tests. -->
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.19.0</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
 
@@ -72,6 +175,12 @@
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
         <repository>
+            <!-- Only this repo had emf.transaction. -->
+            <id>wso2</id>
+            <name>WSO2 Dist Repository</name>
+            <url>https://dist.wso2.org/maven2/</url>
+        </repository>
+        <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
@@ -81,7 +190,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <!-- Need version 3.7+ for java9 modules. -->
                 <groupId>org.apache.maven.plugins</groupId>
@@ -95,6 +203,22 @@
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.8.1</version>
             </plugin>
+
+            <plugin>
+                <!-- Static analysis. Successor to Findbugs. -->
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <dependencies>
+                    <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>4.2.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
 
             <plugin>
                 <!-- Build an executable JAR -->
