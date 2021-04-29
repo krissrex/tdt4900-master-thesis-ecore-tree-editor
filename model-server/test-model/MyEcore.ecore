@@ -21,5 +21,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="MyEnum" instanceTypeName="MyEnumType"/>
   <eClassifiers xsi:type="ecore:EDataType" name="MyData" instanceTypeName="EString"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Circular"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Circular">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="circularReference" eType="#//Circular"
+        containment="true"/>
+  </eClassifiers>
 </ecore:EPackage>

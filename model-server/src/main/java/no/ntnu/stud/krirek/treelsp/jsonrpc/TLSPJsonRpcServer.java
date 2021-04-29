@@ -12,6 +12,7 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
+import org.eclipse.emfcloud.modelserver.emf.configuration.EPackageConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.configuration.ServerConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.di.DefaultModelServerModule;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
@@ -43,10 +44,18 @@ public class TLSPJsonRpcServer implements AutoCloseable {
         // EMF-Cloud Model Server is created with private field injection,
         // so we need a dependency injection framework (or heavy use of reflection) to instantiate some of the classes.
         final Injector injector = Guice.createInjector(new DefaultModelServerModule());
+        /*
+        TODO: alter the default model to register custom file extensions for xmi files
+         by adding a EPackageConfiguration into the DefaultModelServerModule's multibindings.
+         for `resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());`.
+         Currently as .ecore and .command (CCommand) by default.
+        */
         ModelRepository repository = injector.getInstance(ModelRepository.class);
         ModelResourceManager resourceManager = injector.getInstance(ModelResourceManager.class);
         ModelController emfModelController = injector.getInstance(ModelController.class);
         ServerConfiguration serverConfiguration = injector.getInstance(ServerConfiguration.class);
+
+
 
         final ModelTreeController modelTreeController = new ModelTreeController(repository, resourceManager,
                 emfModelController, serverConfiguration, new EcoreToTreeDocumentModelMapper());

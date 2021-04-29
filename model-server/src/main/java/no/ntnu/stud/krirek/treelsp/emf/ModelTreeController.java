@@ -1,6 +1,12 @@
 package no.ntnu.stud.krirek.treelsp.emf;
 
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
@@ -33,6 +39,8 @@ public class ModelTreeController {
     }
 
     public TreeDocument getTreeDocument(String modelFileUri) {
+        modelResourceManager.getResourceSet(modelFileUri);
+
         return null;
     }
 }
