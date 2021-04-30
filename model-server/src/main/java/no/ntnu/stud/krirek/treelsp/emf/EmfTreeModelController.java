@@ -14,7 +14,7 @@ import org.eclipse.emfcloud.modelserver.emf.configuration.ServerConfiguration;
 
 import java.net.URI;
 
-public class ModelTreeController {
+public class EmfTreeModelController {
 
     private final ModelRepository modelRepository;
     private final ModelResourceManager modelResourceManager;
@@ -22,9 +22,9 @@ public class ModelTreeController {
     private final ServerConfiguration serverConfiguration;
     private EcoreToTreeDocumentModelMapper mapper;
 
-    public ModelTreeController(ModelRepository modelRepository, ModelResourceManager modelResourceManager,
-                               ModelController emfModelController, ServerConfiguration serverConfiguration,
-                               EcoreToTreeDocumentModelMapper mapper) {
+    public EmfTreeModelController(ModelRepository modelRepository, ModelResourceManager modelResourceManager,
+                                  ModelController emfModelController, ServerConfiguration serverConfiguration,
+                                  EcoreToTreeDocumentModelMapper mapper) {
         this.modelRepository = modelRepository;
         this.modelResourceManager = modelResourceManager;
         this.emfModelController = emfModelController;
@@ -39,8 +39,8 @@ public class ModelTreeController {
     }
 
     public TreeDocument getTreeDocument(String modelFileUri) {
-        modelResourceManager.getResourceSet(modelFileUri);
-
-        return null;
+        final ResourceSet resourceSet = modelResourceManager.getResourceSet(modelFileUri);
+        final TreeDocument doc = mapper.map(resourceSet);
+        return doc;
     }
 }

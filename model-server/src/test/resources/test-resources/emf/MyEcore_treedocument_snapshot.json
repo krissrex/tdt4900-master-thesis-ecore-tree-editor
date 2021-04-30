@@ -3,108 +3,110 @@
     {
       "id": ".\\test-model\\MyEcore.ecore",
       "rootNode": {
-        "id": "_Vkxy8KmpEeuKwp6PjJJKpA",
+        "id": "_NOhYAKm8EeuBaMJVipwwMw",
         "type": "EPackage",
         "name": "MyEcore",
         "children": [
           {
-            "id": "_Vk1dUKmpEeuKwp6PjJJKpA",
+            "id": "_NOkbUKm8EeuBaMJVipwwMw",
             "type": "EClass",
             "name": "TestClass",
+            "documentation": "This is the main class. Kristian is cool",
             "children": [
               {
-                "id": "_Vk1dUampEeuKwp6PjJJKpA",
+                "id": "_NOkbUam8EeuBaMJVipwwMw",
                 "type": "EAnnotation",
-                "name": "EAnnotation http://www.eclipse.org/emf/2002/Ecore",
+                "name": "http://www.eclipse.org/emf/2002/Ecore",
                 "children": []
               },
               {
-                "id": "_Vk2EYKmpEeuKwp6PjJJKpA",
+                "id": "_NOkbUqm8EeuBaMJVipwwMw",
                 "type": "EAnnotation",
-                "name": "EAnnotation http://www.eclipse.org/emf/2002/GenModel",
+                "name": "http://www.eclipse.org/emf/2002/GenModel",
                 "children": [
                   {
-                    "id": "_Vk2EYampEeuKwp6PjJJKpA",
+                    "id": "_NOkbU6m8EeuBaMJVipwwMw",
                     "type": "EStringToStringMapEntry",
-                    "name": "EString To String Map Entry documentation",
+                    "name": "documentation",
                     "children": []
                   }
                 ]
               },
               {
-                "id": "_Vk2rcKmpEeuKwp6PjJJKpA",
+                "id": "_NOlCYKm8EeuBaMJVipwwMw",
                 "type": "EOperation",
                 "name": "myOperation",
                 "children": [
                   {
-                    "id": "_Vk2rcampEeuKwp6PjJJKpA",
+                    "id": "_NOlCYam8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "EString",
                     "children": []
                   }
                 ]
               },
               {
-                "id": "_Vk3SgKmpEeuKwp6PjJJKpA",
+                "id": "_NOlpcKm8EeuBaMJVipwwMw",
                 "type": "EAttribute",
                 "name": "MyAttribute",
                 "children": [
                   {
-                    "id": "_Vk3SgampEeuKwp6PjJJKpA",
+                    "id": "_NOlpcam8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "EInt",
                     "children": []
                   }
                 ]
               },
               {
-                "id": "_Vk4goKmpEeuKwp6PjJJKpA",
+                "id": "_NOm3kKm8EeuBaMJVipwwMw",
                 "type": "EReference",
                 "name": "MyReference",
                 "children": [
                   {
-                    "id": "_Vk4goampEeuKwp6PjJJKpA",
+                    "id": "_NOm3kam8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "TestClass",
                     "children": []
                   }
                 ]
               },
               {
-                "id": "_Vk5HsKmpEeuKwp6PjJJKpA",
+                "id": "_NOm3kqm8EeuBaMJVipwwMw",
                 "type": "EReference",
                 "name": "me",
                 "children": [
                   {
-                    "id": "_Vk5HsampEeuKwp6PjJJKpA",
+                    "id": "_NOm3k6m8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "TestClass",
                     "children": []
                   }
                 ]
               },
               {
-                "id": "_Vk5HsqmpEeuKwp6PjJJKpA",
+                "id": "_NOm3lKm8EeuBaMJVipwwMw",
                 "type": "EAttribute",
                 "name": "meToo",
+                "documentation": "Very cool!",
                 "children": [
                   {
-                    "id": "_Vk5HtKmpEeuKwp6PjJJKpA",
+                    "id": "_NOm3lqm8EeuBaMJVipwwMw",
                     "type": "EAnnotation",
-                    "name": "EAnnotation http://www.eclipse.org/emf/2002/GenModel",
+                    "name": "http://www.eclipse.org/emf/2002/GenModel",
                     "children": [
                       {
-                        "id": "_Vk5HtampEeuKwp6PjJJKpA",
+                        "id": "_NOm3l6m8EeuBaMJVipwwMw",
                         "type": "EStringToStringMapEntry",
-                        "name": "EString To String Map Entry documentation",
+                        "name": "documentation",
                         "children": []
                       }
                     ]
                   },
                   {
-                    "id": "_Vk5Hs6mpEeuKwp6PjJJKpA",
+                    "id": "_NOm3lam8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "EJavaObject",
                     "children": []
                   }
                 ]
@@ -112,31 +114,31 @@
             ]
           },
           {
-            "id": "_Vk5HtqmpEeuKwp6PjJJKpA",
+            "id": "_NOm3mKm8EeuBaMJVipwwMw",
             "type": "EDataType",
             "name": "MyEnum",
             "children": []
           },
           {
-            "id": "_Vk5Ht6mpEeuKwp6PjJJKpA",
+            "id": "_NOm3mam8EeuBaMJVipwwMw",
             "type": "EDataType",
             "name": "MyData",
             "children": []
           },
           {
-            "id": "_Vk5uwKmpEeuKwp6PjJJKpA",
+            "id": "_NOneoKm8EeuBaMJVipwwMw",
             "type": "EClass",
             "name": "Circular",
             "children": [
               {
-                "id": "_Vk5uwampEeuKwp6PjJJKpA",
+                "id": "_NOneoam8EeuBaMJVipwwMw",
                 "type": "EReference",
                 "name": "circularReference",
                 "children": [
                   {
-                    "id": "_Vk5uwqmpEeuKwp6PjJJKpA",
+                    "id": "_NOneoqm8EeuBaMJVipwwMw",
                     "type": "EGenericType",
-                    "name": "EGeneric Type",
+                    "name": "Circular",
                     "children": []
                   }
                 ]

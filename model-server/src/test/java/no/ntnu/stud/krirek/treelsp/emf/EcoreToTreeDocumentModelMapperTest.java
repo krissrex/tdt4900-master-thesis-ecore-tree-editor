@@ -107,8 +107,17 @@ class EcoreToTreeDocumentModelMapperTest {
         assertThat(classNode.id()).isNotEqualTo(rootNode.id());
         assertThat(classNode.name()).isEqualTo("TestClass");
         assertThat(classNode.type()).isEqualTo("EClass");
-        assertThat(classNode.documentation()).isNull(); // TODO: add docs
+        assertThat(classNode.documentation()).isEqualTo("This is the main class. Kristian is cool"); // TODO this uses custom docs, not default Ecore docs.
         assertThat(classNode.iconOverride()).isNull();
+
+        final TreeNode myOperationNode = classNode.children().get(2);
+        assertThat(myOperationNode.name()).isEqualTo("myOperation");
+        assertThat(myOperationNode.type()).isEqualTo("EOperation");
+
+        final TreeNode genericTypeNode = myOperationNode.children().get(0);
+        assertThat(genericTypeNode.name()).isEqualTo("EString");
+        assertThat(genericTypeNode.type()).isEqualTo("EGenericType");
+
     }
 
     @Test @Disabled("The IDs are not stable, so they always differ.")
@@ -124,10 +133,13 @@ class EcoreToTreeDocumentModelMapperTest {
 
         // When
         final String treeDocumentJson = gson.toJson(model);
+        // Uncomment to update snapshot:
+        //FileWriter snapshot = new FileWriter(jsonSnapshotFile); snapshot.write(treeDocumentJson); snapshot.close();
+        // Then copy contents from `target/test-classes/test-resources/emf/MyEcore_treedocument_snapshot.json` into `src/test/...`.
 
         // Then
         //NB: build the project if the file is changed. The file is copied to `target/test-classes/` only on build.
-        Assertions.assertThat(jsonSnapshotFile).hasContent(treeDocumentJson);
+        assertThat(jsonSnapshotFile).hasContent(treeDocumentJson);
     }
 
     static ResourceSet loadModel() throws Exception {

@@ -3,7 +3,7 @@ package no.ntnu.stud.krirek.treelsp.jsonrpc;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import no.ntnu.stud.krirek.treelsp.emf.EcoreToTreeDocumentModelMapper;
-import no.ntnu.stud.krirek.treelsp.emf.ModelTreeController;
+import no.ntnu.stud.krirek.treelsp.emf.EmfTreeModelController;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Client;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Server;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.ServerImpl;
@@ -12,7 +12,6 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
-import org.eclipse.emfcloud.modelserver.emf.configuration.EPackageConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.configuration.ServerConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.di.DefaultModelServerModule;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
@@ -57,9 +56,9 @@ public class TLSPJsonRpcServer implements AutoCloseable {
 
 
 
-        final ModelTreeController modelTreeController = new ModelTreeController(repository, resourceManager,
+        final EmfTreeModelController emfTreeModelController = new EmfTreeModelController(repository, resourceManager,
                 emfModelController, serverConfiguration, new EcoreToTreeDocumentModelMapper());
-        return new TLSPJsonRpcServer(new ServerImpl(new WorkspaceImpl(modelTreeController), modelTreeController));
+        return new TLSPJsonRpcServer(new ServerImpl(new WorkspaceImpl(emfTreeModelController), emfTreeModelController));
     }
 
     public TLSPJsonRpcServer(Server server) {

@@ -2,14 +2,14 @@ package no.ntnu.stud.krirek.treelsp.emf;
 
 import no.ntnu.stud.krirek.treelsp.model.tree.*;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.ENamedElement;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,22 +69,11 @@ public class EcoreToTreeDocumentModelMapper {
         final ImmutableTreeNode.Builder treeNodeBuilder = ImmutableTreeNode.builder();
 
         treeNodeBuilder.id(uuid(nodeObject));
-
-        // TODO: use an adapter factory or label provider or something
-        if (nodeObject instanceof ENamedElement) {
-            String name = ((ENamedElement) nodeObject).getName();
-            treeNodeBuilder.name(name);
-        } else {
-            log.warn("Not sure how to name EObject {}. Falling back to ReflectiveItemProvider.", nodeObject);
-            final ReflectiveItemProvider reflectiveItemProvider = new ReflectiveItemProvider(new ReflectiveItemProviderAdapterFactory());
-            treeNodeBuilder.name(reflectiveItemProvider.getText(nodeObject));
-        }
-
+        treeNodeBuilder.name(name(nodeObject));
         treeNodeBuilder.type(nodeObject.eClass().getName()); // FIXME: some options here, like instanceTypeName and instanceClassName, which one is correct?
-        // treeNodeBuilder.documentation() // TODO: set documentation based on class etc
+        treeNodeBuilder.documentation(documentation(nodeObject));
 
-        // FIXME: does this add annotations too? Probably not. Use eAllContents, which navigates everything as a tree instead?
-        final EList<EObject> children = nodeObject.eContents();
+        final EList<EObject> children = nodeObject.eContents(); // Also adds EAnnotation etc.
         for (EObject child : children) {
             final ImmutableTreeNode.Builder childBuilder = mapTreeNode(child);
             treeNodeBuilder.addChildren(childBuilder.build());
@@ -93,31 +82,63 @@ public class EcoreToTreeDocumentModelMapper {
         return treeNodeBuilder;
     }
 
+    /**
+     * Get an appropriate name for a node.
+     * @param nodeObject An object that is a tree node.
+     * @return some label that can name the {@code nodeObject}.
+     */
+    protected String name(EObject nodeObject) {
+        // TODO: use an adapter factory or label provider or something
+        if (nodeObject instanceof ENamedElement) {
+            String name = ((ENamedElement) nodeObject).getName();
+            return name;
+        } else if (nodeObject instanceof EGenericType) {
+            final String name = ((EGenericType) nodeObject).getEClassifier().getName();
+            return name;
+        } else {
+            log.debug("Not sure how to name EObject {}. Falling back to ReflectiveItemProvider.", nodeObject);
+            final ReflectiveItemProvider reflectiveItemProvider = new ReflectiveItemProvider(new ReflectiveItemProviderAdapterFactory()) {
+                final Logger itemProviderLogger = LoggerFactory.getLogger(this.getClass());
+
+                @Override
+                public String getText(Object object) {
+                    final EObject eObject = (EObject) object;
+                    final EClass eClass = eObject.eClass();
+                    EStructuralFeature feature = getLabelFeature(eClass);
+                    if (feature != null) {
+                        final Object value = eObject.eGet(feature);
+                        if (value != null) {
+                            return value.toString();
+                        }
+                    }
+
+                    itemProviderLogger.warn("No label found for object {}", object);
+                    return "";
+                }
+            };
+            return reflectiveItemProvider.getText(nodeObject);
+        }
+    }
+
     @NotNull
     private ImmutableHierarchyConfiguration.Builder mapHierarchy(Resource resource) {
         final ImmutableHierarchyConfiguration.Builder hierarchyBuilder = ImmutableHierarchyConfiguration.builder();
-        final EList<EObject> contents = resource.getContents();
-        for (EObject rootEObject : contents) {
-            if ("EPackage".equals(rootEObject.eClass().getName())) {
-                // This should mean Ecore is the metamodel, and we have a .ecore metamodel file in the resource.
-                hierarchyBuilder.putAllowedChildren("EPackage", List.of("EClass", "EDataType", "EAnnotation")); //TODO add all hierarchy
-                break;
-            }
-            // TODO what about reflective model editor? Models where metamodel is not Ecore; xmi model instances etc.
+
+        if (isEcoreMetamodel(resource)) {
+            // This should mean Ecore is the metamodel, and we have a .ecore metamodel file in the resource.
+            hierarchyBuilder.putAllowedChildren("EPackage", List.of("EClass", "EDataType", "EAnnotation")); //TODO add all hierarchy
         }
+        // TODO what about reflective model editor? Models where metamodel is not Ecore; xmi model instances etc.
+
         return hierarchyBuilder;
     }
 
     @NotNull
     private ImmutableActionConfiguration.Builder mapActionConfiguration(Resource resource) {
         final ImmutableActionConfiguration.Builder actionConfigurationBuilder = ImmutableActionConfiguration.builder();
-        final EList<EObject> contents = resource.getContents();
-        for (EObject rootEObject : contents) {
-            if ("EPackage".equals(rootEObject.eClass().getName())) {
-                // This should mean Ecore is the metamodel, and we have a .ecore metamodel file in the resource.
-                useEcoreActionConfiguration(actionConfigurationBuilder);
-                break;
-            }
+
+        if (isEcoreMetamodel(resource)) {
+            useEcoreActionConfiguration(actionConfigurationBuilder);
             // TODO what about reflective model editor? Models where metamodel is not Ecore; xmi model instances etc.
         }
         return actionConfigurationBuilder;
@@ -135,6 +156,45 @@ public class EcoreToTreeDocumentModelMapper {
         );
         actionConfigurationBuilder.addDefaultAcionbarActions("ecore:dynamic-instance");
         actionConfigurationBuilder.putNodeActions("EPackage", List.of("ecore:create-genmodel"));
+    }
+
+    /**
+     * Should return {@code false} for a dynamic instance xmi.
+     *
+     * @param resource the resource with model elements that may be from the Ecore metamodel.
+     * @return {@code true} if at least one root element in {@link Resource#getContents()} is from the {@link EcorePackage}.
+     */
+    protected boolean isEcoreMetamodel(Resource resource) {
+        final String ecoreNsUri = EcorePackage.eINSTANCE.getNsURI();
+        final EList<EObject> contents = resource.getContents();
+        for (EObject rootEObject : contents) {
+            final String metamodelNsUri = rootEObject.eClass().getEPackage().getNsURI();
+            boolean isEcoreMetamodel = ecoreNsUri.equals(metamodelNsUri);
+            if (isEcoreMetamodel) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected @Nullable String documentation(Object object) {
+        if (object instanceof EModelElement) {
+            final EClass instanceClass = ((EModelElement) object).eClass();
+            final String instanceClassDocs = EcoreUtil.getAnnotation(instanceClass, EcoreUtil.GEN_MODEL_ANNOTATION_URI, "documentation");
+            if (instanceClassDocs != null) {
+                return instanceClassDocs;
+            }
+        }
+
+        if (object instanceof EModelElement) {
+            final String documentation = EcoreUtil.getAnnotation((EModelElement) object, EcoreUtil.GEN_MODEL_ANNOTATION_URI, "documentation");
+            if (documentation != null) {
+                return documentation.trim();
+            }
+
+        }
+
+        return null; // TODO: add default docs for ecore types.
     }
 
     protected String uuid(EObject object) {
