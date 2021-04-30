@@ -1,14 +1,37 @@
 package no.ntnu.stud.krirek.treelsp.emf;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.URIHandlerImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
+/**
+ * Enables UUIDs on the objects.
+ * The UUID is only stored in the {@link XMLResource}, so you have to use
+ * {@link EObject#eResource()} and cast it to {@link XMLResource}, then call {@link XMLResource#getID(EObject)}.
+ * Alternatively, use {@link #getId(EObject)}.
+ */
 public class UuidEcoreResourceFactoryImpl extends EcoreResourceFactoryImpl {
+
+    public static @Nullable String getId(EObject object) {
+        if (object == null) {
+            return null;
+        }
+
+        final Resource resource = object.eResource();
+        if (resource instanceof XMLResource) {
+            return ((XMLResource) resource).getID(object);
+        }
+
+        return null;
+    }
 
     @Override
     public Resource createResource(URI uri) {
@@ -42,6 +65,11 @@ public class UuidEcoreResourceFactoryImpl extends EcoreResourceFactoryImpl {
                     // End-modification
                 };
         result.setEncoding("UTF-8");
+        // Begin-modification
+        // Initialize the maps by getting them.
+        result.getIDToEObjectMap();
+        result.getEObjectToIDMap();
+        // End-modification
 
         if ("genmodel".equals(uri.fileExtension()))
         {
