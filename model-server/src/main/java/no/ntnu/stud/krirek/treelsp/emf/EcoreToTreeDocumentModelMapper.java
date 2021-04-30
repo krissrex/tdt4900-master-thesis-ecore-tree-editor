@@ -7,6 +7,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
+import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,14 +68,16 @@ public class EcoreToTreeDocumentModelMapper {
         // FIXME: avoid circular recursion? Is it even possible, with e.g. children of same type as parent?
         final ImmutableTreeNode.Builder treeNodeBuilder = ImmutableTreeNode.builder();
 
-        treeNodeBuilder.id(EcoreUtil.getID(nodeObject));
+        treeNodeBuilder.id(uuid(nodeObject));
 
         // TODO: use an adapter factory or label provider or something
         if (nodeObject instanceof ENamedElement) {
             String name = ((ENamedElement) nodeObject).getName();
             treeNodeBuilder.name(name);
         } else {
-            log.warn("Not sure how to name EObject {}", nodeObject);
+            log.warn("Not sure how to name EObject {}. Falling back to ReflectiveItemProvider.", nodeObject);
+            final ReflectiveItemProvider reflectiveItemProvider = new ReflectiveItemProvider(new ReflectiveItemProviderAdapterFactory());
+            treeNodeBuilder.name(reflectiveItemProvider.getText(nodeObject));
         }
 
         treeNodeBuilder.type(nodeObject.eClass().getName()); // FIXME: some options here, like instanceTypeName and instanceClassName, which one is correct?
@@ -131,6 +135,14 @@ public class EcoreToTreeDocumentModelMapper {
         );
         actionConfigurationBuilder.addDefaultAcionbarActions("ecore:dynamic-instance");
         actionConfigurationBuilder.putNodeActions("EPackage", List.of("ecore:create-genmodel"));
+    }
+
+    protected String uuid(EObject object) {
+        final String id = UuidEcoreResourceFactoryImpl.getId(object);
+        if (id == null) {
+            return EcoreUtil.getIdentification(object); // FIXME: probably a better workaround for this
+        }
+        return id;
     }
 
     private boolean ensureLoaded(Resource resource) {

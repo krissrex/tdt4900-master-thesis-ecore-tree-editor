@@ -1,0 +1,179 @@
+{
+  "roots": [
+    {
+      "id": ".\\test-model\\MyEcore.ecore",
+      "rootNode": {
+        "id": "_Vkxy8KmpEeuKwp6PjJJKpA",
+        "type": "EPackage",
+        "name": "MyEcore",
+        "children": [
+          {
+            "id": "_Vk1dUKmpEeuKwp6PjJJKpA",
+            "type": "EClass",
+            "name": "TestClass",
+            "children": [
+              {
+                "id": "_Vk1dUampEeuKwp6PjJJKpA",
+                "type": "EAnnotation",
+                "name": "EAnnotation http://www.eclipse.org/emf/2002/Ecore",
+                "children": []
+              },
+              {
+                "id": "_Vk2EYKmpEeuKwp6PjJJKpA",
+                "type": "EAnnotation",
+                "name": "EAnnotation http://www.eclipse.org/emf/2002/GenModel",
+                "children": [
+                  {
+                    "id": "_Vk2EYampEeuKwp6PjJJKpA",
+                    "type": "EStringToStringMapEntry",
+                    "name": "EString To String Map Entry documentation",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "_Vk2rcKmpEeuKwp6PjJJKpA",
+                "type": "EOperation",
+                "name": "myOperation",
+                "children": [
+                  {
+                    "id": "_Vk2rcampEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "_Vk3SgKmpEeuKwp6PjJJKpA",
+                "type": "EAttribute",
+                "name": "MyAttribute",
+                "children": [
+                  {
+                    "id": "_Vk3SgampEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "_Vk4goKmpEeuKwp6PjJJKpA",
+                "type": "EReference",
+                "name": "MyReference",
+                "children": [
+                  {
+                    "id": "_Vk4goampEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "_Vk5HsKmpEeuKwp6PjJJKpA",
+                "type": "EReference",
+                "name": "me",
+                "children": [
+                  {
+                    "id": "_Vk5HsampEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "_Vk5HsqmpEeuKwp6PjJJKpA",
+                "type": "EAttribute",
+                "name": "meToo",
+                "children": [
+                  {
+                    "id": "_Vk5HtKmpEeuKwp6PjJJKpA",
+                    "type": "EAnnotation",
+                    "name": "EAnnotation http://www.eclipse.org/emf/2002/GenModel",
+                    "children": [
+                      {
+                        "id": "_Vk5HtampEeuKwp6PjJJKpA",
+                        "type": "EStringToStringMapEntry",
+                        "name": "EString To String Map Entry documentation",
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "id": "_Vk5Hs6mpEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "_Vk5HtqmpEeuKwp6PjJJKpA",
+            "type": "EDataType",
+            "name": "MyEnum",
+            "children": []
+          },
+          {
+            "id": "_Vk5Ht6mpEeuKwp6PjJJKpA",
+            "type": "EDataType",
+            "name": "MyData",
+            "children": []
+          },
+          {
+            "id": "_Vk5uwKmpEeuKwp6PjJJKpA",
+            "type": "EClass",
+            "name": "Circular",
+            "children": [
+              {
+                "id": "_Vk5uwampEeuKwp6PjJJKpA",
+                "type": "EReference",
+                "name": "circularReference",
+                "children": [
+                  {
+                    "id": "_Vk5uwqmpEeuKwp6PjJJKpA",
+                    "type": "EGenericType",
+                    "name": "EGeneric Type",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "actions": {
+        "availableActions": [
+          {
+            "id": "ecore:dynamic-instance",
+            "name": "Create dynamic instance"
+          },
+          {
+            "id": "ecore:create-genmodel",
+            "name": "Create genmodel file"
+          }
+        ],
+        "defaultAcionbarActions": [
+          "ecore:dynamic-instance"
+        ],
+        "nodeActions": {
+          "EPackage": [
+            "ecore:create-genmodel"
+          ]
+        }
+      },
+      "hierarchy": {
+        "allowedChildren": {
+          "EPackage": [
+            "EClass",
+            "EDataType",
+            "EAnnotation"
+          ]
+        }
+      }
+    }
+  ]
+}
