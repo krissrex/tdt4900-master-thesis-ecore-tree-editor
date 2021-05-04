@@ -95,6 +95,7 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
       actionEvent.targetRoot.id
     );
     //TODO: forward actions to the TLSP server.
+    // this.document.tlspServer.doAction(actionEvent);
   }
   setNodeChildrenVisibility(id: NodeId, visible: boolean) {
     try {
