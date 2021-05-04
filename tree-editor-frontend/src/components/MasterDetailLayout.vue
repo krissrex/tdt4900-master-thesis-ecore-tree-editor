@@ -39,14 +39,12 @@ export default Vue.extend({});
 }
 .master {
   grid-area: master;
-  background-color: rgb(187, 187, 252); /* FIXME: debug color */
 }
 .divider {
   grid-area: divider;
-  background-color: green; /* FIXME: debug color */
+  background-color: gray; /* FIXME: debug color */
 }
 .detail {
   grid-area: detail;
-  background-color: orange; /* FIXME: debug color */
 }
 </style>
