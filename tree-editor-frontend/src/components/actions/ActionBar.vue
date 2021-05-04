@@ -42,13 +42,14 @@ export default Vue.extend({
 
       const selection = this.$store.state.selectedNodes;
       // Get a list of all action IDs that can be used for the current selection
-      const nodeActions: string[][] = this.$store.state.treeDocument?.roots
-        ?.map((root) => root.actions.nodeActions)
-        .map((nodeAction) => {
-          return selection.flatMap((selectedNode) =>
-            nodeAction.get(selectedNode.type)
-          );
-        });
+      const nodeActions: string[][] =
+        this.$store.state.treeDocument?.roots
+          ?.map((root) => root.actions.nodeActions)
+          ?.map((nodeAction) => {
+            return selection.flatMap((selectedNode) =>
+              nodeAction.get(selectedNode.type)
+            );
+          }) ?? [];
       // In case of multiple selected, only keep the intersection of all the specific action ids
       while (nodeActions.length > 1) {
         const a = nodeActions[0];
@@ -56,7 +57,7 @@ export default Vue.extend({
         const intersection = new Set(a.filter((x) => b.includes(x)));
         nodeActions[0] = [...intersection];
       }
-      const selectedNodesActionIntersection: string[] = nodeActions[0];
+      const selectedNodesActionIntersection: string[] = nodeActions[0] ?? [];
 
       const availableActions = this.availableActions;
       const actions =
