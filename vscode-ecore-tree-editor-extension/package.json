@@ -127,7 +127,7 @@
     "vscode-test": "^1.4.0"
   },
   "dependencies": {
-    "@vscode-logging/logger": "^1.2.1",
+    "@vscode-logging/logger": "^1.2.3",
     "axios": "^0.21.1",
     "treedocumentmodel": "file:../tree-document-model-js",
     "vscode-jsonrpc": "^6.0.0",

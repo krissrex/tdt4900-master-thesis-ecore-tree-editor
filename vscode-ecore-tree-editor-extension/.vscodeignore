@@ -16,3 +16,4 @@ examples/**
 src-generators/**
 design-doc.*
 download_modelserver.sh
+lib/emf_modelserver_standalone.jar
