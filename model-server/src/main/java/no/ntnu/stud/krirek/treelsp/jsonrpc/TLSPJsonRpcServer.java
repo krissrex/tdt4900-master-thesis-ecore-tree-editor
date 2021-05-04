@@ -68,6 +68,7 @@ public class TLSPJsonRpcServer implements AutoCloseable {
 
     /**
      * Stops the launcher.
+     * Not needed if the underlying inputstream was closed (e.g. from a parent process).
      */
     public void stop() {
         if (onStopped == null || onStopped.isDone()) {

@@ -15,7 +15,7 @@ public interface ActionConfiguration {
     /**
      * {@code List<ActionId>}
      */
-    @Nullable List<String> defaultAcionbarActions();
+    @Nullable List<String> defaultActionbarActions();
 
     /**
      * {@code Map<ActionId, NodeType>}

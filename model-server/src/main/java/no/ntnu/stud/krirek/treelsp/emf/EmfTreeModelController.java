@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -83,13 +85,23 @@ public class EmfTreeModelController {
             throw new IllegalStateException("Workspace folder must be set first");
         }
 
+        if (modelFileUri.startsWith("file:///")) {
+            // Vscode uses this file:// and /c%3A for C: . The emfcloud model server does not handle this well.
+            try {
+                modelFileUri = new File(new URI(modelFileUri)).toURI().toString();
+            } catch (URISyntaxException e) {
+                this.log.warn("Unable to convert {} to URI", modelFileUri);
+            }
+        }
+
         // The modelResourceManager must get an absolute path `file:/` uri. The uri string is used directly in a map-lookup.
         ResourceSet resourceSet = modelResourceManager.getResourceSet(modelFileUri);
         if (resourceSet == null && !modelFileUri.startsWith("file:/")) {
             // Try to find a model inside the workspace that matches the name.
+            String finalModelFileUri = modelFileUri;
             final Optional<String> matchingEntry = serverConfiguration.getWorkspaceEntries() // Lists all files in the workspace
                     .stream()
-                    .filter(modelAbsoluteFilePath -> modelAbsoluteFilePath.endsWith(modelFileUri))
+                    .filter(modelAbsoluteFilePath -> modelAbsoluteFilePath.endsWith(finalModelFileUri))
                     .findFirst();
             if (matchingEntry.isPresent()) {
                 final String detectedModelUri = new File(matchingEntry.get()).toURI().toString();

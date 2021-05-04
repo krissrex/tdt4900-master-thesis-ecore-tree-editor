@@ -2,19 +2,12 @@ package no.ntnu.stud.krirek.treelsp.emf;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import no.ntnu.stud.krirek.treelsp.model.tree.HierarchyConfiguration;
-import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
-import no.ntnu.stud.krirek.treelsp.model.tree.TreeNode;
-import no.ntnu.stud.krirek.treelsp.model.tree.TreeRoot;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ListAssert;
+import no.ntnu.stud.krirek.treelsp.model.tree.*;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -169,4 +162,25 @@ class EcoreToTreeDocumentModelMapperTest {
         fail("Not done. Missing many hierarchy keys and values in the tests");
     }
 
+    @Test
+    void usesEcoreActionConfiguration() throws Exception {
+        // Given
+        final EcoreToTreeDocumentModelMapper mapper = new EcoreToTreeDocumentModelMapper();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
+
+        // When
+        final TreeDocument doc = mapper.map(resourceSet);
+        final ActionConfiguration actions = doc.roots().get(0).actions();
+        final List<Action> availableActions = actions.availableActions();
+        final List<String> defaultActionbarActions = actions.defaultActionbarActions();
+        final Map<String, @NotNull List<String>> nodeActions = actions.nodeActions();
+
+        // Then
+        assertThat(availableActions).hasSize(0); // FIXME
+        assertThat(defaultActionbarActions).hasSize(0); //FIXME
+        assertThat(nodeActions).hasSize(0); // FIXME
+
+        fail("Not done");
+
+    }
 }

@@ -8,6 +8,18 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * This is the interface which defines what the vscode extension is allowed to call.
+ * The actual implementations for methods will be in {@link ServerImpl}.
+ *
+ * Methods that the vscode extension can send, so this server can answer to them over json-rpc.
+ * They are implemented in <a href="../vscode-ecore-tree-editor-extension/src/tree-language-server/jsonrpc/TreeLanguageServerRpcClient.ts">
+ *     tree-language-server/jsonrpc/TreeLanguageServerRpcClient.ts</a> .in the vscode extension.
+ *
+ * @see ServerImpl
+ * @see Client
+ * @see no.ntnu.stud.krirek.treelsp.jsonrpc.TLSPJsonRpcServer
+ */
 public interface Server {
 
     @JsonRequest

@@ -98,8 +98,20 @@ public class EcoreToTreeDocumentModelMapper {
             String name = ((ENamedElement) nodeObject).getName();
             return name;
         } else if (nodeObject instanceof EGenericType) {
-            final String name = ((EGenericType) nodeObject).getEClassifier().getName();
-            return name;
+            final EGenericType eGenericType = (EGenericType) nodeObject;
+            final EClassifier eClassifier = eGenericType.getEClassifier();
+            if (eClassifier != null) {
+                final String name = eClassifier.getName();
+                if (name == null) {
+                    return eClassifier.getInstanceTypeName();
+                }
+                return name;
+            } else if (eGenericType.getETypeParameter() != null) {
+                return eGenericType.getETypeParameter().getName();
+            } else {
+                // Can also use "super lowerBound" and "extends upperBound" in addition to only ?
+                return "?";
+            }
         } else {
             log.debug("Not sure how to name EObject {}. Falling back to ReflectiveItemProvider.", nodeObject);
             final ReflectiveItemProvider reflectiveItemProvider = new ReflectiveItemProvider(new ReflectiveItemProviderAdapterFactory()) {
@@ -164,7 +176,7 @@ public class EcoreToTreeDocumentModelMapper {
                         .name("Create genmodel file")
                         .build()
         );
-        actionConfigurationBuilder.addDefaultAcionbarActions("ecore:dynamic-instance");
+        actionConfigurationBuilder.addDefaultActionbarActions("ecore:dynamic-instance");
         actionConfigurationBuilder.putNodeActions("EPackage", List.of("ecore:create-genmodel"));
     }
 

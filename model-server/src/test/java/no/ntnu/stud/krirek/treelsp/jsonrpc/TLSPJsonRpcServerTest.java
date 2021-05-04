@@ -52,8 +52,7 @@ class TLSPJsonRpcServerTest {
         final String modelFileUri = "MyEcore.ecore"; // File#toURI would make it absolute.
 
         try (server) {
-            final Workspace.WorkspaceConfig workspaceConfig = new Workspace.WorkspaceConfig();
-            workspaceConfig.workspaceUri = workspaceUri;
+            final Workspace.WorkspaceConfig workspaceConfig = new Workspace.WorkspaceConfig(workspaceUri);
             server.getServer().workspace().setWorkspaceUri(workspaceConfig);
 
             // When
@@ -63,5 +62,29 @@ class TLSPJsonRpcServerTest {
             // Then
             assertThat(document).isNotNull();
         }
+    }
+
+    @Test @Tag("slow") @Disabled("Only works locally for kristian")
+    void handlesVscodeStyleUris() throws Exception {
+        // Given
+        final TLSPJsonRpcServer server = TLSPJsonRpcServer.create();
+        server.start();
+        // It is slow because the DefaultModelResourceManager will try to load resources for EVERY file in the workspace
+        String workspaceUri = "file:///c%3A/Users/krire/eclipse-workspace/TreeLanguageServerProtocol";
+        String modelFileUri = "file:///c%3A/Users/krire/eclipse-workspace/TreeLanguageServerProtocol/model/Ecore.ecore";
+
+        // When
+        try (server) {
+            final Workspace.WorkspaceConfig workspaceConfig = new Workspace.WorkspaceConfig(workspaceUri);
+            server.getServer().workspace().setWorkspaceUri(workspaceConfig);
+
+            final Server.ModelRequest request = new Server.ModelRequest(modelFileUri);
+            final TreeDocument document = server.getServer().getModel(request).get();
+
+            // Then
+            assertThat(document).isNotNull();
+        }
+
+
     }
 }
