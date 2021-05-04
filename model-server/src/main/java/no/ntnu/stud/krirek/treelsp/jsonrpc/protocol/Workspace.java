@@ -16,5 +16,12 @@ public interface Workspace {
     class WorkspaceConfig {
         /**  a file uri, like {@code "file:/C:/Users/krissrex/eclipse-workspace/TreeLanguageServerProtocol/"}. */
         public String workspaceUri;
+
+        public WorkspaceConfig(String workspaceUri) {
+            this.workspaceUri = workspaceUri;
+        }
+
+        public WorkspaceConfig() {
+        }
     }
 }

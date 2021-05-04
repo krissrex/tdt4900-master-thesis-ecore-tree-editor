@@ -20,8 +20,7 @@ public class WorkspaceImpl implements Workspace {
     public void setWorkspaceUri(WorkspaceConfig config) {
         log.debug("Set workspace to: {}", config.workspaceUri);
         try {
-            final URI uri = URI.create(config.workspaceUri);
-            emfTreeModelController.setWorkspaceUri(uri);
+            emfTreeModelController.setWorkspaceUri(config.workspaceUri);
         } catch (IllegalArgumentException ex) {
             // Invalid uri
             log.warn("Workspace uri is invalid: {}", config.workspaceUri);

@@ -56,24 +56,37 @@
          They are supposed to be transitive dependencies of emf-cloud modelserver.
          -->
         <dependency>
-            <groupId>org.eclipse.emf</groupId>
+            <groupId>org.eclipse.p2.repo</groupId>
             <artifactId>org.eclipse.emf.ecore</artifactId>
-            <version>2.23.0</version>
+            <version>2.24.0.v20210405-0628</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.emf</groupId>
+            <groupId>org.eclipse.p2.repo</groupId>
             <artifactId>org.eclipse.emf.edit</artifactId>
-            <version>2.16.0</version>
+            <version>2.16.0.v20190920-0401</version>
         </dependency>
         <dependency>
-            <groupId>org.eclipse</groupId>
-            <artifactId>org.eclipse.emf.transaction</artifactId>
-            <version>1.4.0.v20100331-1738</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.emf</groupId>
+            <groupId>org.eclipse.p2.repo</groupId>
             <artifactId>org.eclipse.emf.ecore.change</artifactId>
-            <version>2.14.0</version>
+            <version>2.14.0.v20190528-0725</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.p2.repo</groupId>
+            <artifactId>org.eclipse.emf.validation</artifactId>
+            <version>1.8.0.202008210805</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.p2.repo</groupId>   <!-- matches id of the repo above -->
+            <artifactId>org.eclipse.emf.transaction</artifactId>
+            <version>1.9.1.201805140824</version>
+        </dependency>
+
+
+        <dependency>
+            <!-- Required to register the GenModel EPackage, to load resources with a GenModel. -->
+            <groupId>org.eclipse.p2.repo</groupId>
+            <artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+            <version>2.26.0.v20210405-0904</version>
         </dependency>
 
         <dependency>
@@ -87,7 +100,6 @@
             <groupId>org.immutables</groupId>
             <artifactId>value</artifactId>
             <version>2.8.2</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
@@ -173,21 +185,33 @@
             <id>sonatype-modelserver</id>
             <name>sonatype modelserver snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <!-- Only this repo had emf.transaction. -->
-            <id>wso2</id>
-            <name>WSO2 Dist Repository</name>
-            <url>https://dist.wso2.org/maven2/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>central</id>
             <name>Maven Central</name>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
+
+        <repository>
+            <!-- Browse for packages and versions at https://download.eclipse.org/releases/2021-06/202104161000/plugins/ -->
+            <!-- Use the repo id as groupId for p2 dependencies. -->
+            <id>org.eclipse.p2.repo</id>   <!-- defines the groupId to be used in p2 dependencies -->
+            <url>https://download.eclipse.org/releases/2021-06/202104161000/</url>
+            <layout>p2</layout>
+        </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <!-- the p2-layout-resolver plugin is hosted in OpenNTF's Maven repository -->
+            <id>artifactory.openntf.org</id>
+            <name>artifactory.openntf.org</name>
+            <url>https://artifactory.openntf.org/openntf</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
@@ -196,6 +220,22 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <dependency>
+                            <groupId>org.immutables</groupId>
+                            <artifactId>value</artifactId>
+                            <version>2.8.2</version>
+                        </dependency>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openntf.maven</groupId>
+                <artifactId>p2-layout-resolver</artifactId>
+                <version>1.3.0</version>
+                <extensions>true</extensions>
             </plugin>
 
             <plugin>
@@ -251,7 +291,8 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>no.ntnu.stud.krirek.treelsp.MainRpc</mainClass>
                                 </transformer>
                             </transformers>

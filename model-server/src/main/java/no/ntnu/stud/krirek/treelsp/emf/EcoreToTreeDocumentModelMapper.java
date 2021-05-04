@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -21,7 +22,11 @@ public class EcoreToTreeDocumentModelMapper {
 
     Logger log = LoggerFactory.getLogger(EcoreToTreeDocumentModelMapper.class);
 
-    public TreeDocument map(ResourceSet model) {
+    @Inject
+    public EcoreToTreeDocumentModelMapper() {
+    }
+
+    public TreeDocument map(@NotNull ResourceSet model) {
         final ImmutableTreeDocument.Builder treeDocumentBuilder = ImmutableTreeDocument.builder();
 
         final EList<Resource> resources = model.getResources();

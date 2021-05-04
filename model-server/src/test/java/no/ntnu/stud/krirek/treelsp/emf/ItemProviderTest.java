@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.emf.edit.provider.resource.ResourceItemProvider;
@@ -27,7 +26,7 @@ public class ItemProviderTest {
     @Test @Disabled("Experimental testing")
     void itemProviderUsageTest() throws Exception {
         // Given
-        final ResourceSet resourceSet = EcoreToTreeDocumentModelMapperTest.loadModel();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
         final Resource resource = resourceSet.getResources().get(0);
 
         // When

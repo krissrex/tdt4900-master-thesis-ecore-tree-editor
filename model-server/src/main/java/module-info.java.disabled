@@ -27,10 +27,13 @@ module treelsp.rpc {
     requires org.eclipse.emf.ecore.xmi;
     requires org.eclipse.emf.edit;
     requires org.eclipse.emf.transaction;
+    requires org.eclipse.emf.validation;
     requires org.eclipse.emf.ecore.change;
     requires emfjson.jackson;
     requires com.fasterxml.jackson.databind;
     requires kotlin.stdlib;
+
+    requires org.eclipse.emf.codegen.ecore;
 
     requires org.immutables.value;
     requires com.google.errorprone.annotations;

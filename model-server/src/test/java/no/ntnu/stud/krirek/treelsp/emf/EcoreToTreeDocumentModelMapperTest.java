@@ -5,33 +5,27 @@ import com.google.gson.GsonBuilder;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeNode;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeRoot;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.FileAssert;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
 class EcoreToTreeDocumentModelMapperTest {
 
     @Test
     void loadsModelCorrectly() throws Exception {
         // Given
-        final ResourceSet resourceSet = loadModel();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
 
         // Then
         final EList<Resource> resources = resourceSet.getResources();
@@ -39,13 +33,15 @@ class EcoreToTreeDocumentModelMapperTest {
 
         final Resource resource = resources.get(0);
         assertThat(resource.isLoaded()).isTrue();
+        assertThat(resource).isInstanceOf(XMLResource.class); // Required for extrinsic IDs.
 
         final EList<EObject> contents = resource.getContents();
         assertThat(contents).hasSize(1);
 
         final EObject rootPackage = contents.get(0);
         assertThat(rootPackage.eClass().getName()).isEqualTo("EPackage");
-        assertThat(EcoreUtil.getID(rootPackage)).isNotNull();
+        final String packageUuid = (((XMLResource) resource)).getID(rootPackage); // The extrinsic ID lies in the resource, not the eObject/EPackage
+        assertThat(packageUuid).isNotNull();
         EPackage ePackage = (EPackage) rootPackage;
         assertThat(ePackage.getNsPrefix()).isEqualTo("no.ntnu");
         assertThat(ePackage.getNsURI()).isEqualTo("http://ntnu.no/krirek/ecore/test");
@@ -77,7 +73,7 @@ class EcoreToTreeDocumentModelMapperTest {
     @Test
     void mapMyEcoreToTreeDocumentModel() throws Exception {
         // Given
-        final ResourceSet resourceSet = loadModel();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
 
         // When
         final EcoreToTreeDocumentModelMapper mapper = new EcoreToTreeDocumentModelMapper();
@@ -120,10 +116,10 @@ class EcoreToTreeDocumentModelMapperTest {
 
     }
 
-    @Test @Disabled("The IDs are not stable, so they always differ.")
+    @Test @Disabled("The (extrinsic) IDs are not stable between model loads, so the IDs always differ.")
     void jsonSerializesCorrectly() throws Exception {
         // Given
-        final ResourceSet resourceSet = loadModel();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
         final EcoreToTreeDocumentModelMapper mapper = new EcoreToTreeDocumentModelMapper();
         final TreeDocument model = mapper.map(resourceSet);
         final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -142,14 +138,4 @@ class EcoreToTreeDocumentModelMapperTest {
         assertThat(jsonSnapshotFile).hasContent(treeDocumentJson);
     }
 
-    static ResourceSet loadModel() throws Exception {
-        EcorePackage.eINSTANCE.eClass(); // Register ecore package
-        ResourceSet rs = new ResourceSetImpl();
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new UuidEcoreResourceFactoryImpl());
-        rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("genmodel", new UuidEcoreResourceFactoryImpl());
-
-        final Resource resource = rs.createResource(URI.createURI("./test-model/MyEcore.ecore"));
-        resource.load(null);
-        return rs;
-    }
 }

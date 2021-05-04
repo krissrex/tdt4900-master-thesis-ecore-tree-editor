@@ -2,6 +2,16 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
+      <option name="id" value="org.eclipse.p2.repo" />
+      <option name="name" value="org.eclipse.p2.repo" />
+      <option name="url" value="http://download.eclipse.org/releases/2021-06" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="org.eclipse.p2.repo" />
+      <option name="name" value="org.eclipse.p2.repo" />
+      <option name="url" value="https://download.eclipse.org/releases/2021-06/202104161000/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
@@ -10,6 +20,11 @@
       <option name="id" value="sonatype-modelserver" />
       <option name="name" value="sonatype modelserver snapshots" />
       <option name="url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="openmind" />
+      <option name="name" value="Openmind" />
+      <option name="url" value="http://repository.openmindonline.it/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />

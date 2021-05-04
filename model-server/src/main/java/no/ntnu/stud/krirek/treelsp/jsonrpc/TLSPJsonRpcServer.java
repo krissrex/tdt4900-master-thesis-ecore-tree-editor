@@ -9,6 +9,7 @@ import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Server;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.ServerImpl;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.WorkspaceImpl;
 import org.apache.commons.io.input.CloseShieldInputStream;
+import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
@@ -40,25 +41,9 @@ public class TLSPJsonRpcServer implements AutoCloseable {
     private InputStream jsonrpcInputStream;
 
     public static TLSPJsonRpcServer create() {
-        // EMF-Cloud Model Server is created with private field injection,
-        // so we need a dependency injection framework (or heavy use of reflection) to instantiate some of the classes.
-        final Injector injector = Guice.createInjector(new DefaultModelServerModule());
-        /*
-        TODO: alter the default model to register custom file extensions for xmi files
-         by adding a EPackageConfiguration into the DefaultModelServerModule's multibindings.
-         for `resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());`.
-         Currently as .ecore and .command (CCommand) by default.
-        */
-        ModelRepository repository = injector.getInstance(ModelRepository.class);
-        ModelResourceManager resourceManager = injector.getInstance(ModelResourceManager.class);
-        ModelController emfModelController = injector.getInstance(ModelController.class);
-        ServerConfiguration serverConfiguration = injector.getInstance(ServerConfiguration.class);
-
-
-
-        final EmfTreeModelController emfTreeModelController = new EmfTreeModelController(repository, resourceManager,
-                emfModelController, serverConfiguration, new EcoreToTreeDocumentModelMapper());
-        return new TLSPJsonRpcServer(new ServerImpl(new WorkspaceImpl(emfTreeModelController), emfTreeModelController));
+        final EmfTreeModelController emfTreeModelController = EmfTreeModelController.create();
+        final ServerImpl server = new ServerImpl(new WorkspaceImpl(emfTreeModelController), emfTreeModelController);
+        return new TLSPJsonRpcServer(server);
     }
 
     public TLSPJsonRpcServer(Server server) {

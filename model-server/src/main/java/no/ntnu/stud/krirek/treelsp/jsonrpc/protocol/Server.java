@@ -5,6 +5,7 @@ import org.eclipse.lsp4j.jsonrpc.services.JsonDelegate;
 import org.eclipse.lsp4j.jsonrpc.services.JsonNotification;
 import org.eclipse.lsp4j.jsonrpc.services.JsonRequest;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface Server {
@@ -47,5 +48,15 @@ public interface Server {
     CompletableFuture<TreeDocument> getModel(ModelRequest modelRequest);
     class ModelRequest {
         public String modelFileUri;
+
+        public ModelRequest(String modelFileUri) {
+            this.modelFileUri = modelFileUri;
+        }
+
+        public ModelRequest() {
+        }
     }
+
+    @JsonRequest
+    CompletableFuture<List<String>> getDetectedModelUris();
 }

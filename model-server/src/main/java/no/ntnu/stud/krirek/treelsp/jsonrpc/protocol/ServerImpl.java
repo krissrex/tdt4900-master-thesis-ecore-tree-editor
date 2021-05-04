@@ -4,6 +4,7 @@ import no.ntnu.stud.krirek.treelsp.emf.EmfTreeModelController;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ServerImpl implements Server {
@@ -46,7 +47,16 @@ public class ServerImpl implements Server {
 
     @Override
     public CompletableFuture<TreeDocument> getModel(ModelRequest modelRequest) {
-        final TreeDocument treeDocument = emfTreeModelController.getTreeDocument(modelRequest.modelFileUri);
-        return CompletableFuture.completedFuture(treeDocument);
+        try {
+            final TreeDocument treeDocument = emfTreeModelController.getTreeDocument(modelRequest.modelFileUri);
+            return CompletableFuture.completedFuture(treeDocument);
+        } catch (IllegalArgumentException ex) {
+            return CompletableFuture.failedFuture(ex);
+        }
+    }
+
+    @Override
+    public CompletableFuture<List<String>> getDetectedModelUris() {
+        return CompletableFuture.completedFuture(emfTreeModelController.getDetectedModelUris());
     }
 }
