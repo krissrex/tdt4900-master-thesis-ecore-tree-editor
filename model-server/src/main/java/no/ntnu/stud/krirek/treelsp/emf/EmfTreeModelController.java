@@ -2,14 +2,9 @@ package no.ntnu.stud.krirek.treelsp.emf;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import no.ntnu.stud.krirek.treelsp.jsonrpc.GenmodelModule;
+import no.ntnu.stud.krirek.treelsp.jsonrpc.ExtraEPackagesModule;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
@@ -20,8 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,7 +32,7 @@ public class EmfTreeModelController {
     public static EmfTreeModelController create() {
         // EMF-Cloud Model Server is created with private field injection,
         // so we need a dependency injection framework (or heavy use of reflection) to instantiate some of the classes.
-        final Injector injector = Guice.createInjector(new DefaultModelServerModule(), new GenmodelModule()); // TODO: create 1 injector in the main method, so that singletons are shared.
+        final Injector injector = Guice.createInjector(new DefaultModelServerModule(), new ExtraEPackagesModule()); // TODO: create 1 injector in the main method, so that singletons are shared.
         /*
         TODO: alter the default model to register custom file extensions for xmi files
          by adding a EPackageConfiguration into the DefaultModelServerModule's multibindings.

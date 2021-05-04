@@ -132,6 +132,11 @@ public class EcoreToTreeDocumentModelMapper {
         if (isEcoreMetamodel(resource)) {
             // This should mean Ecore is the metamodel, and we have a .ecore metamodel file in the resource.
             hierarchyBuilder.putAllowedChildren("EPackage", List.of("EClass", "EDataType", "EAnnotation")); //TODO add all hierarchy
+            hierarchyBuilder.putAllowedChildren("EClass", List.of("EAttribute", "EReference", "EAnnotation"));
+            hierarchyBuilder.putAllowedChildren("EAnnotation", List.of(EcorePackage.eINSTANCE.getEAnnotation_Details().getEType().getName()));
+            hierarchyBuilder.putAllowedChildren("EAttribute", List.of());
+            hierarchyBuilder.putAllowedChildren("EReference", List.of());
+            hierarchyBuilder.putAllowedChildren("EDataType", List.of());
         }
         // TODO what about reflective model editor? Models where metamodel is not Ecore; xmi model instances etc.
 

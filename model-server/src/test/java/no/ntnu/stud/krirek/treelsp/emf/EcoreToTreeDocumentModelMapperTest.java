@@ -2,9 +2,12 @@ package no.ntnu.stud.krirek.treelsp.emf;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import no.ntnu.stud.krirek.treelsp.model.tree.HierarchyConfiguration;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeNode;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeRoot;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.ListAssert;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.*;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -12,13 +15,17 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceImpl;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 class EcoreToTreeDocumentModelMapperTest {
 
@@ -136,6 +143,30 @@ class EcoreToTreeDocumentModelMapperTest {
         // Then
         //NB: build the project if the file is changed. The file is copied to `target/test-classes/` only on build.
         assertThat(jsonSnapshotFile).hasContent(treeDocumentJson);
+    }
+
+    @Test
+    void usesEcoreHierarchyForEcoreMetamodels() throws Exception {
+        // Given
+        final EcoreToTreeDocumentModelMapper mapper = new EcoreToTreeDocumentModelMapper();
+        final ResourceSet resourceSet = EmfTestUtils.loadMyEcoreModel();
+
+        // When
+        final TreeDocument document = mapper.map(resourceSet);
+        final HierarchyConfiguration hierarchy = document.roots().get(0).hierarchy();
+        final Map<String, @NotNull List<String>> allowedChildren = hierarchy.allowedChildren();
+
+        // Then
+        assertThat(allowedChildren.keySet()).hasSize(6); //TODO update to correct amount
+        assertThat(allowedChildren).containsOnlyKeys("EPackage", "EClass", "EAnnotation", "EReference", "EAttribute", "EDataType");
+        assertThat(allowedChildren).doesNotContainKey(null);
+
+        assertThat(allowedChildren).doesNotContainValue(null);
+        assertThat(allowedChildren.get("EPackage")).containsExactlyInAnyOrder("EClass", "EDataType", "EAnnotation");
+        assertThat(allowedChildren.get("EClass")).containsExactlyInAnyOrder("EReference", "EAttribute", "EAnnotation");
+        assertThat(allowedChildren.get("EAnnotation")).containsExactlyInAnyOrder("EStringToStringMapEntry");
+        // TODO: add more hierarchy here.
+        fail("Not done. Missing many hierarchy keys and values in the tests");
     }
 
 }
