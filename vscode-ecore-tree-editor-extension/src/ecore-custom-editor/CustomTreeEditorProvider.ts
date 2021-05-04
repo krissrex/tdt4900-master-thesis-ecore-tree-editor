@@ -1,26 +1,22 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import { EXTENSION_HUMAN_NAME, EXTENSION_NAME } from "../config";
+import { EXTENSION_HUMAN_NAME } from "../config";
 import { getLogger } from "../log";
-import { createClient, TreeClient } from "../tree-language-server/Client";
-import { TreeDocument } from "./TreeDocument";
-import { example } from "treedocumentmodel";
-import {
-  sendWebviewNotification,
-  TreeEditorWebviewClient,
-} from "./TreeEditorWebview";
+import { TreeLanguageServerClient } from "../tree-language-server/Client";
+import { TreeCustomDocument } from "./TreeDocument";
+import { TreeEditorWebviewClient } from "./TreeEditorWebview";
 import { VscodeExtensionServer } from "./VscodeExtension";
 
 type TreeDocumentChangeEvent =
-  | vscode.Event<vscode.CustomDocumentEditEvent<TreeDocument>>
-  | vscode.Event<vscode.CustomDocumentContentChangeEvent<TreeDocument>>;
+  | vscode.Event<vscode.CustomDocumentEditEvent<TreeCustomDocument>>
+  | vscode.Event<vscode.CustomDocumentContentChangeEvent<TreeCustomDocument>>;
 
 /**
  * An editor provider is not the actual editor. It just *provides* a DocumentModel for VSCode,
  * and acts as glue.
  */
 export class CustomTreeEditorProvider
-  implements vscode.CustomEditorProvider<TreeDocument> {
+  implements vscode.CustomEditorProvider<TreeCustomDocument> {
   /*
     It is a possibility that representing the tree as text is the best solution.
     However, the file is not worked upon directly; instead all actions are passed to the Tree Language Server.
@@ -40,45 +36,36 @@ export class CustomTreeEditorProvider
 
   constructor(
     private readonly context: vscode.ExtensionContext,
-    private readonly treeLanguageServer: TreeClient
+    private readonly treeLanguageServer: TreeLanguageServerClient
   ) {}
 
-  /**
-   * Constructor utility function.
-   */
-  public static create(
-    context: vscode.ExtensionContext
-  ): CustomTreeEditorProvider {
-    return new CustomTreeEditorProvider(context, createClient());
-  }
-
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<
-    vscode.CustomDocumentEditEvent<TreeDocument>
+    vscode.CustomDocumentEditEvent<TreeCustomDocument>
   >();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument
     .event;
 
   saveCustomDocument(
-    document: TreeDocument,
+    document: TreeCustomDocument,
     cancellation: vscode.CancellationToken
   ): Thenable<void> {
     throw new Error("Method not implemented.");
   }
   saveCustomDocumentAs(
-    document: TreeDocument,
+    document: TreeCustomDocument,
     destination: vscode.Uri,
     cancellation: vscode.CancellationToken
   ): Thenable<void> {
     throw new Error("Method not implemented.");
   }
   revertCustomDocument(
-    document: TreeDocument,
+    document: TreeCustomDocument,
     cancellation: vscode.CancellationToken
   ): Thenable<void> {
     throw new Error("Method not implemented.");
   }
   backupCustomDocument(
-    document: TreeDocument,
+    document: TreeCustomDocument,
     context: vscode.CustomDocumentBackupContext,
     cancellation: vscode.CancellationToken
   ): Thenable<vscode.CustomDocumentBackup> {
@@ -88,10 +75,12 @@ export class CustomTreeEditorProvider
     uri: vscode.Uri,
     openContext: vscode.CustomDocumentOpenContext,
     token: vscode.CancellationToken
-  ): TreeDocument | Thenable<TreeDocument> {
+  ): TreeCustomDocument | Thenable<TreeCustomDocument> {
     this.log.debug("Opening custom document", { uri: uri.toString() });
 
-    return new TreeDocument(uri);
+    return this.treeLanguageServer._onReady.then(() => {
+      return new TreeCustomDocument(uri, this.treeLanguageServer);
+    });
   }
 
   /**
@@ -105,7 +94,7 @@ export class CustomTreeEditorProvider
    * @returns optional Thenable to indicate the editor has been resolved.
    */
   resolveCustomEditor(
-    document: TreeDocument,
+    document: TreeCustomDocument,
     webviewPanel: vscode.WebviewPanel,
     token: vscode.CancellationToken
   ): void | Thenable<void> {

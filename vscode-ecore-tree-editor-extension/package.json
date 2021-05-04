@@ -1,128 +1,136 @@
 {
-	"name": "ecore-tree-editor",
-	"publisher": "krissrex",
-	"displayName": "Ecore Tree-editor",
-	"description": "Modify Ecore and XMI files in a Tree view",
-	"version": "0.0.1",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/krissrex/tdt4900-master-thesis-ecore-tree-editor",
-		"directory": "vscode-ecore-tree-editor-extension"
-	},
-	"engines": {
-		"vscode": "^1.50.0"
-	},
-	"categories": [
-		"Visualization",
-		"Programming Languages"
-	],
-	"keywords": [
-		"ecore",
-		"model-driven development",
-		"tree-editor",
-		"emf",
-		"eclipse modeling framework"
-	],
-	"activationEvents": [
-		"onCustomEditor:ecore-tree-editor.treeEditor",
-		"onCommand:ecore-tree-editor.helloWorld",
-		"onLanguage:ecore",
-		"onLanguage:emof",
-		"onLanguage:xmi"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "krissrex.ecore-tree-editor.helloWorld",
-				"title": "Hello World",
-				"category": "Ecore"
-			},
-			{
-				"command": "krissrex.ecore-tree-editor.xmi-newfile",
-				"title": "New Model file...",
-				"category": "Ecore"
-			},
-			{
-				"command": "krissrex.ecore-tree-editor.server.assert-java",
-				"title": "Assert java is present",
-				"category": "Ecore debug"
-			}
-		],
-		"customEditors": [
-			{
-				"viewType": "ecore-tree-editor.treeEditor",
-				"displayName": "Ecore Tree-editor",
-				"priority": "default",
-				"selector": [
-					{
-						"filenamePattern": "*.ecore"
-					},
-					{
-						"filenamePattern": "*.xmi"
-					},
-					{
-						"filenamePattern": "*.emof"
-					}
-				]
-			}
-		],
-		"configuration": {
-			"type": "object",
-			"title": "Ecore Tree-editor",
-			"properties": {
-				"ecore-tree-editor.log.loggingLevel": {
-					"type": "string",
-					"enum": [
-						"off",
-						"fatal",
-						"error",
-						"warn",
-						"info",
-						"debug",
-						"trace"
-					],
-					"default": "info",
-					"description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
-					"scope": "window"
-				},
-				"ecore-tree-editor.log.sourceLocationTracking": {
-					"type": "boolean",
-					"default": false,
-					"description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
-					"scope": "window"
-				}
-			}
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run build",
-		"build": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "npm run build && npm run lint",
-		"test": "node ./out/test/runTest.js",
-		"test:unit": "jest"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.0",
-		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.50.0",
-		"@typescript-eslint/eslint-plugin": "^4.1.1",
-		"@typescript-eslint/parser": "^4.1.1",
-		"eslint": "^7.9.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
-		"typescript": "^4.0.2",
-		"vscode-test": "^1.4.0"
-	},
-	"dependencies": {
-		"@vscode-logging/logger": "^1.2.1",
-		"axios": "^0.21.1",
-		"treedocumentmodel": "file:../tree-document-model-js",
-		"vscode-jsonrpc": "^6.0.0",
-		"vscode-webview-tree-editor-rpc": "file:../vscode-webview-tree-editor-rpc"
-	}
+  "name": "ecore-tree-editor",
+  "publisher": "krissrex",
+  "displayName": "Ecore Tree-editor",
+  "description": "Modify Ecore and XMI files in a Tree view",
+  "version": "0.0.1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/krissrex/tdt4900-master-thesis-ecore-tree-editor",
+    "directory": "vscode-ecore-tree-editor-extension"
+  },
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "categories": [
+    "Visualization",
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ecore",
+    "model-driven development",
+    "tree-editor",
+    "emf",
+    "eclipse modeling framework"
+  ],
+  "activationEvents": [
+    "onCustomEditor:ecore-tree-editor.treeEditor",
+    "onCommand:ecore-tree-editor.helloWorld",
+    "onLanguage:ecore",
+    "onLanguage:emof",
+    "onLanguage:xmi"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "krissrex.ecore-tree-editor.helloWorld",
+        "title": "Hello World",
+        "category": "Ecore"
+      },
+      {
+        "command": "krissrex.ecore-tree-editor.xmi-newfile",
+        "title": "New Model file...",
+        "category": "Ecore"
+      },
+      {
+        "command": "krissrex.ecore-tree-editor.server.assert-java",
+        "title": "Assert java is present",
+        "category": "Ecore debug"
+      },
+      {
+        "command": "krissrex.ecore-tree-editor.server.list-models",
+        "title": "List model files detected in the workspace",
+        "category": "Ecore debug"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "ecore-tree-editor.treeEditor",
+        "displayName": "Ecore Tree-editor",
+        "priority": "default",
+        "selector": [
+          {
+            "filenamePattern": "*.ecore"
+          },
+          {
+            "filenamePattern": "*.xmi"
+          },
+          {
+            "filenamePattern": "*.emof"
+          },
+          {
+            "filenamePattern": "*.genmodel"
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Ecore Tree-editor",
+      "properties": {
+        "ecore-tree-editor.log.loggingLevel": {
+          "type": "string",
+          "enum": [
+            "off",
+            "fatal",
+            "error",
+            "warn",
+            "info",
+            "debug",
+            "trace"
+          ],
+          "default": "info",
+          "description": "The verbosity of logging. The Order is off < fatal < error < warn < info < debug < trace.",
+          "scope": "window"
+        },
+        "ecore-tree-editor.log.sourceLocationTracking": {
+          "type": "boolean",
+          "default": false,
+          "description": "Should Source Code Location Info be added to log entries, DANGER - May be very slow, only use in debugging scenarios",
+          "scope": "window"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run build && npm run lint",
+    "test": "node ./out/test/runTest.js",
+    "test:unit": "jest"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.50.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.1.3",
+    "typescript": "^4.0.2",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {
+    "@vscode-logging/logger": "^1.2.1",
+    "axios": "^0.21.1",
+    "treedocumentmodel": "file:../tree-document-model-js",
+    "vscode-jsonrpc": "^6.0.0",
+    "vscode-webview-tree-editor-rpc": "file:../vscode-webview-tree-editor-rpc"
+  }
 }

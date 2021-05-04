@@ -14,7 +14,7 @@ import {
   VscodeExtension,
 } from "vscode-webview-tree-editor-rpc";
 import { getChildLogger } from "../log";
-import { TreeDocument } from "./TreeDocument";
+import { TreeCustomDocument } from "./TreeDocument";
 
 /**
  * Receives RPC commands from the webview and dispatches them.
@@ -30,7 +30,7 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
    */
   constructor(
     private webview: Webview,
-    private document: TreeDocument,
+    private document: TreeCustomDocument,
     private treeEditorWebview: TreeEditorWebview
   ) {
     webview.onDidReceiveMessage((event) => {
@@ -62,16 +62,28 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
       }); */
     } else {
       this.log.debug("Webview is ready for %s.", this.document.uri.toString());
-      /* this.postMessage(webviewPanel, 'init', {
-        value: document.documentData
-      }); */
 
-      //FIXME: use a interface here like the TreeEditorWebview from tree-editor-frontend
-      this.log.warn("Setting example document"); //FIXME: remove this testing code.
       if (!this.document.documentData) {
-        this.document.documentData = example.ecore.getExampleTreeDocument(); //FIXME: remove this testing code.
+        this.log.debug(
+          "Fetching tree document from tlsp for %s",
+          this.document.uri
+        );
+        this.document.tlspServer
+          .getModel({ modelFileUri: this.document.uri.toString() })
+          .then((treeDocument) => {
+            this.log.debug("Got document for %s", this.document.uri);
+            this.document.documentData = treeDocument;
+            this.refreshDocument();
+          })
+          .catch((err) => {
+            this.log.error(
+              "Failed to get document for %s: %s",
+              this.document.uri,
+              err,
+              err
+            );
+          });
       }
-      this.treeEditorWebview.setDocument(this.document.documentData);
     }
   }
 

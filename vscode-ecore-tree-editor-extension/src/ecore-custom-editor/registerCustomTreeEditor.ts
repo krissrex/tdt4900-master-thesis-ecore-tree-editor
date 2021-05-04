@@ -1,11 +1,15 @@
 import * as vscode from "vscode";
+import { TreeLanguageServerClient } from "../tree-language-server/Client";
 import { CustomTreeEditorProvider } from "./CustomTreeEditorProvider";
 
-export function registerCustomTreeEditor(context: vscode.ExtensionContext) {
+export function registerCustomTreeEditor(
+  context: vscode.ExtensionContext,
+  server: TreeLanguageServerClient
+) {
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(
       "ecore-tree-editor.treeEditor",
-      CustomTreeEditorProvider.create(context),
+      new CustomTreeEditorProvider(context, server),
       { webviewOptions: {}, supportsMultipleEditorsPerDocument: false }
     )
   );

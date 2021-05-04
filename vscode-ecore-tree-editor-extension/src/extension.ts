@@ -6,6 +6,8 @@ import { registerCustomTreeEditor } from "./ecore-custom-editor/registerCustomTr
 import { registerServerCommands } from "./tree-language-server/serverCommands";
 import { EXTENSION_HUMAN_NAME, EXTENSION_ID } from "./config";
 import { startServer } from "./tree-language-server/start-server";
+import { TreeLanguageServerClient } from "./tree-language-server/Client";
+import { TreeLanguageServerJsonRpcClient } from "./tree-language-server/jsonrpc/TreeLanguageServerRpcClient";
 
 export function activate(context: vscode.ExtensionContext) {
   try {
@@ -26,10 +28,46 @@ export function activate(context: vscode.ExtensionContext) {
   log.debug("Logs are written to %s", context.logUri.fsPath);
 
   registerHelloWorld(context);
-  registerXmiCommands(context);
-  registerCustomTreeEditor(context);
   registerServerCommands(context);
-  startServer(context);
+  const tlspDispatcher = startTlspServer(context);
+  registerXmiCommands(context, tlspDispatcher);
+  registerCustomTreeEditor(context, tlspDispatcher);
+}
+
+function startTlspServer(
+  context: vscode.ExtensionContext
+): TreeLanguageServerClient {
+  const log = getLogger();
+
+  const server = startServer(context);
+  const tlspDispatcher = new TreeLanguageServerJsonRpcClient(
+    server.serverConnection,
+    server.onReady
+  );
+
+  const workspaceFolder = workspaceFolderUri();
+  if (workspaceFolder) {
+    log.info("Setting workspace to %s", workspaceFolder);
+    server.onReady.then(() =>
+      tlspDispatcher
+        .workspace()
+        .setWorkspaceUri({ workspaceUri: workspaceFolder })
+    );
+  } else {
+    log.warn(
+      "No workspace was found. It was therefore not set in the tlsp server either."
+    );
+  }
+
+  return tlspDispatcher;
+}
+
+function workspaceFolderUri(): string | null {
+  const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri;
+  if (workspaceFolder?.scheme === "file") {
+    return workspaceFolder.toString();
+  }
+  return null;
 }
 
 function registerHelloWorld(context: vscode.ExtensionContext) {

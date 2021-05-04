@@ -2,12 +2,49 @@ import * as vscode from "vscode";
 import { IChildLogger, IVSCodeExtLogger } from "@vscode-logging/logger";
 import Axios from "axios";
 import { getLogger } from "../log";
+import { TreeDocument } from "treedocumentmodel";
+import {
+  InitializeParams,
+  InitializeResult,
+  ModelRequest,
+  PingResult,
+  workspace,
+} from "./jsonrpc/protocol";
+
+/**
+ * The methods a tree language server can execute.
+ */
+export interface TreeLanguageServerClient {
+  /**
+   * Not a part of the protocol. Allows waiting for the underlying server to be ready.
+   */
+  _onReady: Promise<void>;
+
+  initialize(params: InitializeParams): Promise<InitializeResult>;
+  shutdown(): Promise<object>;
+
+  exit(): void;
+
+  ping(): Promise<PingResult>;
+
+  getModel(modelRequest: ModelRequest): Promise<TreeDocument>;
+
+  getDetectedModelUris(): Promise<String[]>;
+
+  workspace(): Workspace;
+}
+
+export interface Workspace {
+  setWorkspaceUri(config: workspace.WorkspaceConfig): void;
+}
 
 // TODO: use a JSON-RPC client like https://www.npmjs.com/package/vscode-ws-jsonrpc
 /**
  * For testing and development, not real use.
+ *
+ * @deprecated
  */
-export class TreeClient {
+class TreeClient {
   private readonly logger: IChildLogger;
 
   constructor(public readonly baseUrl: string) {
@@ -54,8 +91,4 @@ export class TreeClient {
     };
     return Axios.put(this.baseUrl + "server/configure", data);
   }
-}
-
-export function createClient() {
-  return new TreeClient("http://localhost:48212/api/v1/");
 }

@@ -6,12 +6,13 @@ import {
   TreeNode,
 } from "treedocumentmodel";
 import { indexToMap } from "treedocumentmodel/dist/util";
+import { TreeLanguageServerClient } from "../tree-language-server/Client";
 
 /**
  * A TreeDocument represents a specific tree which can be mapped to a model.
  *
  */
-export class TreeDocument implements vscode.CustomDocument {
+export class TreeCustomDocument implements vscode.CustomDocument {
   // You can draw inspiration from vscode.TextDocument for what properties and methods are needed.
   // and https://github.com/eclipse-glsp/glsp-vscode-integration/blob/master/vscode-integration/src/glsp-diagram-document.ts
   private readonly log = getLogger().getChildLogger({ label: "TreeDocument" });
@@ -19,7 +20,10 @@ export class TreeDocument implements vscode.CustomDocument {
   private _documentData?: TreeDocumentModel;
   private treeNodeIdIndex: Map<NodeId, TreeNode> = new Map();
 
-  constructor(public uri: vscode.Uri) {
+  constructor(
+    public uri: vscode.Uri,
+    public readonly tlspServer: TreeLanguageServerClient
+  ) {
     this.log.debug("Created tree document", { uri: this.uri });
     //TODO: set this.documentData based on the uri?
   }

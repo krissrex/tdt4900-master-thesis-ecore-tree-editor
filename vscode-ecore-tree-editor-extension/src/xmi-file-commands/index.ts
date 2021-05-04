@@ -1,11 +1,13 @@
 import * as vscode from "vscode";
 import { EXTENSION_ID } from "../config";
 import { getLogger } from "../log";
-import { createClient, TreeClient } from "../tree-language-server/Client";
+import { TreeLanguageServerClient } from "../tree-language-server/Client";
 
-export function registerXmiCommands(context: vscode.ExtensionContext) {
+export function registerXmiCommands(
+  context: vscode.ExtensionContext,
+  tlspDispatcher: TreeLanguageServerClient
+) {
   const logger = getLogger().getChildLogger({ label: "registerXmiCommands" });
-  const client = createClient();
 
   context.subscriptions.push(
     vscode.commands.registerCommand(EXTENSION_ID + ".xmi-newfile", () => {
@@ -26,23 +28,23 @@ export function registerXmiCommands(context: vscode.ExtensionContext) {
             );
             return;
           }
-          client.createNewModel(name);
+
+          throw new Error("Not implemented");
+          //client.createNewModel(name);
         });
     })
   );
 
-  const workspace = vscode.workspace.workspaceFolders?.[0]?.uri;
-  if (workspace && workspace.scheme === "file") {
-    logger.debug("Setting workspace to %s", workspace);
-    // TODO: what if workspace starts with ftp:// or something? We only want file://.
-    client.changeWorkspace(workspace.toString()).then(() => {
-      if (context.extensionMode !== vscode.ExtensionMode.Production) {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      EXTENSION_ID + ".server.list-models",
+      async () => {
+        await tlspDispatcher._onReady;
+        const uris = await tlspDispatcher.getDetectedModelUris();
         vscode.window.showInformationMessage(
-          "Set EMF ModelServer workspace to " + workspace.toString()
+          "Found models:\n" + uris.join("\n")
         );
       }
-    });
-  } else {
-    logger.warn("Unable to set workspace to %s", workspace);
-  }
+    )
+  );
 }
