@@ -11,6 +11,15 @@
       "problemMatcher": [],
       "label": "build extension",
       "detail": "tsc -p ./"
+    },
+    {
+      "type": "npm",
+      "script": "webpack",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "label": "npm: webpack",
+      "detail": "webpack --mode development"
     }
   ]
 }

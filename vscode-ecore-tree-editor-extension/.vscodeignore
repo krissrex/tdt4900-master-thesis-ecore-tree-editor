@@ -10,6 +10,10 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 
+node_modules
+out/
+webpack.config.js
+
 tree-editor-webview-contents/icons/**
 docs-resources/**
 examples/**
