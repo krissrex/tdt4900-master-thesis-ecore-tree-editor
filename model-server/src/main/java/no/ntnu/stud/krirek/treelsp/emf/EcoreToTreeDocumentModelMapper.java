@@ -1,5 +1,8 @@
 package no.ntnu.stud.krirek.treelsp.emf;
 
+import no.ntnu.stud.krirek.treelsp.config.ModelConfiguration;
+import no.ntnu.stud.krirek.treelsp.config.ModelIcons;
+import no.ntnu.stud.krirek.treelsp.config.ServerConfiguration;
 import no.ntnu.stud.krirek.treelsp.model.tree.*;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.*;
@@ -17,13 +20,27 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class EcoreToTreeDocumentModelMapper {
 
-    Logger log = LoggerFactory.getLogger(EcoreToTreeDocumentModelMapper.class);
+    private static final Logger log = LoggerFactory.getLogger(EcoreToTreeDocumentModelMapper.class);
+
+    private @Nullable ModelConfiguration mappingConfig = null;
 
     @Inject
     public EcoreToTreeDocumentModelMapper() {
+    }
+
+    /**
+     * Set a configuration for what icons and actions should be set on the {@link #map(ResourceSet) mapped} {@link TreeDocument tree}.
+     * @param mappingConfig a config, or {@code null} to not use any actions and icons.
+     * @see ServerConfiguration#loadDefaultConfigurations()
+     * @see #map(ResourceSet)
+     */
+    public void setMappingConfig(@Nullable ModelConfiguration mappingConfig) {
+        this.mappingConfig = mappingConfig;
     }
 
     public TreeDocument map(@NotNull ResourceSet model) {
@@ -48,24 +65,42 @@ public class EcoreToTreeDocumentModelMapper {
         final ImmutableTreeRoot.Builder treeRootBuilder = ImmutableTreeRoot.builder();
         treeRootBuilder.id(resource.getURI().toFileString());
 
+        // TODO add actions from config instead
         final ImmutableActionConfiguration.Builder actionConfigurationBuilder = mapActionConfiguration(resource);
         treeRootBuilder.actions(actionConfigurationBuilder.build());
 
         final ImmutableHierarchyConfiguration.Builder hierarchyBuilder = mapHierarchy(resource);
         treeRootBuilder.hierarchy(hierarchyBuilder.build());
 
-        //treeRootBuilder.icons() // TODO: implement
+        addIconsFromConfig(treeRootBuilder);
 
         final EList<EObject> contents = resource.getContents();
         if (contents.size() > 1) {
             throw new IllegalArgumentException("Mutliple roots! What to do?");
         }
         final EObject rootObject = contents.get(0);
-        final HashSet<String> visitedNodeTypes = new HashSet<>();
         final ImmutableTreeNode.Builder treeNodeBuilder = mapTreeNode(rootObject);
         treeRootBuilder.rootNode(treeNodeBuilder.build());
 
         return treeRootBuilder;
+    }
+
+    protected void addIconsFromConfig(ImmutableTreeRoot.Builder treeRootBuilder) {
+        final Optional<ModelIcons> modelIcons = Optional.ofNullable(mappingConfig).flatMap(ModelConfiguration::icons);
+        if (modelIcons.isPresent()) {
+            final Map<String, String> icons = modelIcons.get().icons();
+            final ImmutableIconConfiguration.Builder iconConfigBuilder = ImmutableIconConfiguration.builder();
+
+            for (Map.Entry<String, String> iconEntry : icons.entrySet()) {
+                final String nodeType = iconEntry.getKey();
+                final String iconDataUri = iconEntry.getValue();
+                final NodeIcon nodeIcon = ImmutableNodeIcon.builder()
+                        .addIcons(iconDataUri)
+                        .build();
+                iconConfigBuilder.putIcons(nodeType, nodeIcon);
+            }
+            treeRootBuilder.icons(iconConfigBuilder.build());
+        }
     }
 
     @NotNull

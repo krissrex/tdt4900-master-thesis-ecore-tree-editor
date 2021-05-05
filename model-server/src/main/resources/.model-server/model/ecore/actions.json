@@ -1,7 +1,7 @@
 {
-  "defaultAcionbarActions": [],
+  "defaultActionbarActions": ["ecore:dynamic-instance"],
   "nodeActions": {
     "EResource": [],
-    "EPackage": []
+    "EPackage": ["ecore:create-genmodel"]
   }
 }

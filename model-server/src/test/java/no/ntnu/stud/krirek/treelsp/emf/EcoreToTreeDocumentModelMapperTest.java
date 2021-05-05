@@ -176,11 +176,12 @@ class EcoreToTreeDocumentModelMapperTest {
         final Map<String, @NotNull List<String>> nodeActions = actions.nodeActions();
 
         // Then
-        assertThat(availableActions).hasSize(0); // FIXME
-        assertThat(defaultActionbarActions).hasSize(0); //FIXME
-        assertThat(nodeActions).hasSize(0); // FIXME
+        assertThat(availableActions).hasSize(2); // FIXME
+        assertThat(defaultActionbarActions).containsExactlyInAnyOrder("ecore:dynamic-instance"); //FIXME
+        assertThat(nodeActions).hasSize(1); // FIXME
+        assertThat(nodeActions.get("EPackage")).containsExactlyInAnyOrder("ecore:create-genmodel");
 
-        fail("Not done");
+        fail("Not done. The configuration is missing lots of node actions etc.");
 
     }
 }

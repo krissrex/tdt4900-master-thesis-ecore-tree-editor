@@ -2,6 +2,7 @@ package no.ntnu.stud.krirek.treelsp.emf;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import no.ntnu.stud.krirek.treelsp.config.ModelConfiguration;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.ExtraEPackagesModule;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -111,6 +112,15 @@ public class EmfTreeModelController {
         if (resourceSet == null) {
             throw new IllegalArgumentException("Failed to get resource: " + modelFileUri);
         }
+
+        // FIXME: clean up config loading, to consturctor etc.
+        final no.ntnu.stud.krirek.treelsp.config.ServerConfiguration modelServerConfig = new no.ntnu.stud.krirek.treelsp.config.ServerConfiguration();
+        final List<ModelConfiguration> modelConfigurations = modelServerConfig.loadDefaultConfigurations();
+        String finalModelFileUri1 = modelFileUri;
+        final Optional<ModelConfiguration> languageConfig = modelConfigurations.stream()
+                .filter(conf -> finalModelFileUri1.endsWith("." + conf.languageName()))
+                .findFirst();
+        mapper.setMappingConfig(languageConfig.orElse(null));
 
         final TreeDocument doc = mapper.map(resourceSet);
         log.debug("Model for '{}' mapped to {} root(s).", modelFileUri, doc.roots().size());
