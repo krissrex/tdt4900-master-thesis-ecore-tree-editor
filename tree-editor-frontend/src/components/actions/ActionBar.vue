@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Action } from "treedocumentmodel";
+import { Action, services } from "treedocumentmodel";
 import ActionButtonComponent from "./ActionButton.vue";
 import Vue from "vue";
 import { getChildLogger } from "@/logging";
@@ -25,49 +25,22 @@ export default Vue.extend({
   components: { ActionButtonComponent },
   computed: {
     availableActions(): Array<Action> {
-      return (
-        this.$store.state.treeDocument?.roots?.flatMap(
-          (root) => root.actions.availableActions
-        ) ?? []
-      );
+      const document = this.$store.state.treeDocument;
+      if (document) {
+        return services.getAvailableActions(document);
+      }
+
+      return [];
     },
 
     actions(): Array<Action> {
-      // FIXME: How to filter out only selected root?
-
-      const defaultActionIds =
-        this.$store.state.treeDocument?.roots?.flatMap(
-          (root) => root.actions.defaultActionbarActions
-        ) ?? [];
-
+      const doc = this.$store.state.treeDocument;
       const selection = this.$store.state.selectedNodes;
-      // Get a list of all action IDs that can be used for the current selection
-      const nodeActions: string[][] =
-        this.$store.state.treeDocument?.roots
-          ?.map((root) => root.actions.nodeActions)
-          ?.map((nodeAction) => {
-            return selection.flatMap((selectedNode) =>
-              nodeAction.get(selectedNode.type)
-            );
-          }) ?? [];
-      // In case of multiple selected, only keep the intersection of all the specific action ids
-      while (nodeActions.length > 1) {
-        const a = nodeActions[0];
-        const b = nodeActions[1];
-        const intersection = new Set(a.filter((x) => b.includes(x)));
-        nodeActions[0] = [...intersection];
+
+      if (doc && selection) {
+        return services.getActionsForSelection(selection, doc);
       }
-      const selectedNodesActionIntersection: string[] = nodeActions[0] ?? [];
-
-      const availableActions = this.availableActions;
-      const actions =
-        availableActions.filter(
-          (action) =>
-            defaultActionIds.includes(action.id) ||
-            selectedNodesActionIntersection.includes(action.id)
-        ) ?? [];
-
-      return actions;
+      return [];
     },
   },
 

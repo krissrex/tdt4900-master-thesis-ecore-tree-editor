@@ -2,11 +2,11 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "declaration": true, // Create d.ts files. Important for a library.
     "module": "CommonJS",
     "target": "es5",
-    "lib": ["ES2015", "DOM"]
+    "lib": ["ES2019", "DOM"]
   },
   "include": ["src/**/*"]
 }
