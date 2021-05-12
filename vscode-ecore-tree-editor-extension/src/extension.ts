@@ -6,7 +6,7 @@ import { registerCustomTreeEditor } from "./ecore-custom-editor/registerCustomTr
 import { registerServerCommands } from "./tree-language-server/serverCommands";
 import { EXTENSION_HUMAN_NAME, EXTENSION_ID } from "./config";
 import { startServer } from "./tree-language-server/start-server";
-import { TreeLanguageServerClient } from "./tree-language-server/Client";
+import { TreeLanguageServerClient } from "./tree-language-server/TreeLanguageServerClient";
 import { TreeLanguageServerJsonRpcClient } from "./tree-language-server/jsonrpc/TreeLanguageServerRpcClient";
 
 export function activate(context: vscode.ExtensionContext) {

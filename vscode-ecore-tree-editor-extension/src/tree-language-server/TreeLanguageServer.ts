@@ -28,6 +28,10 @@ export class TreeLanguageServer {
 
   public start() {}
 
+  /**
+   *
+   * @returns a Promise that resolves to `true` if the machine has a high enough Java Runtime version installed.
+   */
   public async assertEnvironmentHasJava(): Promise<boolean> {
     try {
       const version = await getJavaVersion();
@@ -53,6 +57,10 @@ export class TreeLanguageServer {
   }
 }
 
+/**
+ * Calls `java -version` to get the installed jdk version number
+ * @returns a Promise with the version number, for example `11.0.3` (JRE11) or `1.8.0` (JRE8).
+ */
 export function getJavaVersion(): Promise<string> {
   const log = getLogger().getChildLogger({ label: "TreeLanguageServer" });
 

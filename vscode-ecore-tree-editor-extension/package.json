@@ -134,7 +134,6 @@
   },
   "dependencies": {
     "@vscode-logging/logger": "^1.2.3",
-    "axios": "^0.21.1",
     "treedocumentmodel": "file:../tree-document-model-js",
     "vscode-jsonrpc": "^6.0.0",
     "vscode-webview-tree-editor-rpc": "file:../vscode-webview-tree-editor-rpc"

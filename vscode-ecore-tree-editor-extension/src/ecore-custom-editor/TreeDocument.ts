@@ -6,7 +6,7 @@ import {
   TreeNode,
 } from "treedocumentmodel";
 import { services } from "treedocumentmodel";
-import { TreeLanguageServerClient } from "../tree-language-server/Client";
+import { TreeLanguageServerClient } from "../tree-language-server/TreeLanguageServerClient";
 
 /**
  * A TreeDocument represents a specific tree which can be mapped to a model.

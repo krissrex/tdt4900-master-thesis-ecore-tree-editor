@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { TreeLanguageServerClient } from "../tree-language-server/Client";
+import { TreeLanguageServerClient } from "../tree-language-server/TreeLanguageServerClient";
 import { CustomTreeEditorProvider } from "./CustomTreeEditorProvider";
 
 export function registerCustomTreeEditor(

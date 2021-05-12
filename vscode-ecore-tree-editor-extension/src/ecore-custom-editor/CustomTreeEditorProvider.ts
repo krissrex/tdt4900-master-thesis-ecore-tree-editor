@@ -2,7 +2,7 @@ import * as path from "path";
 import * as vscode from "vscode";
 import { EXTENSION_HUMAN_NAME } from "../config";
 import { getLogger } from "../log";
-import { TreeLanguageServerClient } from "../tree-language-server/Client";
+import { TreeLanguageServerClient } from "../tree-language-server/TreeLanguageServerClient";
 import { TreeCustomDocument } from "./TreeDocument";
 import { TreeEditorWebviewClient } from "./TreeEditorWebview";
 import { VscodeExtensionServer } from "./VscodeExtension";
@@ -16,7 +16,8 @@ type TreeDocumentChangeEvent =
  * and acts as glue.
  */
 export class CustomTreeEditorProvider
-  implements vscode.CustomEditorProvider<TreeCustomDocument> {
+  implements vscode.CustomEditorProvider<TreeCustomDocument>
+{
   /*
     It is a possibility that representing the tree as text is the best solution.
     However, the file is not worked upon directly; instead all actions are passed to the Tree Language Server.
@@ -42,8 +43,8 @@ export class CustomTreeEditorProvider
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<
     vscode.CustomDocumentEditEvent<TreeCustomDocument>
   >();
-  public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument
-    .event;
+  public readonly onDidChangeCustomDocument =
+    this._onDidChangeCustomDocument.event;
 
   saveCustomDocument(
     document: TreeCustomDocument,

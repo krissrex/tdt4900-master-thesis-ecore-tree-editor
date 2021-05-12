@@ -1,5 +1,8 @@
 import { TreeDocument } from "treedocumentmodel";
-import { TreeLanguageServerClient, Workspace } from "../Client";
+import {
+  TreeLanguageServerClient,
+  Workspace,
+} from "../TreeLanguageServerClient";
 import * as rpc from "vscode-jsonrpc";
 import * as protocol from "./protocol";
 
@@ -11,7 +14,8 @@ import * as protocol from "./protocol";
  * should be implemented here.
  */
 export class TreeLanguageServerJsonRpcClient
-  implements TreeLanguageServerClient {
+  implements TreeLanguageServerClient
+{
   private _workspace: Workspace;
 
   constructor(

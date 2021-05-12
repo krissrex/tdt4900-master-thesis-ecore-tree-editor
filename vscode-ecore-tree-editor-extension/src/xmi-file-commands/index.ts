@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { EXTENSION_ID } from "../config";
 import { getLogger } from "../log";
-import { TreeLanguageServerClient } from "../tree-language-server/Client";
+import { TreeLanguageServerClient } from "../tree-language-server/TreeLanguageServerClient";
 
 export function registerXmiCommands(
   context: vscode.ExtensionContext,
