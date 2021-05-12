@@ -1,11 +1,8 @@
 import {
   ActionEvent,
   editorStateFactoryInstance,
-  example,
   NodeId,
-  util,
 } from "treedocumentmodel";
-import { indexToMap } from "treedocumentmodel/dist/util";
 import { Disposable, Webview } from "vscode";
 import {
   dispatchMethod,

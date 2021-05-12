@@ -51,7 +51,7 @@ export default Vue.extend({
 
       vscodeExtension.triggerAction({
         action: action.id,
-        targetRoot: this.$store.state.treeDocument?.roots[0], // FIXME: How to get this?
+        targetRoot: this.$store.state.treeDocument?.roots[0], // FIXME: use services.indexTreeDocument to get roots. Preferably store the index in vuex and only calculate on-demand/on-change
         targetNodes: this.$store.state.selectedNodes,
       });
     },

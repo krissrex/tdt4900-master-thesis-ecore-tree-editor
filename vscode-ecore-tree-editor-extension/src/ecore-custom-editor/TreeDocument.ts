@@ -5,7 +5,7 @@ import {
   TreeDocument as TreeDocumentModel,
   TreeNode,
 } from "treedocumentmodel";
-import { indexToMap } from "treedocumentmodel/dist/util";
+import { services } from "treedocumentmodel";
 import { TreeLanguageServerClient } from "../tree-language-server/Client";
 
 /**
@@ -18,7 +18,7 @@ export class TreeCustomDocument implements vscode.CustomDocument {
   private readonly log = getLogger().getChildLogger({ label: "TreeDocument" });
 
   private _documentData?: TreeDocumentModel;
-  private treeNodeIdIndex: Map<NodeId, TreeNode> = new Map();
+  private treeNodeIdIndex?: services.TreeDocumentIndex;
 
   constructor(
     public uri: vscode.Uri,
@@ -40,7 +40,7 @@ export class TreeCustomDocument implements vscode.CustomDocument {
     this._documentData = doc;
     if (doc) {
       try {
-        this.treeNodeIdIndex = indexToMap(doc);
+        this.treeNodeIdIndex = services.indexTreeDocument(doc);
       } catch (err) {
         this.log.error("Indexing of document failed: %s", err);
       }
@@ -49,7 +49,7 @@ export class TreeCustomDocument implements vscode.CustomDocument {
 
   public getNode(id: NodeId): TreeNode | undefined {
     if (this.treeNodeIdIndex) {
-      return this.treeNodeIdIndex.get(id);
+      return this.treeNodeIdIndex.treeNodeById.get(id);
     } else {
       throw new Error(
         "Tree is not indexed. Is the tree set? typeof tree=" +
