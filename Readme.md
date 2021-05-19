@@ -16,6 +16,7 @@ The VSCode extension embeds and presents the Tree Editor frontend. The extension
 <details><summary>PlantUML code</summary>
 
 ```plantuml
+@startuml
 [VSCode extension] as VSCEx
 [Tree Editor frontend] as TEf
 [Tree Language Server] as TLS
@@ -29,6 +30,7 @@ VSCEx --> cfs : webview
 VSCEx <-> TLS : TLSP
 TLS <-> EMS : REST, Websocket
 TDMlib <-- TEf : imports
+@enduml
 ```
 </details>
 
