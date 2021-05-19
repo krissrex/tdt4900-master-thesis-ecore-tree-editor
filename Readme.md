@@ -11,7 +11,7 @@
 
 The VSCode extension embeds and presents the Tree Editor frontend. The extension talks over the Tree Language Server Protocol (TLSP) to the Tree Language Server, which in turn asks the Ecore Model Server to do the actual work on models and files.
 
-![plantuml 0](http://www.plantuml.com/plantuml/proxy?cache=no&idx=0&src=https://raw.githubusercontent.com/krissrex/tdt4900-master-thesis-ecore-tree-editor/master/Readme.md)
+![plantuml 0](https://www.plantuml.com/plantuml/proxy?cache=no&idx=0&src=https://raw.githubusercontent.com/krissrex/tdt4900-master-thesis-ecore-tree-editor/master/Readme.md)
 
 <details><summary>PlantUML code</summary>
 
@@ -25,12 +25,12 @@ The VSCode extension embeds and presents the Tree Editor frontend. The extension
 
 artifact "compiled frontend js" as cfs
 
-TEf -up-> cfs : compiles to
+TEf -right-> cfs : compiles to
 TEf --> VSCWVRPC : imports
 TEf --> TDMlib : imports
 VSCEx --> VSCWVRPC : imports
 VSCEx --> TDMlib : imports
-VSCEx --> cfs : webview
+VSCEx -left-> cfs : webview
 VSCEx <-> TLS : TLSP/JSON-RPC
 @enduml
 ```
