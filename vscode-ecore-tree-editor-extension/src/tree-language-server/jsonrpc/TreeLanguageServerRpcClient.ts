@@ -40,7 +40,7 @@ export class TreeLanguageServerJsonRpcClient
     return this.connection.sendRequest(protocol.getModelRequest, modelRequest);
   }
 
-  getDetectedModelUris(): Promise<String[]> {
+  getDetectedModelUris(): Promise<string[]> {
     return this.connection.sendRequest(protocol.getDetectedModelUrisRequest);
   }
   workspace(): Workspace {
