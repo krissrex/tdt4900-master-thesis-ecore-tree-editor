@@ -1,7 +1,11 @@
 <template>
   <div>
     <span class="root-label">Tree root {{ root.id }}</span>
-    <tree-node-component :node="rootNode" />
+    <tree-node-component
+      :node="rootNode"
+      :treeRoot="root"
+      :parentNode="undefined"
+    />
   </div>
 </template>
 
@@ -28,7 +32,7 @@ export default Vue.extend({
    */
   provide(): object {
     return {
-      treeRoot: this, // TODO figure out the correct thing to provide.
+      treeRoot: this.root, // TODO figure out the correct thing to provide.
     };
   },
 });

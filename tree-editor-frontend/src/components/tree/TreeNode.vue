@@ -10,11 +10,17 @@
       :expanded="showChildren"
       @toggle="onToggleShowChildren"
     />
-    <div class="icon inline"><!-- TODO icon here  -->😎</div>
+    <div class="icon inline">
+      <icon-component :iconData="icon" />
+    </div>
     <span class="label">{{ label }}</span>
     <ol class="children" v-if="showChildren">
       <li v-for="child in children" :key="child.id" class="child">
-        <tree-node-component :node="child" />
+        <tree-node-component
+          :node="child"
+          :treeRoot="treeRoot"
+          :parentNode="node"
+        />
       </li>
     </ol>
   </div>
@@ -22,26 +28,53 @@
 
 <script lang="ts">
 import { Actions, Mutations } from "@/store";
-import { NodeIcon, TreeNode } from "treedocumentmodel";
+import { NodeIcon, TreeNode, TreeRoot } from "treedocumentmodel";
 import Vue, { PropType } from "vue";
 import ToggleCaretComponent from "./ToggleCaret.vue";
+import IconComponent from "./Icon.vue";
 
 export default Vue.extend({
   name: "tree-node-component",
-  components: { ToggleCaretComponent },
+  components: { ToggleCaretComponent, IconComponent },
   props: {
     node: {
       type: Object as PropType<TreeNode>,
       required: true,
+    },
+    treeRoot: {
+      type: Object as PropType<TreeRoot>,
+      required: true,
+    },
+    parentNode: {
+      type: Object as PropType<TreeNode>,
+      required: false,
     },
   },
   computed: {
     label(): string {
       return this.node.name ?? "<no name>";
     },
-    icon(): string | NodeIcon {
-      // TODO create a component for this
-      return this.node.iconOverride ?? "TODO get default icon";
+    icon(): NodeIcon | undefined {
+      const iconOverride = this.node.iconOverride;
+      if (iconOverride) {
+        if (typeof iconOverride === "string") {
+          return { icons: [iconOverride] };
+        }
+        return iconOverride;
+      }
+
+      const type = this.node.type;
+      const iconConfig = this.treeRoot.icons?.icons;
+
+      if (iconConfig) {
+        const icon = iconConfig.get(type);
+        if (typeof icon === "string") {
+          return { icons: [icon] };
+        }
+        return icon;
+      }
+
+      return undefined;
     },
     children(): TreeNode[] {
       return this.node.children;
