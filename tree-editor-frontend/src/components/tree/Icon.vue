@@ -1,11 +1,12 @@
 <template>
-  <div v-if="iconData && icons">
+  <div v-if="iconData && icons" class="icon-container">
     <img
       v-for="(dataUri, index) in icons"
       :key="index"
       :src="dataUri"
       :data-img="'' + dataUri + '-' + index"
       alt="icon"
+      class="icon"
     />
   </div>
 </template>
@@ -27,3 +28,14 @@ export default Vue.extend({
   },
 });
 </script>
+
+<style scoped>
+.icon-container {
+  display: grid;
+}
+.icon {
+  /* Put all icons in the same cell to stack them. */
+  grid-column: 1;
+  grid-row: 1;
+}
+</style>
