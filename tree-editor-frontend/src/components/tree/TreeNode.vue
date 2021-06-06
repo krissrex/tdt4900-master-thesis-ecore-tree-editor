@@ -116,6 +116,10 @@ export default Vue.extend({
   list-style-type: none;
 }
 
+.icon {
+  margin-right: 0.5ex;
+}
+
 .inline {
   display: inline-block;
 }
