@@ -5,30 +5,34 @@
 
 1. VSCode extension (`vscode-ecore-tree-editor-extension`)
 2. Tree Editor frontend (`tree-editor-frontend`)
-3. Tree Language Server (`nil/TODO`)
-4. Ecore Model Server (`model-server`)
-5. Tree Document model js-library (`tree-docment-model-js`)
+3. Tree Language Server (`model-server`)
+4. Tree Document model js-library (`tree-docment-model-js`)
+5. VSCode and Webview RPC js-library (`vscode-webview-tree-editor-rpc`)
 
 The VSCode extension embeds and presents the Tree Editor frontend. The extension talks over the Tree Language Server Protocol (TLSP) to the Tree Language Server, which in turn asks the Ecore Model Server to do the actual work on models and files.
 
-![plantuml 0](http://www.plantuml.com/plantuml/proxy?cache=no&idx=0&src=https://raw.githubusercontent.com/krissrex/tdt4900-master-thesis-ecore-tree-editor/master/Readme.md)
+![plantuml 0](https://www.plantuml.com/plantuml/proxy?cache=no&idx=0&src=https://raw.githubusercontent.com/krissrex/tdt4900-master-thesis-ecore-tree-editor/master/Readme.md#1)
 
 <details><summary>PlantUML code</summary>
 
 ```plantuml
-[VSCode extension] as VSCEx
+@startuml
 [Tree Editor frontend] as TEf
-[Tree Language Server] as TLS
-[Ecore Model Server] as EMS
+[VSCode extension] as VSCEx
+[EMF Tree Language Server] as TLS
 [Tree Document model js-library] as TDMlib
+[VSCode and Webview RPC js-library] as VSCWVRPC
 
 artifact "compiled frontend js" as cfs
 
-TEf -> cfs : compiles to
-VSCEx --> cfs : webview
-VSCEx <-> TLS : TLSP
-TLS <-> EMS : REST, Websocket
-TDMlib <-- TEf : imports
+TEf -right-> cfs : compiles to
+TEf --> VSCWVRPC : imports
+TEf --> TDMlib : imports
+VSCEx --> VSCWVRPC : imports
+VSCEx --> TDMlib : imports
+VSCEx -left-> cfs : webview
+VSCEx <-> TLS : TLSP/JSON-RPC
+@enduml
 ```
 </details>
 
