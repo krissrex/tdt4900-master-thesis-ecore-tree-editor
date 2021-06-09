@@ -30,13 +30,13 @@ describe("JSON serialization", () => {
       const actual = JSON.parse(documentJson) as TreeDocument;
 
       // Then
-      expect(
-        document.roots[0].hierarchy.allowedChildren.get("EPackage")
-      ).toContain("EClass");
-      expect(
-        actual.roots[0].hierarchy.allowedChildren.get("EPackage")
-      ).toContain("EClass"); // FIXME: Replace Map and Set with objects/Records.
-      expect(actual.roots[0].hierarchy.allowedChildren).toBeInstanceOf(Map);
+      expect(document.roots[0].hierarchy.allowedChildren["EPackage"]).toContain(
+        "EClass"
+      );
+      expect(actual.roots[0].hierarchy.allowedChildren["EPackage"]).toContain(
+        "EClass"
+      );
+      expect(actual.roots[0].hierarchy.allowedChildren).not.toBeInstanceOf(Map);
 
       expect(actual).toEqual(document);
     });

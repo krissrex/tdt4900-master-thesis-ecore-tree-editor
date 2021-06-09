@@ -121,7 +121,7 @@ describe("TreeDocument indexing service", () => {
 
 function createHierarchy(): HierarchyConfiguration {
   return {
-    roots: new Set("any"),
-    allowedChildren: new Map([["any", ["any"]]]),
+    roots: ["any"],
+    allowedChildren: { any: ["any"] },
   };
 }

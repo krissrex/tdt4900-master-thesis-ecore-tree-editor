@@ -10,5 +10,5 @@ export interface IconConfiguration {
   /**
    * The *key* is the {@link NodeType} and the *value* is a the icon that should be used for this node type by default.
    */
-  icons: Map<NodeType, IconDataUri | NodeIcon>;
+  icons: Record<NodeType, IconDataUri | NodeIcon>;
 }

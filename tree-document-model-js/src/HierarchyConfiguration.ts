@@ -10,7 +10,7 @@ export interface HierarchyConfiguration {
   /**
    * The {@link NodeType}s that can be {@link TreeRoot.rootNode | tree roots}.
    */
-  roots: Set<NodeType>;
+  roots: Array<NodeType>;
 
   /**
    * This specifies what child {@link TreeNode}s are allowed as children for each {@link NodeType}.
@@ -19,5 +19,5 @@ export interface HierarchyConfiguration {
    * For a file browser:
    * `"directory", ["directory", "file"]`
    */
-  allowedChildren: Map<NodeType, Array<NodeType>>;
+  allowedChildren: Record<NodeType, Array<NodeType>>;
 }

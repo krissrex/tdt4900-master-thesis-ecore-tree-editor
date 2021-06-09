@@ -9,11 +9,11 @@ export function getExampleTreeDocument(): TreeDocument {
         actions: {
           availableActions: [{ id: "validate", name: "Validate" }],
           defaultActionbarActions: [],
-          nodeActions: new Map([["validate", ["EPackage", "EClass"]]]),
+          nodeActions: { validate: ["EPackage", "EClass"] },
         },
         hierarchy: {
-          roots: new Set(["EPackage"]),
-          allowedChildren: new Map([["EPackage", ["EClass"]]]),
+          roots: ["EPackage"],
+          allowedChildren: { EPackage: ["EClass"] },
         },
         icons: {
           icons: ecoreIcons,
