@@ -67,7 +67,7 @@ export default Vue.extend({
       const iconConfig = this.treeRoot.icons?.icons;
 
       if (iconConfig) {
-        const icon = iconConfig.get(type);
+        const icon = iconConfig[type];
         if (typeof icon === "string") {
           return { icons: [icon] };
         }

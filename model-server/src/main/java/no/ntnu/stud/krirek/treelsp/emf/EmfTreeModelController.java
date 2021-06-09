@@ -5,10 +5,13 @@ import com.google.inject.Injector;
 import no.ntnu.stud.krirek.treelsp.config.ModelConfiguration;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.ExtraEPackagesModule;
 import no.ntnu.stud.krirek.treelsp.model.tree.TreeDocument;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
 import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
+import org.eclipse.emfcloud.modelserver.emf.common.RecordingModelResourceManager;
+import org.eclipse.emfcloud.modelserver.emf.configuration.EPackageConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.configuration.ServerConfiguration;
 import org.eclipse.emfcloud.modelserver.emf.di.DefaultModelServerModule;
 import org.slf4j.Logger;
@@ -20,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EmfTreeModelController {
@@ -32,10 +36,37 @@ public class EmfTreeModelController {
     private final ServerConfiguration serverConfiguration;
     private EcoreToTreeDocumentModelMapper mapper;
 
+    public static class IgnoringModelResourceManager extends RecordingModelResourceManager {
+        @Inject
+        public IgnoringModelResourceManager(Set<EPackageConfiguration> configurations, AdapterFactory adapterFactory, ServerConfiguration serverConfiguration) {
+            super(configurations, adapterFactory, serverConfiguration);
+        }
+
+        @Override
+        protected boolean isSourceDirectory(File file) {
+
+            final String name = file.getName();
+            return !(name.contains("node_modules")
+                    || name.contains(".vscode-test")
+                    || name.contains(".vscode")
+                    || name.contains("out")
+                    || name.contains("dist")
+                    || name.contains(".model-server")) // TODO make blacklist/whitelist a config option
+                    && super.isSourceDirectory(file);
+        }
+    }
+
     public static EmfTreeModelController create() {
         // EMF-Cloud Model Server is created with private field injection,
         // so we need a dependency injection framework (or heavy use of reflection) to instantiate some of the classes.
-        final Injector injector = Guice.createInjector(new DefaultModelServerModule(), new ExtraEPackagesModule()); // TODO: create 1 injector in the main method, so that singletons are shared.
+        final Injector injector = Guice.createInjector(new DefaultModelServerModule() {
+
+
+            @Override
+            protected Class<? extends ModelResourceManager> bindModelResourceManager() {
+                return IgnoringModelResourceManager.class;
+            }
+        }, new ExtraEPackagesModule()); // TODO: create 1 injector in the main method, so that singletons are shared.
         /*
         TODO: alter the default model to register custom file extensions for xmi files
          by adding a EPackageConfiguration into the DefaultModelServerModule's multibindings.

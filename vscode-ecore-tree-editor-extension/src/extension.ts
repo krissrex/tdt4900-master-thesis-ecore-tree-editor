@@ -47,12 +47,12 @@ function startTlspServer(
 
   const workspaceFolder = workspaceFolderUri();
   if (workspaceFolder) {
-    log.info("Setting workspace to %s", workspaceFolder);
-    server.onReady.then(() =>
+    server.onReady.then(() => {
+      log.info("Setting workspace to %s", workspaceFolder);
       tlspDispatcher
         .workspace()
-        .setWorkspaceUri({ workspaceUri: workspaceFolder })
-    );
+        .setWorkspaceUri({ workspaceUri: workspaceFolder });
+    });
   } else {
     log.warn(
       "No workspace was found. It was therefore not set in the tlsp server either."

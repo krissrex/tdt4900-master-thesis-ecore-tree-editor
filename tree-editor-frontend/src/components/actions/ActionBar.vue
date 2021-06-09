@@ -37,7 +37,7 @@ export default Vue.extend({
       const doc = this.$store.state.treeDocument;
       const selection = this.$store.state.selectedNodes;
 
-      if (doc && selection) {
+      if (doc && selection && selection.length) {
         return services.getActionsForSelection(selection, doc);
       }
       return [];

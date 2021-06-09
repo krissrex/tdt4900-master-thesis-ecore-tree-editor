@@ -1,24 +1,20 @@
 package no.ntnu.stud.krirek.treelsp.jsonrpc;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import no.ntnu.stud.krirek.treelsp.emf.EcoreToTreeDocumentModelMapper;
 import no.ntnu.stud.krirek.treelsp.emf.EmfTreeModelController;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Client;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.Server;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.ServerImpl;
 import no.ntnu.stud.krirek.treelsp.jsonrpc.protocol.WorkspaceImpl;
+import no.ntnu.stud.krirek.treelsp.model.tree.GsonAdaptersTree;
 import org.apache.commons.io.input.CloseShieldInputStream;
-import org.eclipse.emf.codegen.ecore.genmodel.GenModelPackage;
-import org.eclipse.emfcloud.modelserver.emf.common.ModelController;
-import org.eclipse.emfcloud.modelserver.emf.common.ModelRepository;
-import org.eclipse.emfcloud.modelserver.emf.common.ModelResourceManager;
-import org.eclipse.emfcloud.modelserver.emf.configuration.ServerConfiguration;
-import org.eclipse.emfcloud.modelserver.emf.di.DefaultModelServerModule;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 
 /**
@@ -32,6 +28,8 @@ public class TLSPJsonRpcServer implements AutoCloseable {
     private Server server;
     private Launcher<Client> launcher;
     private Future<Void> onStopped;
+
+    private static final Logger log = LoggerFactory.getLogger(TLSPJsonRpcServer.class);
 
     /**
      * The launcher will only stop when the InputStream closes.
@@ -60,9 +58,27 @@ public class TLSPJsonRpcServer implements AutoCloseable {
         // Documentation for lsp4j-jsonrpc: https://github.com/eclipse/lsp4j/blob/master/documentation/jsonrpc.md
 
         jsonrpcInputStream = getJsonrpcInputstream();
-        final Launcher<Client> serverLauncher = Launcher.createLauncher(server, Client.class, jsonrpcInputStream, System.out);
-        onStopped = serverLauncher.startListening();
-        this.launcher = serverLauncher;
+
+
+        final Launcher.Builder<Client> clientBuilder = new Launcher.Builder<>();
+        clientBuilder
+                .setLocalService(server)
+                .setRemoteInterface(Client.class)
+                .setInput(jsonrpcInputStream)
+                .setOutput(System.out)
+                .configureGson(gsonBuilder -> gsonBuilder.registerTypeAdapterFactory(new GsonAdaptersTree()));
+
+        try {
+            final String traceFilePath = ".model-server/logs/tlsp-jsonrpc.trace";
+            PrintWriter trace = new PrintWriter(traceFilePath, StandardCharsets.UTF_8);
+            clientBuilder.traceMessages(trace);
+            log.info("Tracing to {}", traceFilePath);
+        } catch (Exception ignored) {
+        }
+        launcher = clientBuilder.create();
+        onStopped = launcher.startListening();
+
+
         System.err.println("Listening to stdin for JSON-RPC");
     }
 
@@ -78,7 +94,8 @@ public class TLSPJsonRpcServer implements AutoCloseable {
         if (jsonrpcInputStream != null) {
             try {
                 jsonrpcInputStream.close();
-            } catch (IOException ignored) { }
+            } catch (IOException ignored) {
+            }
             jsonrpcInputStream = null;
         }
     }
@@ -91,6 +108,7 @@ public class TLSPJsonRpcServer implements AutoCloseable {
     /**
      * Provide a {@link InputStream} for the {@link Launcher} to listen to incoming JSON-RPC messages.
      * This will be {@link InputStream#close() closed} when {@link #stop()} is called.
+     *
      * @see CloseShieldInputStream CloseShieldInputStream to avoid closing the underlying stream.
      */
     protected InputStream getJsonrpcInputstream() {
@@ -100,6 +118,7 @@ public class TLSPJsonRpcServer implements AutoCloseable {
     /**
      * The JSON-RPC launcher has the object used to call the remote client, in {@link Launcher#getRemoteProxy()}.
      * {@link #start()} must be called first.
+     *
      * @return the launcher instance.
      * @see #start()
      */
@@ -114,6 +133,7 @@ public class TLSPJsonRpcServer implements AutoCloseable {
     /**
      * The service used to receive JSON-RPC calls.
      * {@link #start()} must be called first.
+     *
      * @return the server service implementation.
      * @see #start()
      */

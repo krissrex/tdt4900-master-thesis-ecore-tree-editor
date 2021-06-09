@@ -44,9 +44,9 @@ public class MainRpc {
 
         if (options.hasOption("r")) {
             // Echo a custom ready message. Must be done after the server is actually ready and listening for input.
-            System.out.println(options.getOptionValue("r"));
+            System.err.println(options.getOptionValue("r"));
         } else {
-            System.out.println(MESSAGE_JSONRPC_READY);
+            System.err.println(MESSAGE_JSONRPC_READY);
         }
 
         // FIXME: remove test code

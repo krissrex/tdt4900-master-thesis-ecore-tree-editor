@@ -77,11 +77,20 @@ export class CustomTreeEditorProvider
     openContext: vscode.CustomDocumentOpenContext,
     token: vscode.CancellationToken
   ): TreeCustomDocument | Thenable<TreeCustomDocument> {
-    this.log.debug("Opening custom document", { uri: uri.toString() });
+    this.log.info("Opening custom document", { uri: uri.toString() });
 
-    return this.treeLanguageServer._onReady.then(() => {
-      return new TreeCustomDocument(uri, this.treeLanguageServer);
-    });
+    return this.treeLanguageServer._onReady
+      .catch((err) => {
+        this.log.error(
+          "Failed to wait for server when creating new TreeCustomDocument"
+        );
+      })
+      .then(() => {
+        this.log.info("Created new TreeCustomDocument", {
+          uri: uri.toString(),
+        });
+        return new TreeCustomDocument(uri, this.treeLanguageServer);
+      });
   }
 
   /**
@@ -110,7 +119,7 @@ export class CustomTreeEditorProvider
 
     webviewPanel.webview.options = {
       enableScripts: true, // Allow our editor to use js
-      enableCommandUris: false, // False is default. TODO: what is this, and should it be true?
+      enableCommandUris: false, // False is default. TODO: what is this, and should it be true? Might be clickable links/uris that when opened will dispatch to vscode as commands
     };
     webviewPanel.webview.html = this.createWebviewHtml(webviewPanel.webview);
     webviewPanel.webview.onDidReceiveMessage(

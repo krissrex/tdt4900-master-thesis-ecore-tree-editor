@@ -23,9 +23,16 @@ export class VscodeJsonRPCServer implements Disposable {
   ) {
     this.addMessageHandlers();
 
-    this.onReady = onServerReady(serverProcess).then(() => {
-      this.initializeConnection();
-    });
+    this.onReady = onServerReady(serverProcess)
+      .then(() => {
+        this.log.info(
+          "TLSP server is ready. Initializing json-rpc connection."
+        );
+        this.initializeConnection();
+      })
+      .catch((err) => {
+        this.log.error("Failed to initialize connection", { err });
+      });
   }
 
   protected addMessageHandlers() {
@@ -40,10 +47,18 @@ export class VscodeJsonRPCServer implements Disposable {
   }
 
   protected initializeConnection() {
-    this.log.debug("TLSP server is ready. Initializing json-rpc connection.");
+    this.serverConnection.onError(
+      (err) => {
+        this.log.error("Error in json-rpc: %s", { err });
+      },
+      this,
+      this.disposables
+    );
+
     this.serverConnection.listen();
 
     this.serverConnection.sendRequest(pingRequest, undefined).then((pong) => {
+      // FIXME: use the TreeLanguageServer interface instead. Or just remove this test code
       this.log.debug(
         "Got a ping from the server: %s",
         pong.receivedAtTimestamp
@@ -51,19 +66,28 @@ export class VscodeJsonRPCServer implements Disposable {
     });
   }
 
-  dispose() {}
+  dispose() {
+    this.disposables.forEach((d) => d.dispose());
+    this.disposables.length = 0;
+  }
 }
 
 function onServerReady(process: ChildProcess): Promise<void> {
+  const log = getChildLogger("VscodeJsonRPCServer:onServerReady");
+
   return new Promise((resolve, reject) => {
+    let message = "";
     const listenAfterReady = (data: String | Buffer) => {
-      const message = data.toString();
-      if (message.startsWith("[JSON-RPC] Server is ready.")) {
+      const chunk = data.toString();
+      log.trace("Got server chunk: %s", chunk);
+
+      message += chunk;
+      if (message.includes("[JSON-RPC] Server is ready.")) {
         resolve();
-        process.stdout?.off("data", listenAfterReady);
+        process.stderr?.off("data", listenAfterReady);
       }
     };
 
-    process.stdout?.on("data", listenAfterReady);
+    process.stderr?.on("data", listenAfterReady);
   });
 }

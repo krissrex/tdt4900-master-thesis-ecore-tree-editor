@@ -8,14 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.*;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,8 +42,13 @@ public class ServerConfiguration {
             if (internalConfigs == null) {
                 throw new RuntimeException("Cannot find internal configuration folder at " + modelConfigsRoot);
             }
+            final URI internalConfigsUri = internalConfigs.toURI();
 
-            final Path internalConfigPath = Paths.get(internalConfigs.toURI());
+            Map<String, String> env = new HashMap<>();
+            env.put("create", "true");
+            FileSystem zipfs = FileSystems.newFileSystem(internalConfigsUri, env);
+
+            final Path internalConfigPath = Paths.get(internalConfigsUri); // Can throw FileSystemNotFoundException
             if (!Files.isDirectory(internalConfigPath)) {
                 throw new RuntimeException("The path " + internalConfigPath.toString() + " is not a directory.");
             }
@@ -65,11 +67,21 @@ public class ServerConfiguration {
                     .build())
                     .collect(Collectors.toList());
 
+            zipfs.close();
             return modelConfigs;
-        } catch (IOException | URISyntaxException e) {
+        } catch (Exception e) {
             log.error("Failed to load default model configs", e);
             return Collections.emptyList();
         }
+
+        /*
+        Possible to get this here as well:
+        Caused by: java.nio.file.FileSystemNotFoundException: null
+            at jdk.zipfs/jdk.nio.zipfs.ZipFileSystemProvider.getFileSystem(ZipFileSystemProvider.java:169)
+            at jdk.zipfs/jdk.nio.zipfs.ZipFileSystemProvider.getPath(ZipFileSystemProvider.java:155)
+            at java.base/java.nio.file.Path.of(Path.java:208)
+            at java.base/java.nio.file.Paths.get(Paths.java:97)
+         */
 
     }
 

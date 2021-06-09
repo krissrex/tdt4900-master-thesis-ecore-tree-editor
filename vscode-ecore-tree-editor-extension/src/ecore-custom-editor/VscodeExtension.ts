@@ -3,6 +3,7 @@ import {
   editorStateFactoryInstance,
   NodeId,
 } from "treedocumentmodel";
+import * as vscode from "vscode";
 import { Disposable, Webview } from "vscode";
 import {
   dispatchMethod,
@@ -63,11 +64,23 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
       if (!this.document.documentData) {
         this.log.debug(
           "Fetching tree document from tlsp for %s",
-          this.document.uri
+          this.document.uri.toString()
         );
+
+        const warningTimeout = setTimeout(() => {
+          const filepath = this.document.uri.path;
+          const parts = filepath.split("/");
+          const filename = parts.pop() ?? "";
+
+          vscode.window.showWarningMessage(
+            `Loading the model for '${filename}' took longer than expected.`
+          );
+        }, 5000);
+
         this.document.tlspServer
           .getModel({ modelFileUri: this.document.uri.toString() })
           .then((treeDocument) => {
+            clearTimeout(warningTimeout);
             this.log.debug("Got document for %s", this.document.uri);
             this.document.documentData = treeDocument;
             this.refreshDocument();
