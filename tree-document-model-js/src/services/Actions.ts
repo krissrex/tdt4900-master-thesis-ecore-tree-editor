@@ -24,20 +24,25 @@ export function getActionsForSelection(
       return document.roots
         ?.map((root) => root.actions.nodeActions)
         ?.flatMap((actionMap) =>
-          Array.from(actionMap.entries())
+          Object.entries(actionMap)
             .filter(([_, nodeTypes]) => nodeTypes.includes(selectedNode.type))
             .map(([id, _]) => id)
         );
     }) ?? [];
 
   // In case of multiple selected, only keep the intersection of all the specific action ids
-  const selectedNodesActionIntersection: ActionId[] = allNodeActions.reduce(
-    (intersection: string[], nodeActions: ActionId[]) => {
-      return Array.from(
-        new Set(intersection.filter((action) => nodeActions.includes(action)))
-      );
-    }
-  );
+  let selectedNodesActionIntersection: ActionId[];
+  if (allNodeActions.length) {
+    selectedNodesActionIntersection = allNodeActions.reduce(
+      (intersection: string[], nodeActions: ActionId[]) => {
+        return Array.from(
+          new Set(intersection.filter((action) => nodeActions.includes(action)))
+        );
+      }
+    );
+  } else {
+    selectedNodesActionIntersection = [];
+  }
 
   const availableActions = getAvailableActions(document);
   const actions =

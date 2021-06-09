@@ -1,4 +1,5 @@
 import { example } from "..";
+import { ActionConfiguration } from "../ActionConfiguration";
 import {
   getActionsForSelection,
   getAvailableActions,
@@ -54,6 +55,35 @@ describe("getAvailableActions", () => {
 });
 
 describe("getActionsForSelection", () => {
+  it("should return default actions when nothing is selected", () => {
+    // Given
+    const root1: TreeRoot = {
+      actions: {
+        availableActions: [
+          { id: "1a", name: "1a" },
+          { id: "1b", name: "1b" },
+        ],
+        defaultActionbarActions: ["1a"],
+      } as ActionConfiguration,
+    } as any; // Use any to avoid specifying everything else in TreeRoot
+    const root2: TreeRoot = {
+      actions: {
+        availableActions: [],
+      },
+    } as any;
+
+    const document: TreeDocument = {
+      roots: [root1, root2],
+    };
+
+    // When
+    const actions = getActionsForSelection([], document);
+
+    // Then
+    expect(actions).toHaveLength(1);
+    expect(actions).toEqual(expect.arrayContaining([{ id: "1a", name: "1a" }]));
+  });
+
   it("should get intersection of actions when two nodes are selected", () => {
     // Given
     const document = example.ecore.getExampleTreeDocument();
@@ -69,11 +99,11 @@ describe("getActionsForSelection", () => {
       { id: "datatype", name: "test3" },
     ];
     document.roots[0].actions.defaultActionbarActions = ["default"];
-    document.roots[0].actions.nodeActions = new Map([
-      ["class", ["EClass"]],
-      ["datatype", ["EDataType"]],
-      ["common", ["EClass", "EDataType"]],
-    ]);
+    document.roots[0].actions.nodeActions = {
+      class: ["EClass"],
+      datatype: ["EDataType"],
+      common: ["EClass", "EDataType"],
+    };
 
     const selection = [eClass, eDataType];
 
