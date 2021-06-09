@@ -38,7 +38,11 @@ export default Vue.extend({
       const selection = this.$store.state.selectedNodes;
 
       if (doc && selection && selection.length) {
-        return services.getActionsForSelection(selection, doc);
+        try {
+          return services.getActionsForSelection(selection, doc);
+        } catch (err) {
+          log.error({ err, selection }, "Failed to get actions for selection");
+        }
       }
       return [];
     },
