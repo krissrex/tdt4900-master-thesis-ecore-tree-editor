@@ -12,7 +12,7 @@ import {
   VscodeExtension,
 } from "vscode-webview-tree-editor-rpc";
 import { getChildLogger } from "../log";
-import { TreeCustomDocument } from "./TreeDocument";
+import { TreeCustomDocument } from "./TreeCustomDocument";
 
 /**
  * Receives RPC commands from the webview and dispatches them.
@@ -93,6 +93,8 @@ export class VscodeExtensionServer implements VscodeExtension, Disposable {
               err
             );
           });
+      } else {
+        this.refreshDocument();
       }
     }
   }

@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { EXTENSION_HUMAN_NAME } from "../config";
 import { getLogger } from "../log";
 import { TreeLanguageServerClient } from "../tree-language-server/TreeLanguageServerClient";
-import { TreeCustomDocument } from "./TreeDocument";
+import { TreeCustomDocument } from "./TreeCustomDocument";
 import { TreeEditorWebviewClient } from "./TreeEditorWebview";
 import { VscodeExtensionServer } from "./VscodeExtension";
 
