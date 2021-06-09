@@ -48,7 +48,8 @@ export default Vue.extend({
   margin-right: 6px;
   margin-top: 2px;
   left: calc(-1 * var(--tree-node-icon-size));
-  color: var(--vscode-button-foreground);
+  color: black;
+  color: var(--vscode-text-foreground);
 }
 
 .caret-down::before {
