@@ -46,12 +46,13 @@ public class EmfTreeModelController {
         protected boolean isSourceDirectory(File file) {
 
             final String name = file.getName();
-            return !(name.contains("node_modules")
-                    || name.contains(".vscode-test")
-                    || name.contains(".vscode")
-                    || name.contains("out")
-                    || name.contains("dist")
-                    || name.contains(".model-server")) // TODO make blacklist/whitelist a config option
+            return !(name.equals("node_modules")
+                    || name.equals(".git")
+                    || name.equals(".vscode-test")
+                    || name.equals(".vscode")
+                    || name.equals("out")
+                    || name.equals("dist")
+                    || name.equals(".model-server")) // TODO make blacklist/whitelist a config option
                     && super.isSourceDirectory(file);
         }
     }
